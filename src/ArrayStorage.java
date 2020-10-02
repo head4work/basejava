@@ -3,7 +3,17 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    public int size = 0;
+    public int size = initcount();
+
+    private int initcount() {
+        int count = 0;
+        for (Resume r : storage) {
+            if (r != null) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     void clear() {
         size = 0;
