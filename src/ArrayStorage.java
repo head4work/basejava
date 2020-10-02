@@ -34,15 +34,12 @@ public class ArrayStorage {
         int indexOfDel = 0;
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null && storage[i].uuid.equals(uuid)) {
-                storage[i] = null;
                 indexOfDel = i;
             }
         }
         for (int i = indexOfDel; i < storage.length - 1; i++) {
-            if (storage[i] == null) {
                 storage[i] = storage[i + 1];
                 storage[i + 1] = null;
-            }
         }
     }
 
