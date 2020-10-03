@@ -14,22 +14,17 @@ public class ArrayStorage {
     }
 
     void clear() {
-        size = 0;
         for (int i = 0; i < optimized; i++) {
             if (storage[i] != null) {
                 storage[i] = null;
             }
         }
+        size = 0;
     }
 
     void save(Resume r) {
-        for (int i = 0; i < optimized; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                size++;
-                break;
-            }
-        }
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
@@ -42,17 +37,16 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int indexOfDel = 0;
         for (int i = 0; i < optimized; i++) {
             if (storage[i] != null && storage[i].uuid.equals(uuid)) {
-                indexOfDel = i;
+                for (int j = i; j < optimized - 1; j++) {
+                    storage[j] = storage[j + 1];
+                    storage[j + 1] = null;
+                }
                 size--;
             }
         }
-        for (int i = indexOfDel; i < optimized - 1; i++) {
-            storage[i] = storage[i + 1];
-            storage[i + 1] = null;
-        }
+
     }
 
     /**
