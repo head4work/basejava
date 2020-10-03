@@ -31,7 +31,6 @@ public class ArrayStorage {
             if (storage[i].uuid.equals(uuid)) {
                 for (int j = i; j < size - 1; j++) {
                     storage[j] = storage[j + 1];
-                    storage[j + 1] = null;
                 }
                 size--;
             }
