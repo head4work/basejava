@@ -18,8 +18,14 @@ public class ArrayStorage {
         return false;
     }
 
-    public void update(Resume r) {
-
+    public void update(Resume r, Resume updt) {
+        if (resume_Present(r.getUuid())) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].getUuid().equals(r.getUuid())) {
+                    storage[i].setUuid(updt.getUuid());
+                }
+            }
+        } else System.out.println("ERROR: such uuid doesn't exist ");
     }
 
     public void clear() {
@@ -32,7 +38,9 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (!resume_Present(r.getUuid())) {
             storage[size] = r;
-            size++;
+            if (size < storage.length) {
+                size++;
+            }
         } else System.out.println("ERROR: such uuid already exist ");
     }
 
