@@ -32,27 +32,41 @@ public class ArrayStorage {
             if (storage[i].getUuid().equals(uuid)) {
                 return false;
             }
-        } return true;
+        }
+        return true;
+    }
+
+    public boolean resume_Present(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
+        if (resume_Present(uuid)) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    return storage[i];
+                }
             }
-        }
+        } else System.out.println("ERROR: such uuid doesn't exist ");
         return null;
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                for (int j = i; j < size - 1; j++) {
-                    storage[j] = storage[j + 1];
+        if (resume_Present(uuid)) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    for (int j = i; j < size - 1; j++) {
+                        storage[j] = storage[j + 1];
+                    }
+                    size--;
                 }
-                size--;
             }
-        }
+        } else System.out.println("ERROR: such uuid doesn't exist ");
     }
 
     /**
