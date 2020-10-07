@@ -9,6 +9,10 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     public int size = 0;
 
+    public void update(Resume r) {
+
+    }
+
     public void clear() {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
@@ -17,8 +21,18 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        storage[size] = r;
-        size++;
+        if (resume_Notpresent(r.getUuid())) {
+            storage[size] = r;
+            size++;
+        } else System.out.println("ERROR: such uuid already exist ");
+    }
+
+    public boolean resume_Notpresent(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return false;
+            }
+        } return true;
     }
 
     public Resume get(String uuid) {
