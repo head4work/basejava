@@ -6,20 +6,11 @@ import com.urise.webapp.model.Resume;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    Resume[] storage = new Resume[10_000];
     public int size = 0;
 
-    public boolean resume_Present(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void update(Resume r, Resume updt) {
-        if (resume_Present(r.getUuid())) {
+        if (resumePresent(r.getUuid())) {
             for (int i = 0; i < size; i++) {
                 if (storage[i].getUuid().equals(r.getUuid())) {
                     storage[i].setUuid(updt.getUuid());
@@ -36,7 +27,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (!resume_Present(r.getUuid())) {
+        if (!resumePresent(r.getUuid())) {
             storage[size] = r;
             if (size < storage.length) {
                 size++;
@@ -45,7 +36,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (resume_Present(uuid)) {
+        if (resumePresent(uuid)) {
             for (int i = 0; i < size; i++) {
                 if (storage[i].getUuid().equals(uuid)) {
                     return storage[i];
@@ -56,12 +47,10 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        if (resume_Present(uuid)) {
+        if (resumePresent(uuid)) {
             for (int i = 0; i < size; i++) {
                 if (storage[i].getUuid().equals(uuid)) {
-                    for (int j = i; j < size - 1; j++) {
-                        storage[j] = storage[j + 1];
-                    }
+                    if (size - 1 - i >= 0) System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
                     size--;
                 }
             }
@@ -73,13 +62,20 @@ public class ArrayStorage {
      */
     public Resume[] getAll() {
         Resume[] resumes = new Resume[size];
-        for (int i = 0; i < resumes.length; i++) {
-            resumes[i] = storage[i];
-        }
+        if (resumes.length >= 0) System.arraycopy(storage, 0, resumes, 0, resumes.length);
         return resumes;
     }
 
     public int size() {
         return size;
+    }
+
+    private boolean resumePresent(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
