@@ -9,13 +9,10 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10_000];
     public int size = 0;
 
+
     public void update(Resume r, Resume updt) {
-        if (resumePresent(r.getUuid())) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(r.getUuid())) {
-                    storage[i].setUuid(updt.getUuid());
-                }
-            }
+        if (resumePresent(r.getUuid()) >= 0) {
+            storage[resumePresent(r.getUuid())].setUuid(updt.getUuid());
         } else System.out.println("ERROR: such uuid doesn't exist ");
     }
 
@@ -27,7 +24,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (!resumePresent(r.getUuid())) {
+        if (resumePresent(r.getUuid()) < 0) {
             storage[size] = r;
             if (size < storage.length) {
                 size++;
@@ -36,24 +33,19 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (resumePresent(uuid)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    return storage[i];
-                }
-            }
+        if (resumePresent(uuid) >= 0) {
+            return storage[resumePresent(uuid)];
         } else System.out.println("ERROR: such uuid doesn't exist ");
         return null;
     }
 
     public void delete(String uuid) {
-        if (resumePresent(uuid)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    if (size - 1 - i >= 0) System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
-                    size--;
-                }
+        if (resumePresent(uuid) >= 0) {
+            if (size - 1 - resumePresent(uuid) >= 0) {
+                System.arraycopy(storage, resumePresent(uuid) + 1, storage, resumePresent(uuid),
+                        size - 1 - resumePresent(uuid));
             }
+            size--;
         } else System.out.println("ERROR: such uuid doesn't exist ");
     }
 
@@ -70,12 +62,14 @@ public class ArrayStorage {
         return size;
     }
 
-    private boolean resumePresent(String uuid) {
+    private int resumePresent(String uuid) {
+        int resumePresent = -1;
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                return true;
+                resumePresent = i;
+                break;
             }
         }
-        return false;
+        return resumePresent;
     }
 }
