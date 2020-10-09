@@ -26,10 +26,10 @@ public class ArrayStorage {
         size = 0;
     }
 
-    public void save(Resume r) {
-        if (resumePresent(r.getUuid()) < 0) {
+    public void save(Resume resume) {
+        if (resumePresent(resume.getUuid()) < 0) {
             if (size < storage.length) {
-                storage[size] = r;
+                storage[size] = resume;
                 size++;
             }
         } else {
@@ -51,8 +51,7 @@ public class ArrayStorage {
         int i = resumePresent(uuid);
         if (i >= 0) {
             if (size - 1 - i >= 0) {
-                System.arraycopy(storage, i + 1, storage, i,
-                        size - 1 - i);
+                System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
             }
             size--;
         } else {
