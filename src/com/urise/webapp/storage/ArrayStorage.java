@@ -2,27 +2,26 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10_000];
-    public int size = 0;
+    private int size = 0;
 
-
-    public void update(Resume r) {
-        int i = resumePresent(r.getUuid());
-        if (i >= 0) {
-            storage[i] = r;
+    public void update(Resume resume) {
+        int index = resumePresent(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
         } else {
-            System.out.println("ERROR: such uuid doesn't exist ");
+            System.out.println("ERROR: Resume with such uuid doesn't exist ");
         }
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
@@ -31,31 +30,30 @@ public class ArrayStorage {
             if (size < storage.length) {
                 storage[size] = resume;
                 size++;
+            } else {
+                System.out.println("Storage is full");
             }
         } else {
-            System.out.println("ERROR: such uuid already exist ");
+            System.out.println("ERROR: Resume with uuid ("+ resume.getUuid() +") already exist.");
         }
     }
 
     public Resume get(String uuid) {
-        int i = resumePresent(uuid);
-        if (i >= 0) {
-            return storage[i];
+        int index = resumePresent(uuid);
+        if (index >= 0) {
+            return storage[index];
         }
-        System.out.println("ERROR: such uuid doesn't exist ");
+        System.out.println("ERROR: Resume with uuid ("+ uuid +") doesn't exist.");
         return null;
     }
 
-
     public void delete(String uuid) {
-        int i = resumePresent(uuid);
-        if (i >= 0) {
-            if (size - 1 - i >= 0) {
-                System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
-            }
+        int index = resumePresent(uuid);
+        if (index >= 0) {
+            System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
             size--;
         } else {
-            System.out.println("ERROR: such uuid doesn't exist ");
+            System.out.println("ERROR: Resume with uuid ("+ uuid +") doesn't exist.");
         }
     }
 
