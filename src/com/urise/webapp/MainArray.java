@@ -26,14 +26,10 @@ public class MainArray {
                 continue;
             }
             String uuid = null;
-            String updt = null;
             if (params.length == 2) {
                 uuid = params[1].intern();
             }
-            if (params.length == 3) {
-                uuid = params[1].intern();
-                updt = params[2].intern();
-            }
+
             switch (params[0]) {
                 case "list":
                     printAll();
@@ -50,9 +46,8 @@ public class MainArray {
                 case "update":
                     r = new Resume();
                     r.setUuid(uuid);
-                    r1 = new Resume();
-                    r1.setUuid(updt);
-                    ARRAY_STORAGE.update(r, r1);
+
+                    ARRAY_STORAGE.update(r);
                     printAll();
                     break;
                 case "delete":

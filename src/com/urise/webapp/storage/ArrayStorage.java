@@ -10,10 +10,13 @@ public class ArrayStorage {
     public int size = 0;
 
 
-    public void update(Resume r, Resume updt) {
-        if (resumePresent(r.getUuid()) >= 0) {
-            storage[resumePresent(r.getUuid())].setUuid(updt.getUuid());
-        } else System.out.println("ERROR: such uuid doesn't exist ");
+    public void update(Resume r) {
+        int i = resumePresent(r.getUuid());
+        if (i >= 0) {
+            storage[i] = r;
+        } else {
+            System.out.println("ERROR: such uuid doesn't exist ");
+        }
     }
 
     public void clear() {
@@ -25,28 +28,36 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         if (resumePresent(r.getUuid()) < 0) {
-            storage[size] = r;
             if (size < storage.length) {
+                storage[size] = r;
                 size++;
             }
-        } else System.out.println("ERROR: such uuid already exist ");
+        } else {
+            System.out.println("ERROR: such uuid already exist ");
+        }
     }
 
     public Resume get(String uuid) {
-        if (resumePresent(uuid) >= 0) {
-            return storage[resumePresent(uuid)];
-        } else System.out.println("ERROR: such uuid doesn't exist ");
+        int i = resumePresent(uuid);
+        if (i >= 0) {
+            return storage[i];
+        }
+        System.out.println("ERROR: such uuid doesn't exist ");
         return null;
     }
 
+
     public void delete(String uuid) {
-        if (resumePresent(uuid) >= 0) {
-            if (size - 1 - resumePresent(uuid) >= 0) {
-                System.arraycopy(storage, resumePresent(uuid) + 1, storage, resumePresent(uuid),
-                        size - 1 - resumePresent(uuid));
+        int i = resumePresent(uuid);
+        if (i >= 0) {
+            if (size - 1 - i >= 0) {
+                System.arraycopy(storage, i + 1, storage, i,
+                        size - 1 - i);
             }
             size--;
-        } else System.out.println("ERROR: such uuid doesn't exist ");
+        } else {
+            System.out.println("ERROR: such uuid doesn't exist ");
+        }
     }
 
     /**
