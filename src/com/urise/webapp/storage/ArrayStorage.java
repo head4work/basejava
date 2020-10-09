@@ -56,7 +56,6 @@ public class ArrayStorage {
             System.out.println("ERROR: Resume with uuid ("+ uuid +") doesn't exist.");
         }
     }
-
     /**
      * @return array, contains only Resumes in storage (without null)
      */
