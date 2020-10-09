@@ -16,7 +16,7 @@ public class ArrayStorage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.println("ERROR: Resume with such uuid doesn't exist ");
+            System.out.println("ERROR: Resume with uuid ("+ resume.getUuid() +") doesn't exist.");
         }
     }
 
