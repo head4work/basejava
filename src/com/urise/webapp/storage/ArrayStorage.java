@@ -2,13 +2,14 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10_000];
-    public int size = 0;
-
+    private int size = 0;
 
     public void update(Resume r) {
         int i = resumePresent(r.getUuid());
@@ -20,9 +21,7 @@ public class ArrayStorage {
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage, null);
         size = 0;
     }
 
