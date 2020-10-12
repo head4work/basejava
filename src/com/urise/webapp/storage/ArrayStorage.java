@@ -7,8 +7,9 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    Resume[] storage = new Resume[10_000];
+public class ArrayStorage implements Storage {
+    private static final int STORAGE_LIMIT = 10_000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void update(Resume resume) {
@@ -16,7 +17,7 @@ public class ArrayStorage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.println("ERROR: Resume with uuid ("+ resume.getUuid() +") doesn't exist.");
+            System.out.println("ERROR: Resume with uuid (" + resume.getUuid() + ") doesn't exist.");
         }
     }
 
@@ -27,14 +28,14 @@ public class ArrayStorage {
 
     public void save(Resume resume) {
         if (resumePresent(resume.getUuid()) < 0) {
-            if (size < storage.length) {
+            if (size < STORAGE_LIMIT) {
                 storage[size] = resume;
                 size++;
             } else {
                 System.out.println("ERROR: Storage is full.");
             }
         } else {
-            System.out.println("ERROR: Resume with uuid ("+ resume.getUuid() +") already exist.");
+            System.out.println("ERROR: Resume with uuid (" + resume.getUuid() + ") already exist.");
         }
     }
 
@@ -43,7 +44,7 @@ public class ArrayStorage {
         if (index >= 0) {
             return storage[index];
         }
-        System.out.println("ERROR: Resume with uuid ("+ uuid +") doesn't exist.");
+        System.out.println("ERROR: Resume with uuid (" + uuid + ") doesn't exist.");
         return null;
     }
 
@@ -53,16 +54,16 @@ public class ArrayStorage {
             System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
             size--;
         } else {
-            System.out.println("ERROR: Resume with uuid ("+ uuid +") doesn't exist.");
+            System.out.println("ERROR: Resume with uuid (" + uuid + ") doesn't exist.");
         }
     }
+
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] resumes = new Resume[size];
-        if (resumes.length >= 0) System.arraycopy(storage, 0, resumes, 0, resumes.length);
-        return resumes;
+        return Arrays.copyOf(storage, size);
+
     }
 
     public int size() {
