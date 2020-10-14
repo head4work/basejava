@@ -1,10 +1,8 @@
 package com.urise.webapp.storage;
 
-import com.sun.source.tree.ArrayAccessTree;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 
 public class SortedArrayStorage extends AbstractArrayStorage {
@@ -25,11 +23,11 @@ public class SortedArrayStorage extends AbstractArrayStorage {
                     storage[0] = resume;
                     size++;
                 } else {
+                    System.out.println(Arrays.binarySearch(storage,
+                            0, size, resume));
                     int position = Arrays.binarySearch(storage,
-                            0, size, resume) * -1 - 1;
-                    for (int i = size; i > position; i--) {
-                        storage[i] = storage[i - 1];
-                    }
+                            0, size, resume) * (-1) - 1;
+                    System.arraycopy(storage, position, storage, position + 1, size - position);
                     storage[position] = resume;
                     size++;
                 }
@@ -41,10 +39,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    @Override
-    public void delete(String uuid) {
 
-    }
 
     @Override
     protected int getIndex(String uuid) {
