@@ -7,19 +7,6 @@ import com.urise.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) < 0) {
-            if (size < STORAGE_LIMIT) {
-                storage[size] = resume;
-                size++;
-            } else {
-                System.out.println("ERROR: Storage is full.");
-            }
-        } else {
-            System.out.println("ERROR: Resume with uuid (" + resume.getUuid() + ") already exist.");
-        }
-    }
-
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
@@ -28,6 +15,10 @@ public class ArrayStorage extends AbstractArrayStorage {
         } else {
             System.out.println("ERROR: Resume with uuid (" + uuid + ") doesn't exist.");
         }
+    }
+    protected void saveMeta(Resume resume) {
+        storage[size] = resume;
+        size++;
     }
 
     protected int getIndex(String uuid) {

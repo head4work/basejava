@@ -11,24 +11,16 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
 
     @Override
-    public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) < 0) {
-            if (size < STORAGE_LIMIT) {
-                if (size == 0) {
-                    storage[0] = resume;
-                    size++;
-                } else {
-                    int position = Arrays.binarySearch(storage,
-                            0, size, resume) * (-1) - 1;
-                    System.arraycopy(storage, position, storage, position + 1, size - position);
-                    storage[position] = resume;
-                    size++;
-                }
-            } else {
-                System.out.println("ERROR: Storage is full.");
-            }
+    protected void saveMeta(Resume resume) {
+        if (size == 0) {
+            storage[0] = resume;
+            size++;
         } else {
-            System.out.println("ERROR: Resume with uuid (" + resume.getUuid() + ") already exist.");
+            int position = Arrays.binarySearch(storage,
+                    0, size, resume) * (-1) - 1;
+            System.arraycopy(storage, position, storage, position + 1, size - position);
+            storage[position] = resume;
+            size++;
         }
     }
 
