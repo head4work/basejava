@@ -29,7 +29,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
-            System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
+            deleteMeta(index);
             size--;
         } else {
             System.out.println("ERROR: Resume with uuid (" + uuid + ") doesn't exist.");
@@ -74,5 +74,7 @@ public abstract class AbstractArrayStorage implements Storage {
     protected abstract int getIndex(String uuid);
 
     protected abstract void saveMeta(Resume resume);
+
+    protected abstract void deleteMeta(int index);
 
 }
