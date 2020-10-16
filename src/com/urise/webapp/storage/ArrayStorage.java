@@ -7,16 +7,18 @@ import com.urise.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    protected void saveMeta(Resume resume) {
-        storage[size] = resume;
-    }
-
     @Override
-    protected void deleteMeta(int index) {
+    protected void deleteResume(int index) {
         storage[index] = storage[size - 1];
         storage[size - 1] = null;
     }
 
+    @Override
+    protected void saveResume(Resume resume, int index) {
+        storage[size] = resume;
+    }
+
+    @Override
     protected int getIndex(String uuid) {
         int resumePresent = -1;
         for (int i = 0; i < size; i++) {
