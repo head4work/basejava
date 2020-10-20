@@ -11,16 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class AbstractArrayStorageTest {
-
-    protected static Storage storage;
-
     AbstractArrayStorageTest(Storage storage) {
         AbstractArrayStorageTest.storage = storage;
     }
 
+    static Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
+    private static final String UUID_dummy = "dummy";
 
     @BeforeEach
     void setUp() {
@@ -32,46 +31,52 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void save() {
-        int amountBefore = storage.size();
-        storage.save(new Resume());
-        assertEquals(amountBefore + 1, storage.size());
+        int sizeBefore = storage.size();
+        storage.save(new Resume("uuid777"));
+        assertEquals(sizeBefore + 1, storage.size());
+        assertEquals(new Resume("uuid777"), (storage.get("uuid777")));
     }
 
     @Test
     void saveToOverflow() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT - 3; i++) {
             storage.save(new Resume());
         }
         assertThrows(StorageException.class, () -> storage.save(new Resume()));
     }
 
     @Test
-    void alreadyExistUuid() {
-        assertThrows(ExistStorageException.class, () -> storage.save(new Resume("uuid1")));
+    void saveAlreadyExistUuid() {
+        assertThrows(ExistStorageException.class, () -> storage.save(new Resume(UUID_1)));
     }
 
     @Test
     void delete() {
-        int amountBefore = storage.size();
-        storage.delete("uuid1");
-        assertEquals(amountBefore - 1, storage.size());
+        int sizeBefore = storage.size();
+        storage.delete(UUID_1);
+        assertEquals(sizeBefore - 1, storage.size());
+    }
+
+    @Test
+    void deleteNotExisted() {
+        assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_dummy));
     }
 
     @Test
     void get() {
-        assertEquals(storage.get("uuid1"), new Resume(UUID_1));
+        assertEquals(storage.get(UUID_1), new Resume(UUID_1));
     }
 
     @Test
     void getNotExisted() {
-        assertThrows(NotExistStorageException.class, () -> storage.get("dummy"));
+        assertThrows(NotExistStorageException.class, () -> storage.get(UUID_dummy));
     }
 
     @Test
     void clear() {
-        int amountBefore = storage.size();
+        int sizeBefore = storage.size();
         storage.clear();
-        assertEquals(amountBefore - 3, storage.size());
+        assertEquals(sizeBefore - 3, storage.size());
     }
 
     @Test
@@ -81,9 +86,14 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void update() {
-        Resume before = new Resume("uuid1");
+        Resume before = new Resume(UUID_1);
         storage.update(before);
-        assertEquals(storage.get("uuid1"), before);
+        assertEquals(before, storage.get(UUID_1));
+    }
+
+    @Test
+    void updateNotExisted() {
+        assertThrows(NotExistStorageException.class, () -> storage.update(new Resume(UUID_dummy)));
     }
 
     @Test

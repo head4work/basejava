@@ -4,6 +4,6 @@ public class ArrayStorageTest extends AbstractArrayStorageTest {
 
 
     public ArrayStorageTest() {
-        super(storage = new ArrayStorage());
+        super(new ArrayStorage());
     }
 }
