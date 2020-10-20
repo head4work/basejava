@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
@@ -42,6 +43,11 @@ public abstract class AbstractArrayStorageTest {
             storage.save(new Resume());
         }
         assertThrows(StorageException.class, () -> storage.save(new Resume()));
+    }
+
+    @Test
+    void alreadyExistUuid() {
+        assertThrows(ExistStorageException.class, () -> storage.save(new Resume("uuid1")));
     }
 
     @Test
