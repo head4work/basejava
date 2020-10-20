@@ -11,11 +11,10 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 100_000;
+    protected static final int STORAGE_LIMIT = 10;
 
     public Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
-
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index < 0) {
