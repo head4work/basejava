@@ -3,20 +3,26 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class AbstractArrayStorageTest {
-    private static final Storage storage = new ArrayStorage();
+public abstract class AbstractArrayStorageTest {
+
+    protected static Storage storage;
+
+    AbstractArrayStorageTest(Storage storage) {
+        AbstractArrayStorageTest.storage = storage;
+    }
+
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         storage.clear();
         storage.save(new Resume(UUID_1));
         storage.save(new Resume(UUID_2));

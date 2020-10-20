@@ -1,18 +1,9 @@
 package com.urise.webapp.storage;
 
-import org.junit.jupiter.api.Test;
+public class SortedArrayStorageTest extends AbstractArrayStorageTest {
 
-class SortedArrayStorageTest {
 
-    @Test
-    void deleteResume() {
-    }
-
-    @Test
-    void saveResume() {
-    }
-
-    @Test
-    void getIndex() {
+    public SortedArrayStorageTest() {
+        super(storage = new SortedArrayStorage());
     }
 }
