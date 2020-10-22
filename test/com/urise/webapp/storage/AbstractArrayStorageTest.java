@@ -7,8 +7,9 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
@@ -80,7 +81,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void getAll() {
-        assertEquals(storage.size(), storage.getAll().length);
+        assertTrue(Arrays.equals(Arrays.copyOf(AbstractArrayStorage.storage, storage.size()),
+                storage.getAll()));
     }
 
     @Test
