@@ -11,15 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class AbstractArrayStorageTest {
-    AbstractArrayStorageTest(Storage storage) {
-        AbstractArrayStorageTest.storage = storage;
-    }
-
-    static Storage storage;
+    private final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_dummy = "dummy";
+
+    AbstractArrayStorageTest(Storage storage) {
+        this.storage = storage;
+    }
 
     @BeforeEach
     void setUp() {
@@ -58,7 +58,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    void deleteNotExisted() {
+    void deleteNotExistUuid() {
         assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_dummy));
     }
 
@@ -68,15 +68,14 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    void getNotExisted() {
+    void getNotExistUuid() {
         assertThrows(NotExistStorageException.class, () -> storage.get(UUID_dummy));
     }
 
     @Test
     void clear() {
-        int sizeBefore = storage.size();
         storage.clear();
-        assertEquals(sizeBefore - 3, storage.size());
+        assertEquals(0, storage.size());
     }
 
     @Test
@@ -86,13 +85,13 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void update() {
-        Resume before = new Resume(UUID_1);
-        storage.update(before);
-        assertEquals(before, storage.get(UUID_1));
+        Resume resumeForUpdate = new Resume(UUID_1);
+        storage.update(resumeForUpdate);
+        assertEquals(resumeForUpdate, storage.get(UUID_1));
     }
 
     @Test
-    void updateNotExisted() {
+    void updateNotExistUuid() {
         assertThrows(NotExistStorageException.class, () -> storage.update(new Resume(UUID_dummy)));
     }
 
