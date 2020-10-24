@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 public class ListStorage extends AbstractStorage {
     @Override
     protected boolean checkResumeExist(Resume resume) {
-        return !list.contains(resume);
+        return list.contains(resume);
     }
 
     @Override

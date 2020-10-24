@@ -23,10 +23,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean checkResumeExist(Resume resume) {
-        return getIndex(resume.getUuid()) < 0;
+        return getIndex(resume.getUuid()) >= 0;
     }
 
-    public void delete(String uuid) {
+   /* public void delete(String uuid) {
         int index = getIndex(uuid);
         if (!checkResumeExist(new Resume(uuid))) {
             ejectResume(index);
@@ -35,7 +35,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         } else {
             throw new NotExistStorageException(uuid);
         }
-    }
+    }*/
     public void deleteResume(int index) {
         ejectResume(index);
         storage[size - 1] = null;

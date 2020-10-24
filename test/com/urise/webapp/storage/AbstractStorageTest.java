@@ -19,6 +19,10 @@ class AbstractStorageTest {
 
     @Test
     void delete() {
+        storage.save(new Resume("uuid777"));
+        Assertions.assertTrue(AbstractStorage.list.contains(new Resume("uuid777")));
+        storage.delete("uuid777");
+        Assertions.assertFalse(AbstractStorage.list.contains(new Resume("uid777")));
     }
 
     @Test
