@@ -34,6 +34,10 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    public Resume getResume(int index) {
+        return list.get(index);
+    }
+    @Override
     public void updateResume(Resume resume, int index) {
         list.set(index, resume);
     }
