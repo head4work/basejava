@@ -57,20 +57,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
+
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
 
     }
 
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+    @Override
+    public void updateResume(Resume resume, int index) {
+        storage[index] = resume;
     }
-
     public int size() {
         return size;
     }

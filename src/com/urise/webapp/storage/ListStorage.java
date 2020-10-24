@@ -15,7 +15,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void saveResume(Resume resume, int index) {
-            injectResume(resume, index);
+        injectResume(resume, index);
     }
 
     @Override
@@ -31,5 +31,10 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void ejectResume(int index) {
         list.remove(index);
+    }
+
+    @Override
+    public void updateResume(Resume resume, int index) {
+        list.set(index, resume);
     }
 }

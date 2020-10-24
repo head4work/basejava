@@ -50,21 +50,23 @@ public abstract class AbstractStorage implements Storage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+        return list.toArray(Resume[]::new);
 
     }
 
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
+        if (checkResumeExist(resume)) {
+            updateResume(resume, index);
         } else {
             throw new NotExistStorageException(resume.getUuid());
         }
     }
 
+    public abstract void updateResume(Resume resume, int index);
+
     public int size() {
-        return size;
+        return list.size();
     }
 
     protected abstract void saveResume(Resume resume, int index);

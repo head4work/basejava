@@ -7,8 +7,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AbstractStorageTest {
-    private Storage storage = new ListStorage();
+abstract class AbstractStorageTest {
+    private Storage storage;
+    AbstractStorageTest(Storage storage){
+        this.storage = storage;
+    }
 
 
     @Test
