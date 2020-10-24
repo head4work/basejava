@@ -1,46 +1,39 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
-import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Array based storage for Resumes
- */
-public abstract class AbstractArrayStorage extends AbstractStorage {
-    
-    @Override
-    protected void saveResume(Resume resume, int index) {
-        if (size < STORAGE_LIMIT) {
-            injectResume(resume, index);
-            size++;
-        } else {
-            throw new StorageException("Storage is full.", resume.getUuid());
-        }
-    }
+public abstract class AbstractStorage implements Storage {
 
-    @Override
-    protected boolean checkResumeExist(Resume resume) {
-        return getIndex(resume.getUuid()) < 0;
+    protected static ArrayList<Resume> list = new ArrayList<>();
+    protected static final int STORAGE_LIMIT = 10_000;
+    protected static Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size = 0;
+
+    public void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (checkResumeExist(resume)) {
+            saveResume(resume, index);
+        } else {
+            throw new ExistStorageException(resume.getUuid());
+        }
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (!checkResumeExist(new Resume(uuid))) {
-            ejectResume(index);
-            storage[size - 1] = null;
-            size--;
+            deleteResume(index);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
-    public void deleteResume(int index) {
-        ejectResume(index);
-        storage[size - 1] = null;
-        size--;
-    }
+
+    public abstract void deleteResume(int index);
+
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
@@ -74,6 +67,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public int size() {
         return size;
     }
+
+    protected abstract void saveResume(Resume resume, int index);
+
+    protected abstract boolean checkResumeExist(Resume resume);
 
     protected abstract int getIndex(String uuid);
 
