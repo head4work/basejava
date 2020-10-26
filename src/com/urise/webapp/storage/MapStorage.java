@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class MapStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage {
     protected static Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -26,7 +26,7 @@ public abstract class MapStorage extends AbstractStorage {
 
     @Override
     public void updateResume(Resume resume, int index) {
-        storage.replace(resume.getUuid(),resume);
+        storage.replace(resume.getUuid(), resume);
     }
 
     @Override
@@ -40,7 +40,9 @@ public abstract class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected abstract int getIndex(String uuid);
+    protected int getIndex(String uuid) {
+        return 0;
+    }
 
     @Override
     protected void insertResume(Resume resume, int index) {
