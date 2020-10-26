@@ -1,6 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -10,11 +9,14 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
-    
+    protected static final int STORAGE_LIMIT = 10_000;
+    protected static Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size = 0;
+
     @Override
     protected void saveResume(Resume resume, int index) {
         if (size < STORAGE_LIMIT) {
-            injectResume(resume, index);
+            insertResume(resume, index);
             size++;
         } else {
             throw new StorageException("Storage is full.", resume.getUuid());
@@ -26,18 +28,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return getIndex(resume.getUuid()) >= 0;
     }
 
-   /* public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (!checkResumeExist(new Resume(uuid))) {
-            ejectResume(index);
-            storage[size - 1] = null;
-            size--;
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }*/
     public void deleteResume(int index) {
-        ejectResume(index);
+        removeResume(index);
         storage[size - 1] = null;
         size--;
     }
@@ -71,8 +63,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void injectResume(Resume resume, int index);
+    protected abstract void insertResume(Resume resume, int index);
 
-    protected abstract void ejectResume(int index);
+    protected abstract void removeResume(int index);
 
 }

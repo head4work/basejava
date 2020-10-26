@@ -8,12 +8,12 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void ejectResume(int index) {
+    protected void removeResume(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
     }
 
     @Override
-    public void injectResume(Resume resume, int index) {
+    public void insertResume(Resume resume, int index) {
         int position = -index - 1;
         System.arraycopy(storage, position, storage, position + 1, size - position);
         storage[position] = resume;

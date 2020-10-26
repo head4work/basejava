@@ -4,15 +4,7 @@ import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public abstract class AbstractStorage implements Storage {
-
-    protected static ArrayList<Resume> list = new ArrayList<>();
-    protected static final int STORAGE_LIMIT = 10_000;
-    protected static Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
 
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
@@ -40,16 +32,12 @@ public abstract class AbstractStorage implements Storage {
         throw new NotExistStorageException(uuid);
     }
 
-    public void clear() {
-        list.clear();
-    }
+    public abstract void clear();
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll() {
-        return list.toArray(Resume[]::new);
-    }
+    public abstract Resume[] getAll();
 
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
@@ -60,9 +48,7 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    public int size() {
-        return list.size();
-    }
+    public abstract int size();
 
     public abstract void deleteResume(int index);
 
@@ -76,8 +62,8 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void injectResume(Resume resume, int index);
+    protected abstract void insertResume(Resume resume, int index);
 
-    protected abstract void ejectResume(int index);
+    protected abstract void removeResume(int index);
 
 }

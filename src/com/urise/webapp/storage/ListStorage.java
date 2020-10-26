@@ -2,43 +2,61 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
+
 public class ListStorage extends AbstractStorage {
+    protected static ArrayList<Resume> storage = new ArrayList<>();
+
     @Override
     protected boolean checkResumeExist(Resume resume) {
-        return list.contains(resume);
+        return storage.contains(resume);
     }
 
     @Override
     public void deleteResume(int index) {
-        ejectResume(index);
+        removeResume(index);
     }
 
     @Override
     public void saveResume(Resume resume, int index) {
-        injectResume(resume, index);
+        insertResume(resume, index);
     }
 
     @Override
     protected int getIndex(String uuid) {
-        return list.indexOf(new Resume(uuid));
+        return storage.indexOf(new Resume(uuid));
     }
 
     @Override
-    protected void injectResume(Resume resume, int index) {
-        list.add(resume);
+    protected void insertResume(Resume resume, int index) {
+        storage.add(resume);
     }
 
     @Override
-    protected void ejectResume(int index) {
-        list.remove(index);
+    protected void removeResume(int index) {
+        storage.remove(index);
     }
 
     @Override
     public Resume getResume(int index) {
-        return list.get(index);
+        return storage.get(index);
     }
+
     @Override
     public void updateResume(Resume resume, int index) {
-        list.set(index, resume);
+        storage.set(index, resume);
     }
+
+    public void clear() {
+        storage.clear();
+    }
+
+    public Resume[] getAll() {
+        return storage.toArray(Resume[]::new);
+    }
+
+    public int size() {
+        return storage.size();
+    }
+
 }

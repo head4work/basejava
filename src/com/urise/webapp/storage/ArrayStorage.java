@@ -8,12 +8,12 @@ import com.urise.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void ejectResume(int index) {
+    protected void removeResume(int index) {
         storage[index] = storage[size - 1];
     }
 
     @Override
-    protected void injectResume(Resume resume, int index) {
+    protected void insertResume(Resume resume, int index) {
         storage[size] = resume;
     }
 
