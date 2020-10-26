@@ -28,13 +28,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return getIndex(resume.getUuid()) >= 0;
     }
 
-    public void deleteResume(int index) {
-        removeResume(index);
+    public void deleteResume(int index,String uuid) {
+        removeResume(index,uuid);
         storage[size - 1] = null;
         size--;
     }
 
-    public Resume getResume(int index) {
+    public Resume getResume(int index, String uuid) {
         return storage[index];
     }
 
@@ -65,6 +65,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract void insertResume(Resume resume, int index);
 
-    protected abstract void removeResume(int index);
+    protected abstract void removeResume(int index,String uuid);
 
 }

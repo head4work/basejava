@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void removeResume(int index) {
+    protected void removeResume(int index,String uuid) {
         System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
     }
 
