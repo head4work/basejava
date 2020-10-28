@@ -12,15 +12,8 @@ public class ListStorage extends AbstractStorage {
         return storage.contains(resume);
     }
 
-    @Override
-    public void deleteResume(int index, String uuid) {
-        removeResume(index, uuid);
-    }
 
-    @Override
-    public void saveResume(Resume resume, int index) {
-        insertResume(resume, index);
-    }
+
 
     @Override
     protected Integer keySearch(String uuid) {
@@ -28,23 +21,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void insertResume(Resume resume, int index) {
+    protected void insertResume(Resume resume) {
         storage.add(resume);
     }
 
     @Override
-    protected void removeResume(int index, String uuid) {
-        storage.remove(index);
+    protected void removeResume(Object key) {
+        int i = (Integer) key;
+        storage.remove(i);
     }
 
-    @Override
-    public Resume getResume(int index, String uuid) {
-        return storage.get(index);
-    }
+
+
+
 
     @Override
     public void updateResume(Resume resume, int index) {
         storage.set(index, resume);
+    }
+
+    @Override
+    public Resume getResume(Object key) {
+        return storage.get((Integer) key);
     }
 
     public void clear() {
