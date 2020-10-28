@@ -1,11 +1,11 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
+import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MapStorageTest extends AbstractStorageTest {
     public MapStorageTest() {
@@ -14,8 +14,9 @@ public class MapStorageTest extends AbstractStorageTest {
 
     @Test
     void getAll() {
-        Collection<Resume> values = MapStorage.storage.values();
-        Resume[] check = values.toArray(Resume[]::new);
-        assertArrayEquals(check, storage.getAll());
+        Resume[] initialArray = {new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
+        Resume[] storageMapArray = storage.getAll();
+        Arrays.sort(storageMapArray);
+        Assertions.assertArrayEquals(initialArray, storageMapArray);
     }
 }

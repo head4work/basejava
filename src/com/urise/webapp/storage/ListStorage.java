@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 import java.util.ArrayList;
 
 public class ListStorage extends AbstractStorage {
-    protected static ArrayList<Resume> storage = new ArrayList<>();
+    private  ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
     protected boolean checkResumeExist(Resume resume) {
@@ -13,8 +13,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void deleteResume(int index,String uuid) {
-        removeResume(index,uuid);
+    public void deleteResume(int index, String uuid) {
+        removeResume(index, uuid);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void removeResume(int index,String uuid) {
+    protected void removeResume(int index, String uuid) {
         storage.remove(index);
     }
 
