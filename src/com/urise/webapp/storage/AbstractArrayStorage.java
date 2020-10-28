@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -13,6 +14,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    public void save(Resume resume) {
+        int index = keySearch(resume.getUuid());
+        if (index < 0) {
+            if (size < STORAGE_LIMIT) {
+                saveResume(resume, index);
+                size++;
+            } else {
+                throw new StorageException("Storage is full.", resume.getUuid());
+            }
+        } else {
+            throw new ExistStorageException(resume.getUuid());
+        }
+    }
     @Override
     protected void saveResume(Resume resume, int index) {
         if (size < STORAGE_LIMIT) {
@@ -25,7 +39,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean checkResumeExist(Resume resume) {
-        return getIndex(resume.getUuid()) >= 0;
+        return keySearch(resume.getUuid()) >= 0;
     }
 
     public void deleteResume(int index,String uuid) {
@@ -61,7 +75,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Integer keySearch(String uuid);
 
     protected abstract void insertResume(Resume resume, int index);
 

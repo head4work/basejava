@@ -4,10 +4,11 @@ import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<T> implements Storage {
+ private T key;
 
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
+        int index = (int) keySearch(resume.getUuid());
         if (!checkResumeExist(resume)) {
             saveResume(resume, index);
         } else {
@@ -16,7 +17,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
+        int index = (int) keySearch(uuid);
         if (checkResumeExist(new Resume(uuid))) {
             deleteResume(index,uuid);
         } else {
@@ -25,7 +26,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
+        int index = (int) keySearch(uuid);
         if (checkResumeExist(new Resume(uuid))) {
             return getResume(index,uuid);
         }
@@ -40,7 +41,7 @@ public abstract class AbstractStorage implements Storage {
     public abstract Resume[] getAll();
 
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
+        int index = (int) keySearch(resume.getUuid());
         if (checkResumeExist(resume)) {
             updateResume(resume, index);
         } else {
@@ -60,7 +61,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean checkResumeExist(Resume resume);
 
-    protected abstract int getIndex(String uuid);
+    protected abstract T keySearch(String uuid);
 
     protected abstract void insertResume(Resume resume, int index);
 
