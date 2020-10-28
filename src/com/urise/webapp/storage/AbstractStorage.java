@@ -5,7 +5,6 @@ import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage<T> implements Storage {
-    private T key;
 
     public void save(Resume resume) {
         if (!checkResumeExist(resume)) {
@@ -38,9 +37,8 @@ public abstract class AbstractStorage<T> implements Storage {
     public abstract Resume[] getAll();
 
     public void update(Resume resume) {
-        int index = (int) keySearch(resume.getUuid());
         if (checkResumeExist(resume)) {
-            updateResume(resume, index);
+            updateResume(resume, keySearch(resume.getUuid()));
         } else {
             throw new NotExistStorageException(resume.getUuid());
         }
@@ -48,11 +46,9 @@ public abstract class AbstractStorage<T> implements Storage {
 
     public abstract int size();
 
-
-    public abstract void updateResume(Resume resume, int index);
+    public abstract void updateResume(Resume resume, Object key);
 
     public abstract Resume getResume(T key);
-
 
     protected abstract boolean checkResumeExist(Resume resume);
 

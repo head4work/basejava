@@ -13,18 +13,23 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    protected void checkStorageSize(Resume resume) {
+        if (size >= STORAGE_LIMIT) {
+            throw new StorageException("Storage is full.", resume.getUuid());
+        }
+    }
 
     @Override
     protected boolean checkResumeExist(Resume resume) {
         return keySearch(resume.getUuid()) >= 0;
     }
 
-
-
+    @Override
     public Resume getResume(Object key) {
         return storage[(Integer) key];
     }
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -33,17 +38,17 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
-
     }
 
     @Override
-    public void updateResume(Resume resume, int index) {
-        storage[index] = resume;
+    public void updateResume(Resume resume, Object key) {
+        storage[(Integer) key] = resume;
     }
 
+    @Override
     public int size() {
         return size;
     }
@@ -51,13 +56,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract Integer keySearch(String uuid);
 
     protected abstract void insertResume(Resume resume);
-
-    protected void checkStorageSize(Resume resume) {
-        if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Storage is full.", resume.getUuid());
-        }
-    }
-
 
 
 }

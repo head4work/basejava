@@ -5,15 +5,12 @@ import com.urise.webapp.model.Resume;
 import java.util.ArrayList;
 
 public class ListStorage extends AbstractStorage {
-    private  ArrayList<Resume> storage = new ArrayList<>();
+    private ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
     protected boolean checkResumeExist(Resume resume) {
         return storage.contains(resume);
     }
-
-
-
 
     @Override
     protected Integer keySearch(String uuid) {
@@ -31,13 +28,9 @@ public class ListStorage extends AbstractStorage {
         storage.remove(i);
     }
 
-
-
-
-
     @Override
-    public void updateResume(Resume resume, int index) {
-        storage.set(index, resume);
+    public void updateResume(Resume resume, Object key) {
+        storage.set((Integer) key, resume);
     }
 
     @Override
@@ -45,14 +38,17 @@ public class ListStorage extends AbstractStorage {
         return storage.get((Integer) key);
     }
 
+    @Override
     public void clear() {
         storage.clear();
     }
 
+    @Override
     public Resume[] getAll() {
         return storage.toArray(Resume[]::new);
     }
 
+    @Override
     public int size() {
         return storage.size();
     }

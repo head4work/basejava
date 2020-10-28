@@ -23,7 +23,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         size++;
     }
 
-
     @Override
     protected Integer keySearch(String uuid) {
         Resume searchKey = new Resume(uuid);

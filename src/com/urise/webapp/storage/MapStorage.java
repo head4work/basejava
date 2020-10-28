@@ -10,26 +10,23 @@ import java.util.Map;
 public class MapStorage extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
+    @Override
     public void save(Resume resume) {
         if (!checkResumeExist(resume)) {
-
             insertResume(resume);
-
         } else {
             throw new ExistStorageException(resume.getUuid());
         }
     }
-
 
     @Override
     public void clear() {
         storage.clear();
     }
 
-
     @Override
-    public void updateResume(Resume resume, int index) {
-        storage.replace(resume.getUuid(), resume);
+    public void updateResume(Resume resume, Object key) {
+        storage.replace((String) key, resume);
     }
 
     @Override
@@ -47,11 +44,6 @@ public class MapStorage extends AbstractStorage {
         return uuid;
     }
 
-
-    protected void insertResume(Resume resume) {
-        storage.put(resume.getUuid(), resume);
-    }
-
     @Override
     protected void removeResume(Object key) {
         storage.remove(key);
@@ -67,5 +59,10 @@ public class MapStorage extends AbstractStorage {
     public int size() {
         return storage.size();
     }
+
+    protected void insertResume(Resume resume) {
+        storage.put(resume.getUuid(), resume);
+    }
+
 
 }

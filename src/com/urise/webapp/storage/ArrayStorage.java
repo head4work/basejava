@@ -21,7 +21,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         size++;
     }
 
-
     @Override
     protected Integer keySearch(String uuid) {
         int resumePresent = -1;
