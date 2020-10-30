@@ -8,8 +8,8 @@ public class ListStorage extends AbstractStorage<Integer> {
     private final ArrayList<Resume> storage = new ArrayList<>();
 
     @Override
-    protected boolean checkResumeExist(Resume resume) {
-        return storage.contains(resume);
+    protected boolean checkResumeExist(Integer key) {
+        return key >= 0;
     }
 
     @Override

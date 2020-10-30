@@ -1,6 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Collection;
@@ -10,14 +9,7 @@ import java.util.Map;
 public class MapStorage extends AbstractStorage<String> {
     private final Map<String, Resume> storage = new HashMap<>();
 
-    @Override
-    public void save(Resume resume) {
-        if (!checkResumeExist(resume)) {
-            insertResume(resume);
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
-    }
+
 
     @Override
     public void clear() {
@@ -35,8 +27,8 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected boolean checkResumeExist(Resume resume) {
-        return storage.containsValue(resume);
+    protected boolean checkResumeExist(String key) {
+        return storage.containsValue(new Resume(key));
     }
 
     @Override

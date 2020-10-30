@@ -4,7 +4,6 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override

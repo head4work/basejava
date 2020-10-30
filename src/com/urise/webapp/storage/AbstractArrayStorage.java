@@ -20,8 +20,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean checkResumeExist(Resume resume) {
-        return searchKey(resume.getUuid()) >= 0;
+    protected boolean checkResumeExist(Integer key) {
+        return key >= 0;
     }
 
     @Override
