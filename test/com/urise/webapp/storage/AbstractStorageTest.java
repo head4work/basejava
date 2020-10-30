@@ -32,7 +32,7 @@ abstract class AbstractStorageTest {
         int sizeBefore = storage.size();
         storage.save(new Resume("uuid777"));
         assertEquals(sizeBefore + 1, storage.size());
-        assertEquals(new Resume("uuid777"), (storage.get("uuid777")));
+        assertEquals(new Resume("uuid777"), (storage.get(new Resume("uuid777"))));
     }
 
     @Test
@@ -43,13 +43,13 @@ abstract class AbstractStorageTest {
     @Test
     void delete() {
         int sizeBefore = storage.size();
-        storage.delete(UUID_1);
+        storage.delete(new Resume(UUID_1));
         assertEquals(sizeBefore - 1, storage.size());
     }
 
     @Test
     void deleteNotExistUuid() {
-        assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_dummy));
+        assertThrows(NotExistStorageException.class, () -> storage.delete(new Resume(UUID_dummy)));
     }
 
     /* @Test
@@ -59,12 +59,12 @@ abstract class AbstractStorageTest {
      }*/
     @Test
     void get() {
-        assertEquals(storage.get(UUID_1), new Resume(UUID_1));
+        assertEquals(storage.get(new Resume(UUID_1)), new Resume(UUID_1));
     }
 
     @Test
     void getNotExistUuid() {
-        assertThrows(NotExistStorageException.class, () -> storage.get(UUID_dummy));
+        assertThrows(NotExistStorageException.class, () -> storage.get(new Resume(UUID_dummy)));
     }
 
     /*@Test
@@ -86,8 +86,8 @@ abstract class AbstractStorageTest {
 
     @Test
     void update() {
-        storage.update(storage.get("uuid1"));
-        assertEquals(storage.get("uuid1"), new Resume("uuid1"));
+        storage.update(storage.get(new Resume("uuid1")));
+        assertEquals(storage.get(new Resume("uuid1")), new Resume("uuid1"));
     }
 
     @Test

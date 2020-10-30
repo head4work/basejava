@@ -8,45 +8,44 @@ public abstract class AbstractStorage<T> implements Storage {
 
     public void save(Resume resume) {
         T key = searchKey(resume.getUuid());
-        if (!checkResumeExist(key)) {
-            insertResume(resume);
-        } else {
+        if (checkResumeExist(key)) {
             throw new ExistStorageException(resume.getUuid());
-        }
-    }
-
-    public void delete(String uuid) {
-        T key = searchKey(uuid);
-        if (checkResumeExist(key)) {
-            removeResume(searchKey(uuid));
         } else {
-            throw new NotExistStorageException(uuid);
+            insertResume(resume);
         }
     }
 
-    public Resume get(String uuid) {
-        T key = searchKey(uuid);
-        if (checkResumeExist(key)) {
-            return getResume(searchKey(uuid));
+    public void delete(Resume resume) {
+        T key = searchKey(resume.getUuid());
+        if (!checkResumeExist(key)) {
+            throw new NotExistStorageException(resume.getUuid());
+        } else {
+            removeResume(searchKey(resume.getUuid()));
         }
-        throw new NotExistStorageException(uuid);
     }
 
-    public abstract void clear();
+    public Resume get(Resume resume) {
+        T key = searchKey(resume.getUuid());
+        if (!checkResumeExist(key)) {
+            throw new NotExistStorageException(resume.getUuid());
+        } else {
+            return getResume(searchKey(resume.getUuid()));
+        }
+    }
+
+    public void update(Resume resume) {
+        T key = searchKey(resume.getUuid());
+        if (!checkResumeExist(key)) {
+            throw new NotExistStorageException(resume.getUuid());
+        } else {
+            updateResume(resume, searchKey(resume.getUuid()));
+        }
+    }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public abstract Resume[] getAll();
-
-    public void update(Resume resume) {
-        T key = searchKey(resume.getUuid());
-        if (checkResumeExist(key)) {
-            updateResume(resume, searchKey(resume.getUuid()));
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-    }
 
     public abstract int size();
 
@@ -61,5 +60,8 @@ public abstract class AbstractStorage<T> implements Storage {
     protected abstract void insertResume(Resume resume);
 
     protected abstract void removeResume(T key);
+
+    public abstract void clear();
+
 
 }
