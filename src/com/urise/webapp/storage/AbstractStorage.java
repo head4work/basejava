@@ -8,10 +8,10 @@ public abstract class AbstractStorage<T> implements Storage {
 
     public void save(Resume resume) {
         T key = searchKey(resume.getUuid());
-        if (checkResumeExist(key)) {
-            throw new ExistStorageException(resume.getUuid());
-        } else {
+        if (!checkResumeExist(key)) {
             insertResume(resume);
+        } else {
+            throw new ExistStorageException(resume.getUuid());
         }
     }
 
@@ -20,7 +20,7 @@ public abstract class AbstractStorage<T> implements Storage {
         if (!checkResumeExist(key)) {
             throw new NotExistStorageException(resume.getUuid());
         } else {
-            removeResume(searchKey(resume.getUuid()));
+            removeResume((key));
         }
     }
 
@@ -29,7 +29,7 @@ public abstract class AbstractStorage<T> implements Storage {
         if (!checkResumeExist(key)) {
             throw new NotExistStorageException(resume.getUuid());
         } else {
-            return getResume(searchKey(resume.getUuid()));
+            return getResume(key);
         }
     }
 
@@ -38,7 +38,7 @@ public abstract class AbstractStorage<T> implements Storage {
         if (!checkResumeExist(key)) {
             throw new NotExistStorageException(resume.getUuid());
         } else {
-            updateResume(resume, searchKey(resume.getUuid()));
+            updateResume(resume, (key));
         }
     }
 
