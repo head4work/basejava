@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
-    private Map<String, Resume> storage = new HashMap<>();
+public class MapStorage extends AbstractStorage<String> {
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void save(Resume resume) {
@@ -30,7 +30,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume getResume(Object key) {
+    public Resume getResume(String key) {
         return storage.get(key);
     }
 
@@ -40,12 +40,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected String keySearch(String uuid) {
+    protected String searchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected void removeResume(Object key) {
+    protected void removeResume(String key) {
         storage.remove(key);
     }
 

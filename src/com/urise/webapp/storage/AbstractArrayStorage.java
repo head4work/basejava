@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10_000;
     protected static Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -21,12 +21,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean checkResumeExist(Resume resume) {
-        return keySearch(resume.getUuid()) >= 0;
+        return searchKey(resume.getUuid()) >= 0;
     }
 
     @Override
-    public Resume getResume(Object key) {
-        return storage[(Integer) key];
+    public Resume getResume(Integer key) {
+        return storage[key];
     }
 
     @Override
@@ -45,7 +45,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public void updateResume(Resume resume, Object key) {
-        storage[(Integer) key] = resume;
+        storage[(int) key] = resume;
     }
 
     @Override
@@ -53,7 +53,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract Integer keySearch(String uuid);
+    protected abstract Integer searchKey(String uuid);
 
     protected abstract void insertResume(Resume resume);
 
