@@ -13,12 +13,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    protected void checkStorageSize(Resume resume) {
-        if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Storage is full.", resume.getUuid());
-        }
-    }
-
     @Override
     protected void saveResume(Resume resume) {
         if (size >= STORAGE_LIMIT) {
@@ -27,6 +21,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
             insertResume(resume);
             size++;
         }
+    }
+
+    @Override
+    protected void deleteResume(Integer key) {
+        removeResume(key);
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override

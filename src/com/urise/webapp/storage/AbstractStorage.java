@@ -13,8 +13,10 @@ public abstract class AbstractStorage<T> implements Storage {
 
     public void delete(String uuid) {
         T key = checkNotExistException(uuid);
-        removeResume(key);
+        deleteResume(key);
     }
+
+    protected abstract void deleteResume(T key);
 
     public Resume get(String uuid) {
         T key = checkNotExistException(uuid);

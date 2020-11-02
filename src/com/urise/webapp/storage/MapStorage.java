@@ -10,6 +10,11 @@ public class MapStorage extends AbstractStorage<String> {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
+    protected void deleteResume(String key) {
+        removeResume(key);
+    }
+
+    @Override
     protected void saveResume(Resume resume) {
         insertResume(resume);
     }

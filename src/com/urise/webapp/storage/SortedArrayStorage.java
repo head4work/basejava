@@ -9,8 +9,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void removeResume(Integer key) {
         System.arraycopy(storage, key + 1, storage, key, size - 1 - key);
-        storage[size - 1] = null;
-        size--;
     }
 
     @Override

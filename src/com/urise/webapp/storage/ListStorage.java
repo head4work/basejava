@@ -39,6 +39,11 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
+    protected void deleteResume(Integer key) {
+        removeResume(key);
+    }
+
+    @Override
     protected void saveResume(Resume resume) {
         insertResume(resume);
     }
