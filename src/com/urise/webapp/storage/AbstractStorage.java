@@ -16,8 +16,6 @@ public abstract class AbstractStorage<T> implements Storage {
         deleteResume(key);
     }
 
-    protected abstract void deleteResume(T key);
-
     public Resume get(String uuid) {
         T key = checkNotExistException(uuid);
         return getResume(key);
@@ -42,6 +40,8 @@ public abstract class AbstractStorage<T> implements Storage {
             throw new ExistStorageException(resume.getUuid());
         }
     }
+
+    protected abstract void deleteResume(T key);
 
     protected abstract void saveResume(Resume resume);
 

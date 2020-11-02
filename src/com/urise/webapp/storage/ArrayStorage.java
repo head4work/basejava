@@ -7,7 +7,6 @@ import com.urise.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-
     @Override
     protected void insertResume(Resume resume) {
         storage[size] = resume;
