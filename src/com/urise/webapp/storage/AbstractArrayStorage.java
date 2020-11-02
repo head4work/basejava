@@ -20,6 +20,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
+    protected void saveResume(Resume resume) {
+        if (size >= STORAGE_LIMIT) {
+            throw new StorageException("Storage is full.", resume.getUuid());
+        } else {
+            insertResume(resume);
+            size++;
+        }
+    }
+
+    @Override
     protected boolean checkResumeExist(Integer key) {
         return key >= 0;
     }

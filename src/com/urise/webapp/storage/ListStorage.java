@@ -3,9 +3,10 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage<Integer> {
-    private final ArrayList<Resume> storage = new ArrayList<>();
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     protected boolean checkResumeExist(Integer key) {
@@ -35,6 +36,11 @@ public class ListStorage extends AbstractStorage<Integer> {
     @Override
     public Resume getResume(Integer key) {
         return storage.get(key);
+    }
+
+    @Override
+    protected void saveResume(Resume resume) {
+        insertResume(resume);
     }
 
     @Override

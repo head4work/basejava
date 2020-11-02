@@ -10,9 +10,7 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insertResume(Resume resume) {
-        checkStorageSize(resume);
         storage[size] = resume;
-        size++;
     }
 
     @Override

@@ -7,46 +7,45 @@ import com.urise.webapp.model.Resume;
 public abstract class AbstractStorage<T> implements Storage {
 
     public void save(Resume resume) {
-        T key = searchKey(resume.getUuid());
+        checkExistStorageException(resume);
+        saveResume(resume);
+    }
+
+    public void delete(String uuid) {
+        T key = checkNotExistException(uuid);
+        removeResume(key);
+    }
+
+    public Resume get(String uuid) {
+        T key = checkNotExistException(uuid);
+        return getResume(key);
+    }
+
+    public void update(Resume resume) {
+        T key = checkNotExistException(resume.getUuid());
+        updateResume(resume, key);
+    }
+
+    private T checkNotExistException(String uuid) {
+        T key = searchKey(uuid);
         if (!checkResumeExist(key)) {
-            insertResume(resume);
-        } else {
+            throw new NotExistStorageException(uuid);
+        }
+        return key;
+    }
+
+    private void checkExistStorageException(Resume resume) {
+        T key = searchKey(resume.getUuid());
+        if (checkResumeExist(key)) {
             throw new ExistStorageException(resume.getUuid());
         }
     }
 
-    public void delete(String uuid) {
-        T key = searchKey(uuid);
-        if (checkResumeExist(key)) {
-            removeResume(searchKey(uuid));
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    public Resume get(String uuid) {
-        T key = searchKey(uuid);
-        if (checkResumeExist(key)) {
-            return getResume(searchKey(uuid));
-        }
-        throw new NotExistStorageException(uuid);
-    }
+    protected abstract void saveResume(Resume resume);
 
     public abstract void clear();
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     public abstract Resume[] getAll();
-
-    public void update(Resume resume) {
-        T key = searchKey(resume.getUuid());
-        if (checkResumeExist(key)) {
-            updateResume(resume, searchKey(resume.getUuid()));
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
-    }
 
     public abstract int size();
 
