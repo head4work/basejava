@@ -4,10 +4,7 @@ import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
@@ -21,12 +18,6 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
             storage.save(new Resume());
         }
         assertThrows(StorageException.class, () -> storage.save(new Resume()));
-    }
-
-    @Test
-    void getAll() {
-        assertTrue(Arrays.equals(Arrays.copyOf(AbstractArrayStorage.storage, storage.size()),
-                storage.getAll()));
     }
 
 }
