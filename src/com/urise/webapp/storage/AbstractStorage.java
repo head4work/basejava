@@ -7,26 +7,26 @@ import com.urise.webapp.model.Resume;
 public abstract class AbstractStorage<T> implements Storage {
 
     public void save(Resume resume) {
-        checkExistStorageException(resume);
-        saveResume(resume);
+        T key = returnKeyIfResumeNotExist(resume);
+        saveResume(resume, key);
     }
 
     public void delete(String uuid) {
-        T key = checkNotExistException(uuid);
+        T key = returnKeyIfResumeExist(uuid);
         deleteResume(key);
     }
 
     public Resume get(String uuid) {
-        T key = checkNotExistException(uuid);
+        T key = returnKeyIfResumeExist(uuid);
         return getResume(key);
     }
 
     public void update(Resume resume) {
-        T key = checkNotExistException(resume.getUuid());
+        T key = returnKeyIfResumeExist(resume.getUuid());
         updateResume(resume, key);
     }
 
-    private T checkNotExistException(String uuid) {
+    private T returnKeyIfResumeExist(String uuid) {
         T key = searchKey(uuid);
         if (!checkResumeExist(key)) {
             throw new NotExistStorageException(uuid);
@@ -34,16 +34,17 @@ public abstract class AbstractStorage<T> implements Storage {
         return key;
     }
 
-    private void checkExistStorageException(Resume resume) {
+    private T returnKeyIfResumeNotExist(Resume resume) {
         T key = searchKey(resume.getUuid());
         if (checkResumeExist(key)) {
             throw new ExistStorageException(resume.getUuid());
         }
+        return key;
     }
 
     protected abstract void deleteResume(T key);
 
-    protected abstract void saveResume(Resume resume);
+    protected abstract void saveResume(Resume resume, T key);
 
     public abstract void clear();
 
@@ -59,7 +60,7 @@ public abstract class AbstractStorage<T> implements Storage {
 
     protected abstract T searchKey(String uuid);
 
-    protected abstract void insertResume(Resume resume);
+    protected abstract void insertResume(Resume resume, T key);
 
     protected abstract void removeResume(T key);
 

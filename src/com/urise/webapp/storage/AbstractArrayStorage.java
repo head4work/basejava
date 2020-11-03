@@ -14,11 +14,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected int size = 0;
 
     @Override
-    protected void saveResume(Resume resume) {
+    protected void saveResume(Resume resume, Integer key) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage is full.", resume.getUuid());
         } else {
-            insertResume(resume);
+            insertResume(resume, key);
             size++;
         }
     }
@@ -46,9 +46,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         size = 0;
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);

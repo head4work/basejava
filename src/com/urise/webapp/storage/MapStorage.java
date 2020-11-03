@@ -13,8 +13,8 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected void saveResume(Resume resume) {
-        insertResume(resume);
+    protected void saveResume(Resume resume, String key) {
+        insertResume(resume, key);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MapStorage extends AbstractStorage<String> {
         return storage.size();
     }
 
-    protected void insertResume(Resume resume) {
+    protected void insertResume(Resume resume, String key) {
         storage.put(resume.getUuid(), resume);
     }
 

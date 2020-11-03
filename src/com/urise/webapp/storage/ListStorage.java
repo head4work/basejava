@@ -19,7 +19,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void insertResume(Resume resume) {
+    protected void insertResume(Resume resume, Integer key) {
         storage.add(resume);
     }
 
@@ -44,8 +44,8 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void saveResume(Resume resume) {
-        insertResume(resume);
+    protected void saveResume(Resume resume, Integer key) {
+        insertResume(resume, key);
     }
 
     @Override

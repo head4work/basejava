@@ -12,8 +12,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void insertResume(Resume resume) {
-        int position = -searchKey(resume.getUuid()) - 1;
+    public void insertResume(Resume resume, Integer key) {
+        int position = -key - 1;
         System.arraycopy(storage, position, storage, position + 1, size - position);
         storage[position] = resume;
     }
