@@ -19,16 +19,6 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void insertResume(Resume resume, Integer key) {
-        storage.add(resume);
-    }
-
-    @Override
-    protected void removeResume(Integer key) {
-        storage.remove((int) key);
-    }
-
-    @Override
     public void updateResume(Resume resume, Object key) {
         storage.set((int) key, resume);
     }
@@ -40,25 +30,23 @@ public class ListStorage extends AbstractStorage<Integer> {
 
     @Override
     protected void deleteResume(Integer key) {
-        removeResume(key);
+        storage.remove((int) key);
     }
 
     @Override
     protected void saveResume(Resume resume, Integer key) {
-        insertResume(resume, key);
+        storage.add(resume);
     }
 
-    @Override
     public void clear() {
         storage.clear();
     }
 
-    @Override
+
     public Resume[] getAll() {
         return storage.toArray(Resume[]::new);
     }
 
-    @Override
     public int size() {
         return storage.size();
     }

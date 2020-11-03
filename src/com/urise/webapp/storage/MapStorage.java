@@ -9,15 +9,14 @@ public class MapStorage extends AbstractStorage<String> {
 
     @Override
     protected void deleteResume(String key) {
-        removeResume(key);
+        storage.remove(key);
     }
 
     @Override
     protected void saveResume(Resume resume, String key) {
-        insertResume(resume, key);
+        storage.put(resume.getUuid(), resume);
     }
 
-    @Override
     public void clear() {
         storage.clear();
     }
@@ -42,12 +41,6 @@ public class MapStorage extends AbstractStorage<String> {
         return uuid;
     }
 
-    @Override
-    protected void removeResume(String key) {
-        storage.remove(key);
-    }
-
-    @Override
     public Resume[] getAll() {
         Collection<Resume> values = storage.values();
         Resume[] result = values.toArray(Resume[]::new);
@@ -55,14 +48,8 @@ public class MapStorage extends AbstractStorage<String> {
         return result;
     }
 
-    @Override
     public int size() {
         return storage.size();
     }
-
-    protected void insertResume(Resume resume, String key) {
-        storage.put(resume.getUuid(), resume);
-    }
-
 
 }

@@ -46,12 +46,6 @@ public abstract class AbstractStorage<T> implements Storage {
 
     protected abstract void saveResume(Resume resume, T key);
 
-    public abstract void clear();
-
-    public abstract Resume[] getAll();
-
-    public abstract int size();
-
     public abstract void updateResume(Resume resume, Object key);
 
     public abstract Resume getResume(T key);
@@ -59,9 +53,5 @@ public abstract class AbstractStorage<T> implements Storage {
     protected abstract boolean checkResumeExist(T key);
 
     protected abstract T searchKey(String uuid);
-
-    protected abstract void insertResume(Resume resume, T key);
-
-    protected abstract void removeResume(T key);
 
 }

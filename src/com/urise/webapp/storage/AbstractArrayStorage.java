@@ -40,13 +40,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         return storage[key];
     }
 
-    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
@@ -56,9 +54,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         storage[(int) key] = resume;
     }
 
-    @Override
     public int size() {
         return size;
     }
+
+    protected abstract void removeResume(Integer key);
+
+    protected abstract void insertResume(Resume resume, Integer key);
 
 }
