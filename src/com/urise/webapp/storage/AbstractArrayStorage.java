@@ -49,6 +49,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         return Arrays.copyOf(storage, size);
     }
 
+   /* public List<Resume> getAllSorted() {
+        List<Resume> oop = Arrays.asList(Arrays.copyOf(storage, size));
+        return oop;
+    }*/
+
     @Override
     public void updateResume(Resume resume, Object key) {
         storage[(int) key] = resume;
