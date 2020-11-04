@@ -22,8 +22,8 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    public void updateResume(Resume resume, Object key) {
-        storage.replace((String) key, resume);
+    public void updateResume(Resume resume, String key) {
+        storage.replace(key, resume);
     }
 
     @Override

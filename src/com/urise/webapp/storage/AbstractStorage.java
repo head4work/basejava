@@ -57,7 +57,7 @@ public abstract class AbstractStorage<T> implements Storage {
 
     protected abstract void saveResume(Resume resume, T key);
 
-    public abstract void updateResume(Resume resume, Object key);
+    public abstract void updateResume(Resume resume, T key);
 
     public abstract Resume getResume(T key);
 

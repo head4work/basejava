@@ -62,8 +62,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public void updateResume(Resume resume, Object key) {
-        storage[(int) key] = resume;
+    public void updateResume(Resume resume, Integer key) {
+        storage[key] = resume;
     }
 
     public int size() {
