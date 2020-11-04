@@ -8,6 +8,17 @@ import java.util.List;
 public class ListStorage extends AbstractStorage<Integer> {
     private final List<Resume> storage = new ArrayList<>();
 
+    /*public List<Resume> getAllSorted() {
+        List<Resume> resumes = new ArrayList<>(storage);
+       resumes.sort(Comparator.comparing(Resume::getFullName));
+        return resumes;
+    }*/
+
+    @Override
+    protected List<Resume> getResumes() {
+        return new ArrayList<>(storage);
+    }
+
     @Override
     protected boolean checkResumeExist(Integer key) {
         return key >= 0;
@@ -15,7 +26,12 @@ public class ListStorage extends AbstractStorage<Integer> {
 
     @Override
     protected Integer searchKey(String uuid) {
-        return storage.indexOf(new Resume(uuid));
+        for (Resume r : storage) {
+            if (r.getUuid().equals(uuid)) {
+                return storage.indexOf(r);
+            }
+        }
+        return -1;
     }
 
     @Override

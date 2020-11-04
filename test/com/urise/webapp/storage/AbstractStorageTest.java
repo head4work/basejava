@@ -6,6 +6,10 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractStorageTest {
@@ -74,10 +78,21 @@ abstract class AbstractStorageTest {
         assertEquals(0, storage.size());
     }
 
+
     @Test
     void getAll() {
         Resume[] expectedResumes = {resume_1, resume_2, resume_3};
         assertArrayEquals(expectedResumes, storage.getAll());
+    }
+
+    @Test
+    void getAllSorted() {
+        List<Resume> expectedResumes = new ArrayList<>();
+        expectedResumes.add(resume_1);
+        expectedResumes.add(resume_2);
+        expectedResumes.add(resume_3);
+        expectedResumes.sort(Comparator.comparing(Resume::getFullName));
+        assertEquals(expectedResumes, storage.getAllSorted());
     }
 
     @Test

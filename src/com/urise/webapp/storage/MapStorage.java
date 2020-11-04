@@ -48,6 +48,17 @@ public class MapStorage extends AbstractStorage<String> {
         return result;
     }
 
+    /*public List<Resume> getAllSorted() {
+        List<Resume> resumes = new ArrayList<>(storage.values());
+        resumes.sort(Comparator.comparing(Resume::getFullName));
+        return resumes;
+    }*/
+
+    @Override
+    protected List<Resume> getResumes() {
+        return new ArrayList<>(storage.values());
+    }
+
     public int size() {
         return storage.size();
     }

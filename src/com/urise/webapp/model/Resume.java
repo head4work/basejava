@@ -31,12 +31,12 @@ public class Resume implements Comparable<Resume> {
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid);
+        return fullName != null ? fullName.equals(resume.fullName) : resume.fullName == null;
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return fullName != null ? fullName.hashCode() : 0;
     }
 
     public String getUuid() {
