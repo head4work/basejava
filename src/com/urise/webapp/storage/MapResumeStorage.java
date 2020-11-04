@@ -4,7 +4,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapFullnameStorage extends AbstractStorage<Resume> {
+public class MapResumeStorage extends AbstractStorage<Resume> {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -52,12 +52,6 @@ public class MapFullnameStorage extends AbstractStorage<Resume> {
         Arrays.sort(result, Comparator.comparing(Resume::getUuid));
         return result;
     }
-
-    /*public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>(storage.values());
-        resumes.sort(Comparator.comparing(Resume::getFullName));
-        return resumes;
-    }*/
 
     @Override
     protected List<Resume> getResumes() {

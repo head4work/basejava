@@ -78,7 +78,6 @@ abstract class AbstractStorageTest {
         assertEquals(0, storage.size());
     }
 
-
     @Test
     void getAll() {
         Resume[] expectedResumes = {resume_1, resume_2, resume_3};

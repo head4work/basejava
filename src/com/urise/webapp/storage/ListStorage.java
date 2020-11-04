@@ -8,12 +8,6 @@ import java.util.List;
 public class ListStorage extends AbstractStorage<Integer> {
     private final List<Resume> storage = new ArrayList<>();
 
-    /*public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>(storage);
-       resumes.sort(Comparator.comparing(Resume::getFullName));
-        return resumes;
-    }*/
-
     @Override
     protected List<Resume> getResumes() {
         return new ArrayList<>(storage);
@@ -57,7 +51,6 @@ public class ListStorage extends AbstractStorage<Integer> {
     public void clear() {
         storage.clear();
     }
-
 
     public Resume[] getAll() {
         return storage.toArray(Resume[]::new);
