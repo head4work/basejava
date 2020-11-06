@@ -90,7 +90,7 @@ abstract class AbstractStorageTest {
         expectedResumes.add(resume_1);
         expectedResumes.add(resume_2);
         expectedResumes.add(resume_3);
-        expectedResumes.sort(Comparator.comparing(Resume::getFullName));
+        expectedResumes.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
         assertEquals(expectedResumes, storage.getAllSorted());
     }
 
