@@ -10,26 +10,26 @@ import java.util.List;
 public abstract class AbstractStorage<T> implements Storage {
 
     public void save(Resume resume) {
-        T key = returnKeyIfResumeNotExist(resume);
+        T key = receiveKeyIfResumeNotExist(resume);
         saveResume(resume, key);
     }
 
     public void delete(String uuid) {
-        T key = returnKeyIfResumeExist(uuid);
+        T key = receiveKeyIfResumeExist(uuid);
         deleteResume(key);
     }
 
     public Resume get(String uuid) {
-        T key = returnKeyIfResumeExist(uuid);
+        T key = receiveKeyIfResumeExist(uuid);
         return getResume(key);
     }
 
     public void update(Resume resume) {
-        T key = returnKeyIfResumeExist(resume.getUuid());
+        T key = receiveKeyIfResumeExist(resume.getUuid());
         updateResume(resume, key);
     }
 
-    private T returnKeyIfResumeExist(String uuid) {
+    private T receiveKeyIfResumeExist(String uuid) {
         T key = searchKey(uuid);
         if (!checkResumeExist(key)) {
             throw new NotExistStorageException(uuid);
@@ -37,7 +37,7 @@ public abstract class AbstractStorage<T> implements Storage {
         return key;
     }
 
-    private T returnKeyIfResumeNotExist(Resume resume) {
+    private T receiveKeyIfResumeNotExist(Resume resume) {
         T key = searchKey(resume.getUuid());
         if (checkResumeExist(key)) {
             throw new ExistStorageException(resume.getUuid());
