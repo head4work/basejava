@@ -1,5 +1,7 @@
 package com.urise.webapp.model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -7,10 +9,10 @@ import java.util.UUID;
  * Initial resume class
  */
 public class Resume {
-
     // Unique identifier
     private final String uuid;
     private final String fullName;
+    private final HashMap<String,String> contacts = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -29,6 +31,10 @@ public class Resume {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public HashMap<String, String> getContacts() {
+        return contacts;
     }
 
     @Override
