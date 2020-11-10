@@ -9,10 +9,14 @@ import java.util.UUID;
  * Initial resume class
  */
 public class Resume {
+
+
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final HashMap<String,String> contacts = new HashMap<>();
+    private final HashMap<ContactTypes, String> contacts = new HashMap<>();
+    private final HashMap<SectionTypes, String> sections = new HashMap<>();
+
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -25,6 +29,16 @@ public class Resume {
         this.fullName = fullName;
     }
 
+    void addContact(ContactTypes type,String value) {
+            contacts.put(type, value);
+    }
+    String getContact(ContactTypes type){
+      return  contacts.get(type);
+    }
+    void removeContact(ContactTypes type){
+        contacts.remove(type);
+    }
+
     public String getUuid() {
         return uuid;
     }
@@ -33,8 +47,12 @@ public class Resume {
         return fullName;
     }
 
-    public HashMap<String, String> getContacts() {
+    public HashMap<ContactTypes, String> getContacts() {
         return contacts;
+    }
+
+    public HashMap<SectionTypes, String> getSections() {
+        return sections;
     }
 
     @Override
