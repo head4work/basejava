@@ -14,7 +14,11 @@ public class Resume {
     private final String uuid;
     private final String fullName;
     private final HashMap<ContactTypes, String> contacts = new HashMap<>();
-    private final HashMap<SectionTypes, String> sections = new HashMap<>();
+    private final HashMap<SectionTypes, Section> sections = new HashMap<>();
+
+    public HashMap<SectionTypes, Section> getSections() {
+        return sections;
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -26,6 +30,10 @@ public class Resume {
         this.uuid = uuid;
         this.fullName = fullName;
 
+    }
+
+    void addSection(SectionTypes type, Section section) {
+        sections.put(type, section);
     }
 
     void addContact(ContactTypes type, String value) {
@@ -52,9 +60,6 @@ public class Resume {
         return contacts;
     }
 
-    public HashMap<SectionTypes, String> getSections() {
-        return sections;
-    }
 
     @Override
     public boolean equals(Object o) {
