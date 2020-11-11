@@ -65,6 +65,7 @@ abstract class AbstractStorageTest {
     @Test
     void get() {
         assertEquals(resume_1, storage.get(UUID_1));
+        System.out.println(storage.get(UUID_1));
     }
 
     @Test

@@ -1,7 +1,6 @@
 package com.urise.webapp.model;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,7 +16,6 @@ public class Resume {
     private final HashMap<ContactTypes, String> contacts = new HashMap<>();
     private final HashMap<SectionTypes, String> sections = new HashMap<>();
 
-
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
@@ -27,15 +25,18 @@ public class Resume {
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
+
     }
 
-    void addContact(ContactTypes type,String value) {
-            contacts.put(type, value);
+    void addContact(ContactTypes type, String value) {
+        contacts.put(type, value);
     }
-    String getContact(ContactTypes type){
-      return  contacts.get(type);
+
+    String getContact(ContactTypes type) {
+        return contacts.get(type);
     }
-    void removeContact(ContactTypes type){
+
+    void removeContact(ContactTypes type) {
         contacts.remove(type);
     }
 
