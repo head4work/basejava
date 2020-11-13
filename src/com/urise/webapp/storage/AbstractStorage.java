@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 public abstract class AbstractStorage<T> implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
-
     public void save(Resume resume) {
         LOG.info("save " + resume);
         T key = receiveKeyIfResumeNotExist(resume);
