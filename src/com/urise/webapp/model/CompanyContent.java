@@ -2,6 +2,7 @@ package com.urise.webapp.model;
 
 import java.net.URL;
 import java.time.YearMonth;
+import java.util.Objects;
 
 public class CompanyContent {
     URL homepage;
@@ -17,6 +18,7 @@ public class CompanyContent {
         this.title = title;
         this.description = description;
     }
+
     public URL getHomepage() {
         return homepage;
     }
@@ -38,14 +40,29 @@ public class CompanyContent {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CompanyContent that = (CompanyContent) o;
+        return Objects.equals(homepage, that.homepage) &&
+                started.equals(that.started) &&
+                Objects.equals(finished, that.finished) &&
+                title.equals(that.title) &&
+                description.equals(that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(homepage, started, finished, title, description);
+    }
+
+    @Override
     public String toString() {
-        return "CompanyContent{" +
-                "homepage=" + homepage +
-                ", started=" + started +
-                ", finished=" + finished +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Company homepage: " + homepage +
+                ", started: " + started +
+                ", finished: " + finished +
+                ", company name:'" + title +
+                "', experience description: " + description;
     }
 
 }

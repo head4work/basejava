@@ -1,20 +1,29 @@
 package com.urise.webapp.model;
 
-public class TextSection extends Section<String>{
+import java.util.Objects;
 
-    public TextSection(String content) {
-        super(content);
+public class TextSection extends Section<String>{
+String text;
+
+    public TextSection(String text) {
+        super(text);
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
     }
 
     @Override
-    public String toString() {
-        return "SectionText{" +
-                "content=" + content +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TextSection that = (TextSection) o;
+        return text.equals(that.text);
     }
 
-/*String text;
-    public SectionText(String text) {
-        this.text = text;
-    }*/
+    @Override
+    public int hashCode() {
+        return Objects.hash(text);
+    }
 }

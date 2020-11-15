@@ -10,14 +10,14 @@ import java.util.List;
 
 import static com.urise.webapp.model.ContactTypes.*;
 
-class ResumeTest {
+class ResumeTestData {
     Resume resume_1 = new Resume("name1");
     URL homepage = new URL("https://www.google.com/");
     YearMonth date = YearMonth.of(2000, 2);
-    CompanyContent company = new CompanyContent(homepage,date,date,"Google","some work in google");
+    CompanyContent company = new CompanyContent(homepage, date, date, "Google", "some work in google");
     List<CompanyContent> list = new ArrayList<>();
 
-    ResumeTest() throws MalformedURLException {
+    ResumeTestData() throws MalformedURLException {
     }
 
     @Test
@@ -38,11 +38,16 @@ class ResumeTest {
 
     @Test
     void addSection() {
-        resume_1.addSection(SectionTypes.OBJECTIVE, new Section<>(new TextSection("sometext")));
-        list.add(company);
-        resume_1.addSection(SectionTypes.EXPERIENCE, new Section<>(new CompaniesListSection(list)));
+        resume_1.addSection(SectionTypes.OBJECTIVE, new TextSection("some text"));
+        System.out.println(resume_1.getSections().get(SectionTypes.OBJECTIVE).getContent());
+        System.out.println(resume_1.getSections().get(SectionTypes.OBJECTIVE).getClass());
 
-        System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE));
+        list.add(company);
+        resume_1.addSection(SectionTypes.EXPERIENCE, new CompaniesListSection(list));
+        //   System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE).getContent().toString());
+        System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE).getContent().getClass());
+        System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE).getContent());
+
     }
 
 }
