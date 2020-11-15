@@ -14,9 +14,9 @@ public class Resume {
     private final String uuid;
     private final String fullName;
     private final HashMap<ContactTypes, String> contacts = new HashMap<>();
-    private final HashMap<SectionTypes, Section> sections = new HashMap<>();
+    private final HashMap<SectionTypes, Section<Object>> sections = new HashMap<>();
 
-    public HashMap<SectionTypes, Section> getSections() {
+    public HashMap<SectionTypes, Section<Object>> getSections() {
         return sections;
     }
 
@@ -32,7 +32,7 @@ public class Resume {
 
     }
 
-    void addSection(SectionTypes type, Section section) {
+    void addSection(SectionTypes type, Section<Object> section) {
         sections.put(type, section);
     }
 
