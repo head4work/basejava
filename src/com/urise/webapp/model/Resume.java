@@ -10,12 +10,11 @@ import java.util.UUID;
  */
 public class Resume {
 
-
     // Unique identifier
     private final String uuid;
     private final String fullName;
     private final Map<ContactTypes, String> contacts = new EnumMap<>(ContactTypes.class);
-    private final Map<SectionTypes, Section> sections = new EnumMap<>(SectionTypes.class);
+    private final Map<SectionTypes, Object> sections = new EnumMap<>(SectionTypes.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -26,10 +25,9 @@ public class Resume {
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
-
     }
 
-    void addSection(SectionTypes type, Section section) {
+    void addSection(SectionTypes type, Object section) {
         sections.put(type, section);
     }
 
@@ -57,10 +55,9 @@ public class Resume {
         return contacts;
     }
 
-    public Map<SectionTypes, Section> getSections() {
+    public Map<SectionTypes, Object> getSections() {
         return sections;
     }
-
 
     @Override
     public boolean equals(Object o) {

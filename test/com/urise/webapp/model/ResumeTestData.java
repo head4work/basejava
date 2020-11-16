@@ -39,14 +39,14 @@ class ResumeTestData {
     @Test
     void addSection() {
         resume_1.addSection(SectionTypes.OBJECTIVE, new SingleTextSection("some text"));
-        System.out.println(resume_1.getSections().get(SectionTypes.OBJECTIVE).getContent());
+        System.out.println(resume_1.getSections().get(SectionTypes.OBJECTIVE));
         System.out.println(resume_1.getSections().get(SectionTypes.OBJECTIVE).getClass());
 
         list.add(company);
         resume_1.addSection(SectionTypes.EXPERIENCE, new Company(list));
         //   System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE).getContent().toString());
-        System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE).getContent().getClass());
-        System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE).getContent());
+        System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE).getClass());
+        System.out.println(resume_1.getSections().get(SectionTypes.EXPERIENCE));
 
     }
 
