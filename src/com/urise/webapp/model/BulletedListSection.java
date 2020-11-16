@@ -27,4 +27,10 @@ public class BulletedListSection extends Section<List<String>> {
     public int hashCode() {
         return Objects.hash(list);
     }
+
+    @Override
+    public String toString() {
+        return "" + list +
+                "";
+    }
 }

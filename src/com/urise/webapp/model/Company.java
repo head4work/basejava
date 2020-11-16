@@ -30,8 +30,7 @@ public class Company extends Section<List<Experience>> {
 
     @Override
     public String toString() {
-        return "CompaniesListSection{" +
-                "list=" + experienceList +
-                '}';
+        return "" + experienceList +
+                "";
     }
 }

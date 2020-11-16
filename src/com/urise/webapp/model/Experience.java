@@ -5,13 +5,15 @@ import java.time.YearMonth;
 import java.util.Objects;
 
 public class Experience {
+    private final String company;
     private final URL homepage;
     private final YearMonth started;
     private final YearMonth finished;
     private final String title;
     private final String description;
 
-    public Experience(URL homepage, YearMonth started, YearMonth finished, String title, String description) {
+    public Experience(String company, URL homepage, YearMonth started, YearMonth finished, String title, String description) {
+        this.company = company;
         this.homepage = homepage;
         this.started = started;
         this.finished = finished;
@@ -39,6 +41,10 @@ public class Experience {
         return description;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,11 +64,11 @@ public class Experience {
 
     @Override
     public String toString() {
-        return "Company homepage: " + homepage +
-                ", started: " + started +
-                ", finished: " + finished +
-                ", company name:'" + title +
-                "', experience description: " + description;
+        return company + "\n" +
+                homepage + "\n" +
+                started + " - " + finished + "          " + title + "\n" +
+                description;
     }
+
 
 }

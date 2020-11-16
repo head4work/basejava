@@ -26,4 +26,9 @@ public class SingleTextSection extends Section<String> {
     public int hashCode() {
         return Objects.hash(text);
     }
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }
