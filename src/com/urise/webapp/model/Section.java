@@ -1,7 +1,7 @@
 package com.urise.webapp.model;
 
   public  class Section<T> {
-      T content;
+      private final T content;
 
       public Section(T content) {
           this.content = content;

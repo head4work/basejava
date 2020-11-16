@@ -4,14 +4,14 @@ import java.net.URL;
 import java.time.YearMonth;
 import java.util.Objects;
 
-public class CompanyContent {
-    URL homepage;
-    YearMonth started;
-    YearMonth finished;
-    String title;
-    String description;
+public class Experience {
+    private final URL homepage;
+    private final YearMonth started;
+    private final YearMonth finished;
+    private final String title;
+    private final String description;
 
-    public CompanyContent(URL homepage, YearMonth started, YearMonth finished, String title, String description) {
+    public Experience(URL homepage, YearMonth started, YearMonth finished, String title, String description) {
         this.homepage = homepage;
         this.started = started;
         this.finished = finished;
@@ -43,7 +43,7 @@ public class CompanyContent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CompanyContent that = (CompanyContent) o;
+        Experience that = (Experience) o;
         return Objects.equals(homepage, that.homepage) &&
                 started.equals(that.started) &&
                 Objects.equals(finished, that.finished) &&

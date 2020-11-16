@@ -1,6 +1,7 @@
 package com.urise.webapp.model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -13,12 +14,8 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private final HashMap<ContactTypes, String> contacts = new HashMap<>();
-    private final HashMap<SectionTypes, Section> sections = new HashMap<>();
-
-    public HashMap<SectionTypes, Section> getSections() {
-        return sections;
-    }
+    private final Map<ContactTypes, String> contacts = new EnumMap<>(ContactTypes.class);
+    private final Map<SectionTypes, Section> sections = new EnumMap<>(SectionTypes.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -56,8 +53,12 @@ public class Resume {
         return fullName;
     }
 
-    public HashMap<ContactTypes, String> getContacts() {
+    public Map<ContactTypes, String> getContacts() {
         return contacts;
+    }
+
+    public Map<SectionTypes, Section> getSections() {
+        return sections;
     }
 
 
@@ -66,12 +67,15 @@ public class Resume {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return fullName != null ? fullName.equals(resume.fullName) : resume.fullName == null;
+        return uuid.equals(resume.uuid) &&
+                fullName.equals(resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return fullName != null ? fullName.hashCode() : 0;
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override
