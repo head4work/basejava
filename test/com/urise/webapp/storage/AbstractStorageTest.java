@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 abstract class AbstractStorageTest {
     Storage storage;
@@ -77,12 +78,6 @@ abstract class AbstractStorageTest {
     void clear() {
         storage.clear();
         assertEquals(0, storage.size());
-    }
-
-    @Test
-    void getAll() {
-        Resume[] expectedResumes = {resume_1, resume_2, resume_3};
-        assertArrayEquals(expectedResumes, storage.getAll());
     }
 
     @Test

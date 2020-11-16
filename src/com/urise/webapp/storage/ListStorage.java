@@ -52,10 +52,6 @@ public class ListStorage extends AbstractStorage<Integer> {
         storage.clear();
     }
 
-    public Resume[] getAll() {
-        return storage.toArray(Resume[]::new);
-    }
-
     public int size() {
         return storage.size();
     }
