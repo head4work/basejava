@@ -18,10 +18,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected void saveResume(Resume resume, Integer key) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage is full.", resume.getUuid());
-        } else {
-            insertResume(resume, key);
-            size++;
         }
+        insertResume(resume, key);
+        size++;
     }
 
     @Override

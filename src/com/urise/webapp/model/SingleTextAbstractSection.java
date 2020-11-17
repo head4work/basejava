@@ -2,10 +2,10 @@ package com.urise.webapp.model;
 
 import java.util.Objects;
 
-public class SingleTextSection extends Section<String> {
+public class SingleTextAbstractSection extends AbstractSection<String> {
     private final String text;
 
-    public SingleTextSection(String text) {
+    public SingleTextAbstractSection(String text) {
         super(text);
         this.text = text;
     }
@@ -18,7 +18,7 @@ public class SingleTextSection extends Section<String> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SingleTextSection that = (SingleTextSection) o;
+        SingleTextAbstractSection that = (SingleTextAbstractSection) o;
         return text.equals(that.text);
     }
 

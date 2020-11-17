@@ -3,7 +3,7 @@ package com.urise.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class Company extends Section<List<Experience>> {
+public class Company extends AbstractSection<List<Experience>> {
     private final List<Experience> experienceList;
 
     public Company(List<Experience> experienceList) {
