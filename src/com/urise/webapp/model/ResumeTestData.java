@@ -1,7 +1,5 @@
 package com.urise.webapp.model;
 
-import org.junit.jupiter.api.Test;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.YearMonth;
@@ -12,45 +10,34 @@ import java.util.Map;
 import static com.urise.webapp.model.ContactTypes.*;
 import static com.urise.webapp.model.SectionTypes.*;
 
-class ResumeTestData {
-    Resume resume_1 = new Resume("Григорий Кислин\n");
+public class ResumeTestData {
 
 
-    Experience java_online_projects = new Experience("Java Online Projects", new URL("http://javaops.ru/"),
-            YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
-            "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
-    Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"),
-            YearMonth.of(2013, 2), YearMonth.of(2013, 5), "\"Functional Programming Principles in Scala\" by Martin Odersky",
-            "");
+    public static void main(String[] args) throws MalformedURLException {
+        Resume resume_1 = new Resume("Григорий Кислин\n");
+        Experience java_online_projects = new Experience("Java Online Projects", new URL("http://javaops.ru/"),
+                YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
+                "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
+        Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"),
+                YearMonth.of(2013, 2), YearMonth.of(2013, 5), "\"Functional Programming Principles in Scala\" by Martin Odersky",
+                "");
 
-    List<Experience> list = new ArrayList<>();
-    List<Experience> list1 = new ArrayList<>();
-    List<String> blist = new ArrayList<>();
-    List<String> blist1 = new ArrayList<>();
+        List<Experience> list = new ArrayList<>();
+        List<Experience> list1 = new ArrayList<>();
+        List<String> blist = new ArrayList<>();
+        List<String> blist1 = new ArrayList<>();
 
-    ResumeTestData() throws MalformedURLException {
-    }
-
-    @Test
-    void addContact() {
-        System.out.println(resume_1.getFullName());
+        System.out.println("\n" + resume_1.getFullName());
         resume_1.addContact(PHONE, "+7(921) 855-0482");
         resume_1.addContact(SKYPE, "grigory.kislin");
         resume_1.addContact(EMAIL, "gkislin@yandex.ru");
         resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume_1.addContact(GITHUB, "https://github.com/gkislin");
         resume_1.addContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/");
-        printContacts();
-    }
+        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/\n");
 
-    private void printContacts() {
-        Map<ContactTypes, String> map = resume_1.getContacts();
-        map.forEach((k, v) -> System.out.println(k.getContact() + "  -  " + v));
-    }
+        ptintContacts(resume_1);
 
-    @Test
-    void addSection() {
         resume_1.addSection(OBJECTIVE,
                 new SingleTextAbstractSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям\n"));
         resume_1.addSection(PERSONAL,
@@ -71,12 +58,18 @@ class ResumeTestData {
         list1.add(coursera);
         resume_1.addSection(EXPERIENCE, new Company(list));
         resume_1.addSection(EDUCATION, new Company(list1));
-        printSection();
+
+        printSections(resume_1);
     }
 
-    private void printSection() {
-        Map<SectionTypes, Object> map = resume_1.getSections();
-        map.forEach((k, v) -> System.out.println(k.getTitle() + "\n" + v.toString()));
+    private static void printSections(Resume resume_1) {
+        Map<SectionTypes, Object> map1 = resume_1.getSections();
+        map1.forEach((k, v) -> System.out.println(k.getTitle() + "\n" + v.toString()));
     }
 
+    private static void ptintContacts(Resume resume_1) {
+        Map<ContactTypes, String> map = resume_1.getContacts();
+        map.forEach((k, v) -> System.out.println(k.getContact() + "  -  " + v));
+    }
 }
+
