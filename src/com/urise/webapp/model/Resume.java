@@ -27,11 +27,11 @@ public class Resume {
         this.fullName = fullName;
     }
 
-    void addSection(SectionTypes type, Object section) {
-        sections.put(type, section);
-    }
+   public void addSection(SectionTypes type, Object section) {
+       sections.put(type, section);
+   }
 
-    void addContact(ContactTypes type, String value) {
+    public void addContact(ContactTypes type, String value) {
         contacts.put(type, value);
     }
 
