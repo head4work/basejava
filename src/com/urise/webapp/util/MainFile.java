@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class MainFile {
     public static void main(String[] args) {
-        String path = "D:\\Test";
+        String path = "basejava/src/com/urise/webapp";
         File file = new File(path);
         List<String> rootPath = new ArrayList<>();
 

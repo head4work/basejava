@@ -1,4 +1,6 @@
-package com.urise.webapp.model;
+package com.urise.webapp.util;
+
+import com.urise.webapp.model.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,16 +19,18 @@ public class ResumeTestData {
         Resume resume_1 = new Resume("Григорий Кислин\n");
 
         System.out.println("\n" + resume_1.getFullName());
-        resume_1.addContact(PHONE, "+7(921) 855-0482");
-        resume_1.addContact(SKYPE, "grigory.kislin");
-        resume_1.addContact(EMAIL, "gkislin@yandex.ru");
-        resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        resume_1.addContact(GITHUB, "https://github.com/gkislin");
-        resume_1.addContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/\n");
+        resumeFillData(resume_1);
 
         printContacts(resume_1);
+        printSections(resume_1);
+    }
 
+    public static void resumeFillData(Resume resume_1) throws MalformedURLException {
+        resumeAddContacts(resume_1);
+        resumeAddSections(resume_1);
+    }
+
+    private static void resumeAddSections(Resume resume_1) throws MalformedURLException {
         resume_1.addSection(OBJECTIVE,
                 new SingleTextAbstractSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям\n"));
         resume_1.addSection(PERSONAL,
@@ -40,17 +44,18 @@ public class ResumeTestData {
         sectionListAchievement.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike." +
                 " Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.\n");
 
-        List<String> sectionListExperience = new ArrayList<>();
-        resume_1.addSection(QUALIFICATION, new BulletedListAbstractSection(sectionListExperience));
-        sectionListExperience.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n");
-        sectionListExperience.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
+        List<String> sectionListQualification = new ArrayList<>();
+        resume_1.addSection(QUALIFICATION, new BulletedListAbstractSection(sectionListQualification));
+        sectionListQualification.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n");
+        sectionListQualification.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
 
         Experience javaOnlineProjects = new Experience("Java Online Projects", new URL("http://javaops.ru/"),
                 YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
                 "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
-        List<Experience> sectionListExperience1 = new ArrayList<>();
-        sectionListExperience1.add(javaOnlineProjects);
-        resume_1.addSection(EXPERIENCE, new Company(sectionListExperience1));
+        List<Experience> sectionListExperience = new ArrayList<>();
+        sectionListExperience.add(javaOnlineProjects);
+
+        resume_1.addSection(EXPERIENCE, new Company(sectionListExperience));
 
         Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"),
                 YearMonth.of(2013, 2), YearMonth.of(2013, 5), "\"Functional Programming Principles in Scala\" by Martin Odersky",
@@ -66,8 +71,16 @@ public class ResumeTestData {
         List<Experience> sectionListExperience3 = new ArrayList<>();
         sectionListExperience3.add(sifmo);
         resume_1.addSection(EDUCATION, new Company(sectionListExperience3));
+    }
 
-        printSections(resume_1);
+    private static void resumeAddContacts(Resume resume_1) {
+        resume_1.addContact(PHONE, "+7(921) 855-0482");
+        resume_1.addContact(SKYPE, "grigory.kislin");
+        resume_1.addContact(EMAIL, "gkislin@yandex.ru");
+        resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume_1.addContact(GITHUB, "https://github.com/gkislin");
+        resume_1.addContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/\n");
     }
 
     private static void printSections(Resume resume_1) {
