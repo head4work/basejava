@@ -49,28 +49,28 @@ public class ResumeTestData {
         sectionListQualification.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n");
         sectionListQualification.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
 
+        List<Experience> sectionListExperience = new ArrayList<>();
+
         Experience javaOnlineProjects = new Experience("Java Online Projects", new URL("http://javaops.ru/"),
                 YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
                 "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
-        List<Experience> sectionListExperience = new ArrayList<>();
         sectionListExperience.add(javaOnlineProjects);
-
         resume_1.addSection(EXPERIENCE, new Company(sectionListExperience));
 
         Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"),
                 YearMonth.of(2013, 2), YearMonth.of(2013, 5), "\"Functional Programming Principles in Scala\" by Martin Odersky",
                 "");
-        List<Experience> sectionListExperience2 = new ArrayList<>();
-        sectionListExperience2.add(coursera);
-        resume_1.addSection(EDUCATION, new Company(sectionListExperience2));
+        sectionListExperience.add(coursera);
+
+        List<Experience> sectionListEducation = new ArrayList<>();
+        resume_1.addSection(EDUCATION, new Company(sectionListEducation));
 
         Experience sifmo = new Experience("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
                 new URL("http://www.ifmo.ru/"),
                 YearMonth.of(1993, 9), YearMonth.of(1996, 7), YearMonth.of(1987, 9), YearMonth.of(1993, 7),
                 "Аспирантура (программист С, С++)", "Инженер (программист Fortran, C)");
-        List<Experience> sectionListExperience3 = new ArrayList<>();
-        sectionListExperience3.add(sifmo);
-        resume_1.addSection(EDUCATION, new Company(sectionListExperience3));
+        sectionListEducation.add(sifmo);
+        resume_1.addSection(EDUCATION, new Company(sectionListEducation));
     }
 
     private static void resumeAddContacts(Resume resume_1) {
