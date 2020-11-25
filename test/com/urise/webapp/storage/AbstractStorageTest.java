@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.util.ResumeTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.urise.webapp.util.ResumeTestData.createResumeWithData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -23,18 +23,20 @@ abstract class AbstractStorageTest {
     static final String UUID_dummy = "dummy";
     static final String UUID_777 = "uuid777";
     static Resume resume_1;
+    static Resume resume_2;
+    static Resume resume_3;
+    static Resume resume_777;
 
     static {
         try {
-            resume_1 = ResumeTestData.createResumeWithData(UUID_1, "Григорий Кислин");
+            resume_1 = createResumeWithData(UUID_1, "Григорий Кислин");
+            resume_2 = createResumeWithData(UUID_2, "Name2");
+            resume_3 = createResumeWithData(UUID_3, "Name3");
+            resume_777 = createResumeWithData(UUID_777, "Name777");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
-
-    static Resume resume_2 = new Resume(UUID_2, "Petr Zaicev");
-    static Resume resume_3 = new Resume(UUID_3, "Mark Avreli");
-    static Resume resume_777 = new Resume(UUID_777, "Juan Lopez");
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
