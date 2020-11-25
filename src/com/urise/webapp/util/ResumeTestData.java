@@ -16,21 +16,26 @@ public class ResumeTestData {
 
 
     public static void main(String[] args) throws MalformedURLException {
-        Resume resume_1 = new Resume("Григорий Кислин\n");
+        Resume resume_1 = createResumeWithData("uuid1", "Григорий Кислин\n");
+
 
         System.out.println("\n" + resume_1.getFullName());
-        resumeFillData(resume_1);
-
         printContacts(resume_1);
         printSections(resume_1);
+
     }
 
-    public static void resumeFillData(Resume resume_1) throws MalformedURLException {
-        resumeAddContacts(resume_1);
-        resumeAddSections(resume_1);
-    }
+    public static Resume createResumeWithData(String uuid, String fullName) throws MalformedURLException {
+        Resume resume_1 = new Resume(uuid, fullName);
 
-    private static void resumeAddSections(Resume resume_1) throws MalformedURLException {
+        resume_1.addContact(PHONE, "+7(921) 855-0482");
+        resume_1.addContact(SKYPE, "grigory.kislin");
+        resume_1.addContact(EMAIL, "gkislin@yandex.ru");
+        resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume_1.addContact(GITHUB, "https://github.com/gkislin");
+        resume_1.addContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/\n");
+
         resume_1.addSection(OBJECTIVE,
                 new SingleTextAbstractSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям\n"));
         resume_1.addSection(PERSONAL,
@@ -50,7 +55,6 @@ public class ResumeTestData {
         sectionListQualification.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
 
         List<Experience> sectionListExperience = new ArrayList<>();
-
         Experience javaOnlineProjects = new Experience("Java Online Projects", new URL("http://javaops.ru/"),
                 YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
                 "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
@@ -64,24 +68,15 @@ public class ResumeTestData {
 
         List<Experience> sectionListEducation = new ArrayList<>();
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
-
         Experience sifmo = new Experience("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
                 new URL("http://www.ifmo.ru/"),
                 YearMonth.of(1993, 9), YearMonth.of(1996, 7), YearMonth.of(1987, 9), YearMonth.of(1993, 7),
                 "Аспирантура (программист С, С++)", "Инженер (программист Fortran, C)");
         sectionListEducation.add(sifmo);
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
+        return resume_1;
     }
 
-    private static void resumeAddContacts(Resume resume_1) {
-        resume_1.addContact(PHONE, "+7(921) 855-0482");
-        resume_1.addContact(SKYPE, "grigory.kislin");
-        resume_1.addContact(EMAIL, "gkislin@yandex.ru");
-        resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        resume_1.addContact(GITHUB, "https://github.com/gkislin");
-        resume_1.addContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/\n");
-    }
 
     private static void printSections(Resume resume_1) {
         Map<SectionTypes, Object> map1 = resume_1.getSections();

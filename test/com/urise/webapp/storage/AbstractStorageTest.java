@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.util.ResumeTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.urise.webapp.util.ResumeTestData.resumeFillData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,7 +22,16 @@ abstract class AbstractStorageTest {
     static final String UUID_3 = "uuid3";
     static final String UUID_dummy = "dummy";
     static final String UUID_777 = "uuid777";
-    static Resume resume_1 = new Resume(UUID_1, "Григорий Кислин");
+    static Resume resume_1;
+
+    static {
+        try {
+            resume_1 = ResumeTestData.createResumeWithData(UUID_1, "Григорий Кислин");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
     static Resume resume_2 = new Resume(UUID_2, "Petr Zaicev");
     static Resume resume_3 = new Resume(UUID_3, "Mark Avreli");
     static Resume resume_777 = new Resume(UUID_777, "Juan Lopez");
@@ -35,7 +44,6 @@ abstract class AbstractStorageTest {
     void setUp() throws MalformedURLException {
         storage.clear();
         storage.save(resume_1);
-        resumeFillData(resume_1);
         storage.save(resume_2);
         storage.save(resume_3);
     }
