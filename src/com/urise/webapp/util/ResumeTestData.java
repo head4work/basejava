@@ -55,23 +55,30 @@ public class ResumeTestData {
         sectionListQualification.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
 
         List<Experience> sectionListExperience = new ArrayList<>();
-        Experience javaOnlineProjects = new Experience("Java Online Projects", new URL("http://javaops.ru/"),
-                YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
-                "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
+        List<Period> javaOnlinePeriods = new ArrayList<>();
+        javaOnlinePeriods.add(new Period(YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
+                "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
+
+        Experience javaOnlineProjects = new Experience("Java Online Projects", new URL("http://javaops.ru/"), javaOnlinePeriods);
+
+
         sectionListExperience.add(javaOnlineProjects);
         resume_1.addSection(EXPERIENCE, new Company(sectionListExperience));
 
-        Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"),
-                YearMonth.of(2013, 2), YearMonth.of(2013, 5), "\"Functional Programming Principles in Scala\" by Martin Odersky",
-                "");
+        List<Period> courseraPeriods = new ArrayList<>();
+        courseraPeriods.add(new Period(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
+                "\"Functional Programming Principles in Scala\" by Martin Odersky", ""));
+        Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"), courseraPeriods);
         sectionListExperience.add(coursera);
 
         List<Experience> sectionListEducation = new ArrayList<>();
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
+
+        List<Period> simfo = new ArrayList<>();
+        simfo.add(new Period(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура (программист С, С++)", ""));
+        simfo.add(new Period(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер (программист Fortran, C)", ""));
         Experience sifmo = new Experience("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
-                new URL("http://www.ifmo.ru/"),
-                YearMonth.of(1993, 9), YearMonth.of(1996, 7), YearMonth.of(1987, 9), YearMonth.of(1993, 7),
-                "Аспирантура (программист С, С++)", "Инженер (программист Fortran, C)");
+                new URL("http://www.ifmo.ru/"), simfo);
         sectionListEducation.add(sifmo);
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
         return resume_1;
