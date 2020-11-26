@@ -33,8 +33,8 @@ public class Period {
 
     @Override
     public String toString() {
-        return started + " - " + finished + "    " + title + "\n" +
-                description + '\''
+        return started + " - " + finished + " " + title + " " +
+                description + "\n"
                 ;
     }
 }

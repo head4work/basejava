@@ -74,11 +74,11 @@ public class ResumeTestData {
         List<Experience> sectionListEducation = new ArrayList<>();
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
 
-        List<Period> simfo = new ArrayList<>();
-        simfo.add(new Period(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура (программист С, С++)", ""));
-        simfo.add(new Period(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер (программист Fortran, C)", ""));
+        List<Period> simfoPeriods = new ArrayList<>();
+        simfoPeriods.add(new Period(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)"));
+        simfoPeriods.add(new Period(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"));
         Experience sifmo = new Experience("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
-                new URL("http://www.ifmo.ru/"), simfo);
+                new URL("http://www.ifmo.ru/"), simfoPeriods);
         sectionListEducation.add(sifmo);
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
         return resume_1;
