@@ -30,7 +30,7 @@ public class Company extends AbstractSection<List<Experience>> {
 
     @Override
     public String toString() {
-        return "" + experienceList +
-                "";
+        return (experienceList + "").replace("[", "").replace("]", "").replace(",", "")
+                ;
     }
 }

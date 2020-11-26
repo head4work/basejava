@@ -33,8 +33,8 @@ public class Period {
 
     @Override
     public String toString() {
-        return started + " - " + finished + " " + title + " " +
-                description + "\n"
+        return (started + " - " + finished + " " + title + " " +
+                description + "\n").replace("[", "").replace("]", "").replace(",", "")
                 ;
     }
 }

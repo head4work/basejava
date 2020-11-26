@@ -45,9 +45,9 @@ public class Experience {
 
     @Override
     public String toString() {
-        return company + "\n" +
+        return (company + "\n" +
                 homepage + "\n" +
-                period
+                period).replace("[", "").replace("]", "").replace(",", "")
                 ;
     }
 }

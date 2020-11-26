@@ -30,7 +30,6 @@ public class BulletedListAbstractSection extends AbstractSection<List<String>> {
 
     @Override
     public String toString() {
-        return "" + list +
-                "";
+        return (list + "").replace("[", "").replace("]", "").replace(",", "");
     }
 }
