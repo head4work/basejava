@@ -43,7 +43,7 @@ abstract class AbstractStorageTest {
     }
 
     @BeforeEach
-    void setUp() throws MalformedURLException {
+    void setUp() {
         storage.clear();
         storage.save(resume_1);
         storage.save(resume_2);
