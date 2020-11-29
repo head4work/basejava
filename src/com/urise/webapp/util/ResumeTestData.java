@@ -37,12 +37,12 @@ public class ResumeTestData {
         resume_1.addContact(HOMEPAGE, "http://gkislin.ru/\n");
 
         resume_1.addSection(OBJECTIVE,
-                new SingleTextAbstractSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям\n"));
+                new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям\n"));
         resume_1.addSection(PERSONAL,
-                new SingleTextAbstractSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.\n"));
+                new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.\n"));
 
         List<String> sectionListAchievement = new ArrayList<>();
-        resume_1.addSection(ACHIEVEMENT, new BulletedListAbstractSection(sectionListAchievement));
+        resume_1.addSection(ACHIEVEMENT, new ListSection(sectionListAchievement));
         sectionListAchievement.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven." +
                 " Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\"." +
                 " Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n");
@@ -50,35 +50,35 @@ public class ResumeTestData {
                 " Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.\n");
 
         List<String> sectionListQualification = new ArrayList<>();
-        resume_1.addSection(QUALIFICATION, new BulletedListAbstractSection(sectionListQualification));
+        resume_1.addSection(QUALIFICATION, new ListSection(sectionListQualification));
         sectionListQualification.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n");
         sectionListQualification.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
 
         List<Experience> sectionListExperience = new ArrayList<>();
-        List<Period> javaOnlinePeriods = new ArrayList<>();
-        javaOnlinePeriods.add(new Period(YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
+        List<Experience.Position> javaOnlinePositions = new ArrayList<>();
+        javaOnlinePositions.add(new Experience.Position(YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
                 "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
 
-        Experience javaOnlineProjects = new Experience("Java Online Projects", new URL("http://javaops.ru/"), javaOnlinePeriods);
+        Experience javaOnlineProjects = new Experience("Java Online Projects", new URL("http://javaops.ru/"), javaOnlinePositions);
 
 
         sectionListExperience.add(javaOnlineProjects);
         resume_1.addSection(EXPERIENCE, new Company(sectionListExperience));
 
-        List<Period> courseraPeriods = new ArrayList<>();
-        courseraPeriods.add(new Period(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
+        List<Experience.Position> courseraPositions = new ArrayList<>();
+        courseraPositions.add(new Experience.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
                 "\"Functional Programming Principles in Scala\" by Martin Odersky", ""));
-        Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"), courseraPeriods);
+        Experience coursera = new Experience("Coursera", new URL("https://www.coursera.org/course/progfun"), courseraPositions);
         sectionListExperience.add(coursera);
 
         List<Experience> sectionListEducation = new ArrayList<>();
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
 
-        List<Period> simfoPeriods = new ArrayList<>();
-        simfoPeriods.add(new Period(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)"));
-        simfoPeriods.add(new Period(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"));
+        List<Experience.Position> simfoPositions = new ArrayList<>();
+        simfoPositions.add(new Experience.Position(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)"));
+        simfoPositions.add(new Experience.Position(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"));
         Experience sifmo = new Experience("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
-                new URL("http://www.ifmo.ru/"), simfoPeriods);
+                new URL("http://www.ifmo.ru/"), simfoPositions);
         sectionListEducation.add(sifmo);
         resume_1.addSection(EDUCATION, new Company(sectionListEducation));
         return resume_1;
