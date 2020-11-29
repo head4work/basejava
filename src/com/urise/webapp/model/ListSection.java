@@ -1,10 +1,15 @@
 package com.urise.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends AbstractSection<List<String>> {
+public class ListSection extends Section<List<String>> {
     private final List<String> list;
+
+    public ListSection(String... strings) {
+        this(Arrays.asList(strings));
+    }
 
     public ListSection(List<String> list) {
         super(list);

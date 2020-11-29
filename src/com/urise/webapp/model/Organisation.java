@@ -2,22 +2,26 @@ package com.urise.webapp.model;
 
 import java.net.URL;
 import java.time.YearMonth;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Experience {
+public class Organisation {
     private final String company;
     private final URL homepage;
     private final List<Position> position;
 
+    public Organisation(String company, URL homepage, Position... positions) {
+        this(company, homepage, Arrays.asList(positions));
+    }
 
-    public Experience(String company, URL homepage, List<Position> position) {
+    public Organisation(String company, URL homepage, List<Position> position) {
         this.company = company;
         this.homepage = homepage;
         this.position = position;
     }
 
-    public List<Position> getPeriod() {
+    public List<Position> getPosition() {
         return position;
     }
 
@@ -33,7 +37,7 @@ public class Experience {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Experience that = (Experience) o;
+        Organisation that = (Organisation) o;
         return company.equals(that.company) &&
                 Objects.equals(homepage, that.homepage) &&
                 position.equals(that.position);

@@ -1,9 +1,9 @@
 package com.urise.webapp.model;
 
- abstract public class AbstractSection<T> {
+ abstract public class Section<T> {
      private final T content;
 
-     public AbstractSection(T content) {
+     public Section(T content) {
          this.content = content;
      }
 
