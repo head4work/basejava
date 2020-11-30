@@ -27,34 +27,44 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getResumes() {
         List<Resume> list = new ArrayList<>();
         for (File file : Objects.requireNonNull(directory.listFiles())) {
-            list.add(readResume(file));
+            list.add(getResume(file));
         }
         return list;
     }
 
     @Override
     protected void deleteResume(File file) {
-        file.delete();
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName());
+        }
     }
 
     @Override
     protected void saveResume(Resume resume, File file) {
         try {
             file.createNewFile();
-            writeResume(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
+        updateResume(resume, file);
     }
 
     @Override
     public void updateResume(Resume resume, File file) {
-        writeResume(resume, file);
+        try {
+            writeResume(resume, file);
+        } catch (Exception e) {
+            throw new StorageException("File write error", resume.getUuid(), e);
+        }
     }
 
     @Override
     public Resume getResume(File file) {
-        return readResume(file);
+        try {
+            return readResume(file);
+        } catch (Exception e) {
+            throw new StorageException("File read error ", file.getName(), e);
+        }
     }
 
     @Override
@@ -70,7 +80,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         for (File file : Objects.requireNonNull(directory.listFiles())) {
-            file.delete();
+            deleteResume(file);
         }
     }
 
