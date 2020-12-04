@@ -1,14 +1,16 @@
 package com.urise.webapp.model;
 
- abstract public class Section<T> {
-     private final T content;
+import java.io.Serializable;
 
-     public Section(T content) {
-         this.content = content;
-     }
+abstract public class Section<T> implements Serializable {
+    private final T content;
 
-     public T getContent() {
-         return content;
-     }
+    public Section(T content) {
+        this.content = content;
+    }
+
+    public T getContent() {
+        return content;
+    }
 
  }

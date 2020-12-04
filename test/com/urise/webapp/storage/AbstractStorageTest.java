@@ -6,6 +6,7 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -16,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 abstract class AbstractStorageTest {
+    protected final static File STORAGE_DIR = new File("D:\\Basejava\\basejava\\storage");
+
     Storage storage;
     static final String UUID_1 = "uuid1";
     static final String UUID_2 = "uuid2";
@@ -79,7 +82,6 @@ abstract class AbstractStorageTest {
     @Test
     void get() {
         assertEquals(resume_1, storage.get(UUID_1));
-        System.out.println(storage.get(UUID_1));
     }
 
     @Test

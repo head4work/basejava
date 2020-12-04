@@ -1,49 +1,36 @@
 package com.urise.webapp.util;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
 import java.util.Objects;
 
 public class MainFile {
-    public static void main(String[] args) {
+    public static File file = new File(".");
+    static int n = 1;
 
-        String path = ".";
-        File file = new File(path);
-        List<String> rootPath = new ArrayList<>();
-
-        getCurrentRootDirs(path, file, rootPath);
-        getInnerRootDirs(rootPath);
-        printContent(rootPath);
+    public static void main(String[] args) throws IOException {
+        printDir(file);
     }
 
-    private static void getCurrentRootDirs(String path, File file, List<String> subpath) {
-        for (String name : Objects.requireNonNull(file.list())) {
-            if (new File(path + "\\" + name).isDirectory()) {
-                subpath.add(path + "\\" + name);
+    public static void printDir(File file) {
+
+        for (File f : Objects.requireNonNull(file.listFiles())) {
+            if (f.isFile()) {
+                System.out.println(padLeft("File: ", n) + f.getName());
+            } else if (f.isDirectory()) {
+                System.out.println(padLeft("Dir: ", n) + f);
+                n = n + 5;
+                printDir(f);
+
             }
         }
+        n = n - 5;
     }
 
-    private static void getInnerRootDirs(List<String> rootPath) {
-        for (int k = 0; k < rootPath.size(); k++) {
-            for (int i = 0; i < Objects.requireNonNull(new File(rootPath.get(k)).list()).length; i++) {
-                List<String> list = Arrays.asList(Objects.requireNonNull(new File(rootPath.get(k)).list()));
-                if (new File(rootPath.get(k) + "\\" + list.get(i)).isDirectory()) {
-                    rootPath.add(rootPath.get(k) + "\\" + list.get(i));
-                }
-            }
-        }
-    }
-
-    private static void printContent(List<String> subpath) {
-        for (String root : subpath) {
-            System.out.println(root);
-            for (String name : Objects.requireNonNull(new File(root).list())) {
-                System.out.println(name);
-            }
-        }
+    public static String padLeft(String s, int n) {
+        return String.format("%" + n + "s", s);
     }
 
 }
+
+

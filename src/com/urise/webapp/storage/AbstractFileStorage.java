@@ -3,8 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +51,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void updateResume(Resume resume, File file) {
         try {
-            writeResume(resume, file);
+            writeResume(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File write error", resume.getUuid(), e);
         }
@@ -61,7 +60,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public Resume getResume(File file) {
         try {
-            return readResume(file);
+            return readResume(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File read error ", file.getName(), e);
         }
@@ -79,6 +78,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
+        if (directory.listFiles() == null) {
+            throw new StorageException("Directory read error", null);
+        }
         for (File file : Objects.requireNonNull(directory.listFiles())) {
             deleteResume(file);
         }
@@ -86,10 +88,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
+        if (directory.list() == null) {
+            throw new StorageException("Directory read error", null);
+        }
         return Objects.requireNonNull(directory.list()).length;
     }
 
-    protected abstract void writeResume(Resume resume, File file);
+    protected abstract void writeResume(Resume resume, OutputStream outputStream) throws IOException;
 
-    protected abstract Resume readResume(File file);
+    protected abstract Resume readResume(InputStream inputStream) throws IOException;
 }

@@ -1,12 +1,15 @@
 package com.urise.webapp.model;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Organisation {
+public class Organisation implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final String company;
     private final URL homepage;
     private final List<Position> position;
@@ -56,7 +59,9 @@ public class Organisation {
                 ;
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
+        private static final long serialVersionUID = 1L;
+
         private final YearMonth started;
         private final YearMonth finished;
         private final String title;
@@ -83,6 +88,22 @@ public class Organisation {
 
         public String getDescription() {
             return description;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Position position = (Position) o;
+            return Objects.equals(started, position.started) &&
+                    Objects.equals(finished, position.finished) &&
+                    Objects.equals(title, position.title) &&
+                    Objects.equals(description, position.description);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(started, finished, title, description);
         }
 
         @Override
