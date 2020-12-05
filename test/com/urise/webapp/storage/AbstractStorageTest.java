@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 abstract class AbstractStorageTest {
-    protected final static File STORAGE_DIR = new File("D:\\Basejava\\basejava\\storage");
+    protected final static File STORAGE_DIR = new File("basejava/storage");
 
     Storage storage;
     static final String UUID_1 = "uuid1";
