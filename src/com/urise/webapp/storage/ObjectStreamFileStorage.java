@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamFileStorage extends AbstractFileStorage {
+public class ObjectStreamFileStorage extends AbstractFileStorage implements ResumeFileStrategy {
     protected ObjectStreamFileStorage(File directory) {
         super(directory);
     }
@@ -24,5 +24,16 @@ public class ObjectStreamFileStorage extends AbstractFileStorage {
         } catch (ClassNotFoundException e) {
             throw new StorageException("Error read resume", null, e);
         }
+    }
+
+
+    @Override
+    public void saveFile() {
+
+    }
+
+    @Override
+    public void readFile() {
+
     }
 }
