@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
+    Context context = new Context(new ObjectStrategy());
 
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -55,7 +56,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     public void updateResume(Resume resume, Path dir) {
         try {
-            writeResume(resume, new BufferedOutputStream(new FileOutputStream(dir.toFile())));
+            context.executeSave(resume, new BufferedOutputStream(new FileOutputStream(dir.toFile())));
         } catch (Exception e) {
             throw new StorageException("File write error", resume.getUuid(), e);
         }
@@ -64,7 +65,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     public Resume getResume(Path dir) {
         try {
-            return readResume(new BufferedInputStream(new FileInputStream(dir.toFile())));
+            return context.executeRead(new BufferedInputStream(new FileInputStream(dir.toFile())));
         } catch (Exception e) {
             throw new StorageException("File read error ", dir.toFile().getName(), e);
         }
@@ -99,7 +100,5 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         throw new StorageException("Directory read error", null);
     }
 
-    protected abstract void writeResume(Resume resume, OutputStream outputStream) throws IOException;
 
-    protected abstract Resume readResume(InputStream inputStream) throws IOException;
 }

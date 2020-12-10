@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private final File directory;
+    Context context = new Context(new ObjectStrategy());
 
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
@@ -51,7 +52,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void updateResume(Resume resume, File file) {
         try {
-            writeResume(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            context.executeSave(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File write error", resume.getUuid(), e);
         }
@@ -60,7 +61,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public Resume getResume(File file) {
         try {
-            return readResume(new BufferedInputStream(new FileInputStream(file)));
+            return context.executeRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File read error ", file.getName(), e);
         }
@@ -94,7 +95,4 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return Objects.requireNonNull(directory.list()).length;
     }
 
-    protected abstract void writeResume(Resume resume, OutputStream outputStream) throws IOException;
-
-    protected abstract Resume readResume(InputStream inputStream) throws IOException;
 }
