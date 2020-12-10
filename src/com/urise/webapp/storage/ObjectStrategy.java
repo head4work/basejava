@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStrategy implements ResumeSaveStrategy {
+public class ObjectStrategy implements ResumeSerializeStrategy {
 
     @Override
     public void writeResume(Resume resume, OutputStream outputStream) throws IOException {

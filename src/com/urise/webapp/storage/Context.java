@@ -7,9 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class Context {
-    ResumeSaveStrategy strategy;
+    ResumeSerializeStrategy strategy;
 
-    public Context(ResumeSaveStrategy strategy) {
+    public Context(ResumeSerializeStrategy strategy) {
         this.strategy = strategy;
     }
 
