@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.strategy.ObjectStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,9 +14,9 @@ import java.util.stream.Collectors;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
-    Context context = new Context(new ObjectStrategy());
 
     protected PathStorage(String dir) {
+        serializeStrategy = new ObjectStrategy();
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -56,7 +57,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     public void updateResume(Resume resume, Path dir) {
         try {
-            context.executeSave(resume, new BufferedOutputStream(new FileOutputStream(dir.toFile())));
+            serializeStrategy.writeResume(resume, new BufferedOutputStream(new FileOutputStream(dir.toFile())));
         } catch (Exception e) {
             throw new StorageException("File write error", resume.getUuid(), e);
         }
@@ -65,7 +66,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     public Resume getResume(Path dir) {
         try {
-            return context.executeRead(new BufferedInputStream(new FileInputStream(dir.toFile())));
+            return serializeStrategy.readResume(new BufferedInputStream(new FileInputStream(dir.toFile())));
         } catch (Exception e) {
             throw new StorageException("File read error ", dir.toFile().getName(), e);
         }

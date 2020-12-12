@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.strategy.ObjectStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
-    Context context = new Context(new ObjectStrategy());
 
     protected FileStorage(File directory) {
+        serializeStrategy = new ObjectStrategy();
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
@@ -52,7 +53,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public void updateResume(Resume resume, File file) {
         try {
-            context.executeSave(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            serializeStrategy.writeResume(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File write error", resume.getUuid(), e);
         }
@@ -61,7 +62,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public Resume getResume(File file) {
         try {
-            return context.executeRead(new BufferedInputStream(new FileInputStream(file)));
+            return serializeStrategy.readResume(new BufferedInputStream(new FileInputStream(file)));
         } catch (Exception e) {
             throw new StorageException("File read error ", file.getName(), e);
         }
