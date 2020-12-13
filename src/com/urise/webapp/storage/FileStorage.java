@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.strategy.ObjectStrategy;
+import com.urise.webapp.storage.strategy.SerializeStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,9 +11,10 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
+    private final SerializeStrategy serializeStrategy;
 
-    protected FileStorage(File directory) {
-        serializeStrategy = new ObjectStrategy();
+    protected FileStorage(File directory, SerializeStrategy serializeStrategy) {
+        this.serializeStrategy = serializeStrategy;
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");

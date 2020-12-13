@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.strategy.SerializeStrategy;
 
 import java.util.Comparator;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.logging.Logger;
 
 public abstract class AbstractStorage<T> implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
-    protected SerializeStrategy serializeStrategy;
 
     public void save(Resume resume) {
         LOG.info("save " + resume);
