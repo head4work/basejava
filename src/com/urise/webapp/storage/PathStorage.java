@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
@@ -32,7 +33,7 @@ public class PathStorage extends AbstractStorage<Path> {
     protected List<Resume> getResumes() {
         List<Resume> list = new ArrayList<>();
         try {
-            list = Files.list(directory).map(this::getResume).collect(Collectors.toList());
+            list = getFilesList().map(this::getResume).collect(Collectors.toList());
         } catch (IOException e) {
             throwError();
         }
@@ -89,7 +90,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     public void clear() {
         try {
-            Files.list(directory).forEach(this::deleteResume);
+            getFilesList().forEach(this::deleteResume);
         } catch (IOException e) {
             throwError();
         }
@@ -98,10 +99,14 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     public int size() {
         try {
-            return (int) Files.list(directory).count();
+            return (int) getFilesList().count();
         } catch (IOException e) {
             return throwError();
         }
+    }
+
+    public Stream<Path> getFilesList() throws IOException {
+        return Files.list(directory);
     }
 
     public int throwError() {

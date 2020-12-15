@@ -29,7 +29,7 @@ public class FileStorage extends AbstractStorage<File> {
     protected List<Resume> getResumes() {
         List<Resume> list = new ArrayList<>();
         checkDirNotNull();
-        for (File file : directory.listFiles()) {
+        for (File file : getFilesList()) {
             list.add(getResume(file));
         }
         return list;
@@ -83,7 +83,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         checkDirNotNull();
-        for (File file : directory.listFiles()) {
+        for (File file : getFilesList()) {
             deleteResume(file);
         }
     }
@@ -91,11 +91,15 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     public int size() {
         checkDirNotNull();
-        return directory.listFiles().length;
+        return getFilesList().length;
+    }
+
+    public File[] getFilesList() {
+        return directory.listFiles();
     }
 
     public void checkDirNotNull() {
-        if (directory.listFiles() == null) {
+        if (getFilesList() == null) {
             throw new StorageException("Directory read error", null);
         }
     }
