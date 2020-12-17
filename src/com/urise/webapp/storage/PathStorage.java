@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -27,17 +26,6 @@ public class PathStorage extends AbstractStorage<Path> {
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(path + " is not a directory or is not writable");
         }
-    }
-
-    @Override
-    protected List<Resume> getResumes() {
-        List<Resume> list = new ArrayList<>();
-        try {
-            list = getFilesList().map(this::getResume).collect(Collectors.toList());
-        } catch (IOException e) {
-            throwError();
-        }
-        return list;
     }
 
     @Override
@@ -88,28 +76,26 @@ public class PathStorage extends AbstractStorage<Path> {
     }
 
     @Override
+    protected List<Resume> getResumes() {
+        return pathStream().map(this::getResume).collect(Collectors.toList());
+    }
+
+    @Override
     public void clear() {
-        try {
-            getFilesList().forEach(this::deleteResume);
-        } catch (IOException e) {
-            throwError();
-        }
+        pathStream().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
+        return (int) pathStream().count();
+    }
+
+    private Stream<Path> pathStream() {
         try {
-            return (int) getFilesList().count();
+            return Files.list(directory);
         } catch (IOException e) {
-            return throwError();
+            throw new StorageException("Directory read error", null);
         }
     }
 
-    public Stream<Path> getFilesList() throws IOException {
-        return Files.list(directory);
-    }
-
-    public int throwError() {
-        throw new StorageException("Directory read error", null);
-    }
 }

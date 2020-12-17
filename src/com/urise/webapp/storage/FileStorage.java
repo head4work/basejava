@@ -5,9 +5,11 @@ import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.strategy.SerializeStrategy;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileStorage extends AbstractStorage<File> {
     private final File directory;
@@ -25,15 +27,6 @@ public class FileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
-    @Override
-    protected List<Resume> getResumes() {
-        List<Resume> list = new ArrayList<>();
-        checkDirNotNull();
-        for (File file : getFilesList()) {
-            list.add(getResume(file));
-        }
-        return list;
-    }
 
     @Override
     protected void deleteResume(File file) {
@@ -81,27 +74,24 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
+    protected List<Resume> getResumes() {
+        return fileStream().map(this::getResume).collect(Collectors.toList());
+    }
+
+    @Override
     public void clear() {
-        checkDirNotNull();
-        for (File file : getFilesList()) {
-            deleteResume(file);
-        }
+        fileStream().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
-        checkDirNotNull();
-        return getFilesList().length;
+        return (int) fileStream().count();
     }
 
-    public File[] getFilesList() {
-        return directory.listFiles();
-    }
-
-    public void checkDirNotNull() {
-        if (getFilesList() == null) {
+    private Stream<File> fileStream() {
+        if (directory.listFiles() == null) {
             throw new StorageException("Directory read error", null);
         }
+        return Arrays.stream(directory.listFiles());
     }
-
 }
