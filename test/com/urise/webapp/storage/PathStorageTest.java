@@ -1,6 +1,6 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.storage.strategy.ObjectStrategy;
+import com.urise.webapp.storage.serializer.ObjectStrategy;
 
 class PathStorageTest extends AbstractStorageTest {
 

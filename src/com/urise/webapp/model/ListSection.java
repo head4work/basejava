@@ -1,17 +1,23 @@
 package com.urise.webapp.model;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends Section<List<String>> {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private final List<String> list;
+    private List<String> list;
+
+    public ListSection() {
+    }
 
     public ListSection(String... strings) {
         this(Arrays.asList(strings));
     }
+
 
     public ListSection(List<String> list) {
         super(list);

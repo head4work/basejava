@@ -3,7 +3,10 @@ package com.urise.webapp.model;
 import java.io.Serializable;
 
 abstract public class Section<T> implements Serializable {
-    private final T content;
+    private T content;
+
+    public Section() {
+    }
 
     public Section(T content) {
         this.content = content;
@@ -13,4 +16,5 @@ abstract public class Section<T> implements Serializable {
         return content;
     }
 
- }
+
+}

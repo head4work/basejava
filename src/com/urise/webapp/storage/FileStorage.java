@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.strategy.SerializeStrategy;
+import com.urise.webapp.storage.serializer.SerializeStrategy;
 
 import java.io.*;
 import java.util.Arrays;
@@ -89,9 +89,10 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     private Stream<File> fileStream() {
-        if (directory.listFiles() == null) {
+        File[] files = directory.listFiles();
+        if (files == null) {
             throw new StorageException("Directory read error", null);
         }
-        return Arrays.stream(directory.listFiles());
+        return Arrays.stream(files);
     }
 }

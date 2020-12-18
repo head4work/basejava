@@ -1,5 +1,6 @@
 package com.urise.webapp.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.YearMonth;
@@ -8,11 +9,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Organisation implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private final String company;
-    private final URL homepage;
-    private final List<Position> position;
+    private String company;
+    private URL homepage;
+    private List<Position> position;
+
+    public Organisation() {
+    }
 
     public Organisation(String company, URL homepage, Position... positions) {
         this(company, homepage, Arrays.asList(positions));
@@ -60,12 +65,16 @@ public class Organisation implements Serializable {
     }
 
     public static class Position implements Serializable {
+        @Serial
         private static final long serialVersionUID = 1L;
 
-        private final YearMonth started;
-        private final YearMonth finished;
-        private final String title;
-        private final String description;
+        private YearMonth started;
+        private YearMonth finished;
+        private String title;
+        private String description;
+
+        public Position() {
+        }
 
         public Position(YearMonth started, YearMonth finished, String title, String description) {
             this.started = started;
