@@ -1,5 +1,10 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.util.YearMonthAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.net.URL;
@@ -8,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organisation implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -64,11 +70,13 @@ public class Organisation implements Serializable {
                 ;
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
         @Serial
         private static final long serialVersionUID = 1L;
-
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
         private YearMonth started;
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
         private YearMonth finished;
         private String title;
         private String description;

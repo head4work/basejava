@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class OrganisationSection extends Section<List<Organisation>> {
+public class OrganisationSection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -19,7 +19,6 @@ public class OrganisationSection extends Section<List<Organisation>> {
     }
 
     public OrganisationSection(List<Organisation> organisationList) {
-        super(organisationList);
         this.organisationList = organisationList;
     }
 

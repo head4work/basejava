@@ -1,20 +1,9 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 
-abstract public class Section<T> implements Serializable {
-    private T content;
-
-    public Section() {
-    }
-
-    public Section(T content) {
-        this.content = content;
-    }
-
-    public T getContent() {
-        return content;
-    }
-
-
+@XmlAccessorType(XmlAccessType.FIELD)
+abstract public class Section implements Serializable {
 }

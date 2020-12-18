@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends Section<List<String>> {
+public class ListSection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,6 @@ public class ListSection extends Section<List<String>> {
 
 
     public ListSection(List<String> list) {
-        super(list);
         this.list = list;
     }
 
