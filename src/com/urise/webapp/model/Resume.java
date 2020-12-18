@@ -39,9 +39,9 @@ public class Resume implements Serializable {
         this.fullName = fullName;
     }
 
-   public void addSection(SectionTypes type, Object section) {
-       sections.put(type, section);
-   }
+    public void addSection(SectionTypes type, Object section) {
+        sections.put(type, section);
+    }
 
     public void addContact(ContactTypes type, String value) {
         contacts.put(type, value);
@@ -89,7 +89,10 @@ public class Resume implements Serializable {
 
     @Override
     public String toString() {
-        return uuid;
+        return uuid +
+                fullName +
+                contacts +
+                sections;
     }
 
 }
