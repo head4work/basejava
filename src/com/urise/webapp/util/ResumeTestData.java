@@ -85,7 +85,7 @@ public class ResumeTestData {
 
 
     private static void printSections(Resume resume_1) {
-        Map<SectionTypes, Object> map1 = resume_1.getSections();
+        Map<SectionTypes, Section> map1 = resume_1.getSections();
         map1.forEach((k, v) -> System.out.println(k.getTitle() + "\n" + v.toString()));
     }
 

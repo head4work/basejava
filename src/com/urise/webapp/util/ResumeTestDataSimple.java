@@ -44,19 +44,19 @@ public class ResumeTestDataSimple {
 
         resume_1.addSection(QUALIFICATION, new ListSection("text",
                 "text"));
-
-        resume_1.addSection(EXPERIENCE, new Organisation("Coursera", new URL("https://www.coursera.org"), new Organisation.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
-                "title", "description")));
+        resume_1.addSection(EXPERIENCE, new OrganisationSection(new Organisation("Coursera", new URL("https://www.coursera.org"), new Organisation.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
+                "title", "description"))));
 
         resume_1.addSection(EDUCATION, new OrganisationSection(new Organisation("университет", new URL("https://www.spbgu.org")
                 , new Organisation.Position(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)")
                 , new Organisation.Position(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"))));
+
         return resume_1;
     }
 
 
     private static void printSections(Resume resume_1) {
-        Map<SectionTypes, Object> map1 = resume_1.getSections();
+        Map<SectionTypes, Section> map1 = resume_1.getSections();
         map1.forEach((k, v) -> System.out.println(k.getTitle() + "\n" + v.toString()));
     }
 
