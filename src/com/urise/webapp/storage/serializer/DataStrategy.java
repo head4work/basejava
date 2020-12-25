@@ -16,17 +16,17 @@ public class DataStrategy implements SerializeStrategy {
         try (DataOutputStream dos = new DataOutputStream(outputStream)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-            Map<ContactTypes, String> contacts = resume.getContacts();
+            Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
 
-            for (Map.Entry<ContactTypes, String> entry : contacts.entrySet()) {
+            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
-            Map<SectionTypes, Section> sections = resume.getSections();
+            Map<SectionType, Section> sections = resume.getSections();
             dos.writeInt(sections.size());
 
-            for (Map.Entry<SectionTypes, Section> entry : sections.entrySet()) {
+            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue().getClass().getSimpleName());
 
@@ -50,8 +50,8 @@ public class DataStrategy implements SerializeStrategy {
                             dos.writeUTF(String.valueOf(o.getHomepage()));
                             dos.writeInt(o.getPosition().size());
                             for (Organisation.Position p : o.getPosition()) {
-                                dos.writeUTF(p.getStarted().toString());
-                                dos.writeUTF(p.getFinished().toString());
+                                dos.writeUTF(p.getStartDate().toString());
+                                dos.writeUTF(p.getFinishDate().toString());
                                 dos.writeUTF(p.getTitle());
                                 dos.writeUTF(p.getDescription());
                             }
@@ -70,12 +70,12 @@ public class DataStrategy implements SerializeStrategy {
             int size = dis.readInt();
             Resume resume = new Resume(uuid, fullName);
             for (int i = 0; i < size; i++) {
-                resume.addContact(ContactTypes.valueOf(dis.readUTF()), dis.readUTF());
+                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             size = dis.readInt();
             for (int i = 0; i < size; i++) {
 
-                SectionTypes type = SectionTypes.valueOf(dis.readUTF());
+                SectionType type = SectionType.valueOf(dis.readUTF());
                 switch (dis.readUTF()) {
                     case "TextSection" -> resume.addSection(type, new TextSection(dis.readUTF()));
                     case "ListSection" -> {

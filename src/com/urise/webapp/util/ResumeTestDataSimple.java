@@ -7,8 +7,8 @@ import java.net.URL;
 import java.time.YearMonth;
 import java.util.Map;
 
-import static com.urise.webapp.model.ContactTypes.*;
-import static com.urise.webapp.model.SectionTypes.*;
+import static com.urise.webapp.model.ContactType.*;
+import static com.urise.webapp.model.SectionType.*;
 
 public class ResumeTestDataSimple {
 
@@ -56,12 +56,12 @@ public class ResumeTestDataSimple {
 
 
     private static void printSections(Resume resume_1) {
-        Map<SectionTypes, Section> map1 = resume_1.getSections();
+        Map<SectionType, Section> map1 = resume_1.getSections();
         map1.forEach((k, v) -> System.out.println(k.getTitle() + "\n" + v.toString()));
     }
 
     private static void printContacts(Resume resume_1) {
-        Map<ContactTypes, String> map = resume_1.getContacts();
+        Map<ContactType, String> map = resume_1.getContacts();
         map.forEach((k, v) -> System.out.println(k.getContact() + "  -  " + v));
     }
 }

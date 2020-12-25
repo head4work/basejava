@@ -15,11 +15,14 @@ public class ListSection extends Section {
     }
 
     public ListSection(String... strings) {
+
         this(Arrays.asList(strings));
     }
 
 
     public ListSection(List<String> list) {
+        Objects.requireNonNull(list, "list should be not null");
+
         this.list = list;
     }
 

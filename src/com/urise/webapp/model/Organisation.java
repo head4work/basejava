@@ -30,6 +30,7 @@ public class Organisation implements Serializable {
     }
 
     public Organisation(String company, URL homepage, List<Position> position) {
+        Objects.requireNonNull(company, "company should be not null");
         this.company = company;
         this.homepage = homepage;
         this.position = position;
@@ -75,28 +76,31 @@ public class Organisation implements Serializable {
         @Serial
         private static final long serialVersionUID = 1L;
         @XmlJavaTypeAdapter(YearMonthAdapter.class)
-        private YearMonth started;
+        private YearMonth startDate;
         @XmlJavaTypeAdapter(YearMonthAdapter.class)
-        private YearMonth finished;
+        private YearMonth finishDate;
         private String title;
         private String description;
 
         public Position() {
         }
 
-        public Position(YearMonth started, YearMonth finished, String title, String description) {
-            this.started = started;
-            this.finished = finished;
+        public Position(YearMonth startDate, YearMonth finishDate, String title, String description) {
+            Objects.requireNonNull(startDate, "started must not be null");
+            Objects.requireNonNull(finishDate, "finished must not be null");
+            Objects.requireNonNull(title, "title must not be null");
+            this.startDate = startDate;
+            this.finishDate = finishDate;
             this.title = title;
             this.description = description;
         }
 
-        public YearMonth getStarted() {
-            return started;
+        public YearMonth getStartDate() {
+            return startDate;
         }
 
-        public YearMonth getFinished() {
-            return finished;
+        public YearMonth getFinishDate() {
+            return finishDate;
         }
 
         public String getTitle() {
@@ -112,20 +116,20 @@ public class Organisation implements Serializable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Position position = (Position) o;
-            return Objects.equals(started, position.started) &&
-                    Objects.equals(finished, position.finished) &&
+            return Objects.equals(startDate, position.startDate) &&
+                    Objects.equals(finishDate, position.finishDate) &&
                     Objects.equals(title, position.title) &&
                     Objects.equals(description, position.description);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(started, finished, title, description);
+            return Objects.hash(startDate, finishDate, title, description);
         }
 
         @Override
         public String toString() {
-            return (started + " - " + finished + " " + title + " " +
+            return (startDate + " - " + finishDate + " " + title + " " +
                     description + "\n").replace("[", "").replace("]", "").replace(",", "")
                     ;
         }

@@ -1,6 +1,6 @@
 package com.urise.webapp.model;
 
-public enum SectionTypes {
+public enum SectionType {
 
     OBJECTIVE("Позиция"),
     PERSONAL("Личные качетва"),
@@ -11,7 +11,7 @@ public enum SectionTypes {
 
     private final String title;
 
-    SectionTypes(String title) {
+    SectionType(String title) {
         this.title = title;
     }
 
