@@ -36,6 +36,10 @@ public class Organisation implements Serializable {
         this.position = position;
     }
 
+    public void setHomepage(URL homepage) {
+        this.homepage = homepage;
+    }
+
     public List<Position> getPosition() {
         return position;
     }
@@ -109,6 +113,10 @@ public class Organisation implements Serializable {
 
         public String getDescription() {
             return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
         }
 
         @Override

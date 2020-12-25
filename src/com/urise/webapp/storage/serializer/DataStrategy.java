@@ -5,6 +5,7 @@ import com.urise.webapp.model.*;
 import java.io.*;
 import java.net.URL;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +51,12 @@ public class DataStrategy implements SerializeStrategy {
                             dos.writeUTF(String.valueOf(o.getHomepage()));
                             dos.writeInt(o.getPosition().size());
                             for (Organisation.Position p : o.getPosition()) {
-                                dos.writeUTF(p.getStartDate().toString());
-                                dos.writeUTF(p.getFinishDate().toString());
+                                dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
                                 dos.writeUTF(p.getTitle());
+                                if (p.getDescription() == null) {
+                                    p.setDescription("");
+                                }
                                 dos.writeUTF(p.getDescription());
                             }
                         }
@@ -92,7 +96,11 @@ public class DataStrategy implements SerializeStrategy {
                         List<Organisation.Position> positions = new ArrayList<>();
                         for (int k = 0; k < orgSize; k++) {
                             String company = dis.readUTF();
-                            URL url = new URL(dis.readUTF());
+                            URL url = null;
+                            String sUrl = dis.readUTF();
+                            if (!sUrl.equals("null")) {
+                                url = new URL(sUrl);
+                            }
                             int posSize = dis.readInt();
                             for (int l = 0; l < posSize; l++) {
                                 YearMonth started = YearMonth.parse(dis.readUTF());
