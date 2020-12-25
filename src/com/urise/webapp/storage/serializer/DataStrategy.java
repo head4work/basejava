@@ -28,25 +28,25 @@ public class DataStrategy implements SerializeStrategy {
             dos.writeInt(sections.size());
 
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue().getClass().getSimpleName());
+                String sectionName = entry.getKey().name();
+                dos.writeUTF(sectionName);
 
-                switch (entry.getValue().getClass().getSimpleName()) {
-                    case "TextSection" -> {
+                switch (SectionType.valueOf(sectionName)) {
+                    case OBJECTIVE, PERSONAL -> {
                         TextSection text = (TextSection) entry.getValue();
                         dos.writeUTF(text.getText());
                     }
-                    case "ListSection" -> {
+                    case ACHIEVEMENT, QUALIFICATION -> {
                         ListSection list = (ListSection) entry.getValue();
                         dos.writeInt(list.getList().size());
                         for (String s : list.getList()) {
                             dos.writeUTF(s);
                         }
                     }
-                    case "OrganisationSection" -> {
-                        OrganisationSection org = (OrganisationSection) entry.getValue();
-                        dos.writeInt(org.getOrganisationList().size());
-                        for (Organisation o : org.getOrganisationList()) {
+                    case EXPERIENCE, EDUCATION -> {
+                        OrganisationSection organisations = (OrganisationSection) entry.getValue();
+                        dos.writeInt(organisations.getOrganisationList().size());
+                        for (Organisation o : organisations.getOrganisationList()) {
                             dos.writeUTF(o.getCompany());
                             dos.writeUTF(String.valueOf(o.getHomepage()));
                             dos.writeInt(o.getPosition().size());
@@ -80,9 +80,9 @@ public class DataStrategy implements SerializeStrategy {
             for (int i = 0; i < size; i++) {
 
                 SectionType type = SectionType.valueOf(dis.readUTF());
-                switch (dis.readUTF()) {
-                    case "TextSection" -> resume.addSection(type, new TextSection(dis.readUTF()));
-                    case "ListSection" -> {
+                switch (type) {
+                    case OBJECTIVE, PERSONAL -> resume.addSection(type, new TextSection(dis.readUTF()));
+                    case ACHIEVEMENT, QUALIFICATION -> {
                         int listSize = dis.readInt();
                         List<String> list = new ArrayList<>();
                         for (int j = 0; j < listSize; j++) {
@@ -90,7 +90,7 @@ public class DataStrategy implements SerializeStrategy {
                         }
                         resume.addSection(type, new ListSection(list));
                     }
-                    case "OrganisationSection" -> {
+                    case EXPERIENCE, EDUCATION -> {
                         int orgSize = dis.readInt();
                         List<Organisation> organisations = new ArrayList<>();
                         List<Organisation.Position> positions = new ArrayList<>();
