@@ -79,35 +79,34 @@ public class DataStrategy implements SerializeStrategy {
                 switch (dis.readUTF()) {
                     case "TextSection" -> resume.addSection(type, new TextSection(dis.readUTF()));
                     case "ListSection" -> {
-                        int lsize = dis.readInt();
+                        int listSize = dis.readInt();
                         List<String> list = new ArrayList<>();
-                        for (int j = 0; j < lsize; j++) {
+                        for (int j = 0; j < listSize; j++) {
                             list.add(dis.readUTF());
                         }
                         resume.addSection(type, new ListSection(list));
                     }
                     case "OrganisationSection" -> {
-                        int orgsize = dis.readInt();
-                        List<Organisation> orgs = new ArrayList<>();
+                        int orgSize = dis.readInt();
+                        List<Organisation> organisations = new ArrayList<>();
                         List<Organisation.Position> positions = new ArrayList<>();
-                        for (int k = 0; k < orgsize; k++) {
+                        for (int k = 0; k < orgSize; k++) {
                             String company = dis.readUTF();
                             URL url = new URL(dis.readUTF());
-                            int possize = dis.readInt();
-                            for (int l = 0; l < possize; l++) {
+                            int posSize = dis.readInt();
+                            for (int l = 0; l < posSize; l++) {
                                 YearMonth started = YearMonth.parse(dis.readUTF());
                                 YearMonth finished = YearMonth.parse(dis.readUTF());
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
                                 positions.add(new Organisation.Position(started, finished, title, description));
                             }
-                            orgs.add(new Organisation(company, url, positions));
+                            organisations.add(new Organisation(company, url, positions));
                         }
-                        resume.addSection(type, new OrganisationSection(orgs));
+                        resume.addSection(type, new OrganisationSection(organisations));
                     }
                 }
             }
-
             return resume;
         }
     }
