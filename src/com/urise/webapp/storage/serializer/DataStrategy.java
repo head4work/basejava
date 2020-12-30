@@ -9,11 +9,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class DataStrategy implements SerializeStrategy {
 
     private static <K, V> void actionMap(Map<K, V> map, MyBiConsumer<K, V> action) throws IOException {
+        Objects.requireNonNull(action);
         for (Map.Entry<K, V> entry : map.entrySet()) {
             K k = entry.getKey();
             V v = entry.getValue();
@@ -26,51 +28,32 @@ public class DataStrategy implements SerializeStrategy {
         try (DataOutputStream dos = new DataOutputStream(outputStream)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
+
             Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
-
-            actionMap(contacts, new MyBiConsumer<ContactType, String>() {
-                @Override
-                public void accept(ContactType contactType, String s) throws IOException {
-                    dos.writeUTF((contactType.name()));
-                    dos.writeUTF(s);
-                }
+            actionMap(contacts, (contactType, s) -> {
+                dos.writeUTF((contactType.name()));
+                dos.writeUTF(s);
             });
 
-            /*contacts.forEach((contactType, s) -> {
-                try {
-                    dos.writeUTF((contactType.name()));
-                    dos.writeUTF(s);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });*/
-
-           /* for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            }*/
             Map<SectionType, Section> sections = resume.getSections();
             dos.writeInt(sections.size());
-
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                String sectionName = entry.getKey().name();
-                dos.writeUTF(sectionName);
-
-                switch (SectionType.valueOf(sectionName)) {
+            actionMap(sections, (sectionType, section) -> {
+                dos.writeUTF(sectionType.name());
+                switch (SectionType.valueOf(sectionType.name())) {
                     case OBJECTIVE, PERSONAL -> {
-                        TextSection text = (TextSection) entry.getValue();
+                        TextSection text = (TextSection) section;
                         dos.writeUTF(text.getText());
                     }
                     case ACHIEVEMENT, QUALIFICATION -> {
-                        ListSection list = (ListSection) entry.getValue();
+                        ListSection list = (ListSection) section;
                         dos.writeInt(list.getList().size());
                         for (String s : list.getList()) {
                             dos.writeUTF(s);
                         }
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        OrganisationSection organisations = (OrganisationSection) entry.getValue();
+                        OrganisationSection organisations = (OrganisationSection) section;
                         dos.writeInt(organisations.getOrganisationList().size());
                         for (Organisation o : organisations.getOrganisationList()) {
                             dos.writeUTF(o.getCompany());
@@ -88,7 +71,7 @@ public class DataStrategy implements SerializeStrategy {
                         }
                     }
                 }
-            }
+            });
         }
     }
 
