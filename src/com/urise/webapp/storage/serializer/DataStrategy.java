@@ -10,7 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 public class DataStrategy implements SerializeStrategy {
+
+    private static <K, V> void actionMap(Map<K, V> map, MyBiConsumer<K, V> action) throws IOException {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            K k = entry.getKey();
+            V v = entry.getValue();
+            action.accept(k, v);
+        }
+    }
 
     @Override
     public void writeResume(Resume resume, OutputStream outputStream) throws IOException {
@@ -20,10 +29,27 @@ public class DataStrategy implements SerializeStrategy {
             Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
 
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            actionMap(contacts, new MyBiConsumer<ContactType, String>() {
+                @Override
+                public void accept(ContactType contactType, String s) throws IOException {
+                    dos.writeUTF((contactType.name()));
+                    dos.writeUTF(s);
+                }
+            });
+
+            /*contacts.forEach((contactType, s) -> {
+                try {
+                    dos.writeUTF((contactType.name()));
+                    dos.writeUTF(s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });*/
+
+           /* for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            }*/
             Map<SectionType, Section> sections = resume.getSections();
             dos.writeInt(sections.size());
 
