@@ -6,20 +6,24 @@ import java.io.*;
 import java.net.URL;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 public class DataStrategy implements SerializeStrategy {
 
-    private static <K, V> void actionMap(Map<K, V> map, MyBiConsumer<K, V> action) throws IOException {
+    private <K, V> void writeWithExceptionMap(Map<K, V> map, MyBiConsumer<K, V> action) throws IOException {
         Objects.requireNonNull(action);
         for (Map.Entry<K, V> entry : map.entrySet()) {
             K k = entry.getKey();
             V v = entry.getValue();
             action.accept(k, v);
+        }
+    }
+
+    private <T> void writeWithException(Collection<T> collection, MyConsumerWriter<T> action) throws IOException {
+        Objects.requireNonNull(action);
+        for (T element : collection) {
+            action.accept(element);
         }
     }
 
@@ -31,47 +35,97 @@ public class DataStrategy implements SerializeStrategy {
 
             Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
-            actionMap(contacts, (contactType, s) -> {
-                dos.writeUTF((contactType.name()));
-                dos.writeUTF(s);
+
+            writeWithException(contacts.entrySet(), contactTypeStringEntry -> {
+                dos.writeUTF(contactTypeStringEntry.getKey().name());
+                dos.writeUTF(contactTypeStringEntry.getValue());
             });
+
+                   /* writeWithExceptionMap(contacts, new MyBiConsumer<ContactType, String>() {
+                        @Override
+                        public void accept(ContactType contactType, String s) throws IOException {
+                            dos.writeUTF((contactType.name()));
+                            dos.writeUTF(s);
+                        }
+                    });*/
 
             Map<SectionType, Section> sections = resume.getSections();
             dos.writeInt(sections.size());
-            actionMap(sections, (sectionType, section) -> {
-                dos.writeUTF(sectionType.name());
-                switch (SectionType.valueOf(sectionType.name())) {
-                    case OBJECTIVE, PERSONAL -> {
-                        TextSection text = (TextSection) section;
-                        dos.writeUTF(text.getText());
-                    }
-                    case ACHIEVEMENT, QUALIFICATION -> {
-                        ListSection list = (ListSection) section;
-                        dos.writeInt(list.getList().size());
-                        for (String s : list.getList()) {
-                            dos.writeUTF(s);
+            writeWithException(sections.entrySet(), new MyConsumerWriter<Map.Entry<SectionType, Section>>() {
+                @Override
+                public void accept(Map.Entry<SectionType, Section> sectionTypeSectionEntry) throws IOException {
+                    dos.writeUTF(sectionTypeSectionEntry.getKey().name());
+                    switch (SectionType.valueOf(sectionTypeSectionEntry.getKey().name())) {
+                        case OBJECTIVE, PERSONAL -> {
+                            TextSection text = (TextSection) sectionTypeSectionEntry.getValue();
+                            dos.writeUTF(text.getText());
                         }
-                    }
-                    case EXPERIENCE, EDUCATION -> {
-                        OrganisationSection organisations = (OrganisationSection) section;
-                        dos.writeInt(organisations.getOrganisationList().size());
-                        for (Organisation o : organisations.getOrganisationList()) {
-                            dos.writeUTF(o.getCompany());
-                            dos.writeUTF(String.valueOf(o.getHomepage()));
-                            dos.writeInt(o.getPosition().size());
-                            for (Organisation.Position p : o.getPosition()) {
-                                dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                dos.writeUTF(p.getTitle());
-                                if (p.getDescription() == null) {
-                                    p.setDescription("");
+                        case ACHIEVEMENT, QUALIFICATION -> {
+                            ListSection list = (ListSection) sectionTypeSectionEntry.getValue();
+                            dos.writeInt(list.getList().size());
+                            for (String s : list.getList()) {
+                                dos.writeUTF(s);
+                            }
+                        }
+                        case EXPERIENCE, EDUCATION -> {
+                            OrganisationSection organisations = (OrganisationSection) sectionTypeSectionEntry.getValue();
+                            dos.writeInt(organisations.getOrganisationList().size());
+                            for (Organisation o : organisations.getOrganisationList()) {
+                                dos.writeUTF(o.getCompany());
+                                dos.writeUTF(String.valueOf(o.getHomepage()));
+                                dos.writeInt(o.getPosition().size());
+                                for (Organisation.Position p : o.getPosition()) {
+                                    dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                    dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                    dos.writeUTF(p.getTitle());
+                                    if (p.getDescription() == null) {
+                                        p.setDescription("");
+                                    }
+                                    dos.writeUTF(p.getDescription());
                                 }
-                                dos.writeUTF(p.getDescription());
                             }
                         }
                     }
                 }
             });
+
+           /* writeWithExceptionMap(sections, new MyBiConsumer<SectionType, Section>() {
+                @Override
+                public void accept(SectionType sectionType, Section section) throws IOException {
+                    dos.writeUTF(sectionType.name());
+                    switch (SectionType.valueOf(sectionType.name())) {
+                        case OBJECTIVE, PERSONAL -> {
+                            TextSection text = (TextSection) section;
+                            dos.writeUTF(text.getText());
+                        }
+                        case ACHIEVEMENT, QUALIFICATION -> {
+                            ListSection list = (ListSection) section;
+                            dos.writeInt(list.getList().size());
+                            for (String s : list.getList()) {
+                                dos.writeUTF(s);
+                            }
+                        }
+                        case EXPERIENCE, EDUCATION -> {
+                            OrganisationSection organisations = (OrganisationSection) section;
+                            dos.writeInt(organisations.getOrganisationList().size());
+                            for (Organisation o : organisations.getOrganisationList()) {
+                                dos.writeUTF(o.getCompany());
+                                dos.writeUTF(String.valueOf(o.getHomepage()));
+                                dos.writeInt(o.getPosition().size());
+                                for (Organisation.Position p : o.getPosition()) {
+                                    dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                    dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                    dos.writeUTF(p.getTitle());
+                                    if (p.getDescription() == null) {
+                                        p.setDescription("");
+                                    }
+                                    dos.writeUTF(p.getDescription());
+                                }
+                            }
+                        }
+                    }
+                }
+            });*/
         }
     }
 
