@@ -34,27 +34,14 @@ public class DataStrategy implements SerializeStrategy {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
 
-            Map<ContactType, String> contacts = resume.getContacts();
-            //   dos.writeInt(contacts.size());
-
-            writeWithException(dos, contacts.entrySet(), contactTypeStringEntry -> {
+            writeWithException(dos, resume.getContacts().entrySet(), contactTypeStringEntry -> {
                 dos.writeUTF(contactTypeStringEntry.getKey().name());
                 dos.writeUTF(contactTypeStringEntry.getValue());
             });
 
-                   /* writeWithExceptionMap(contacts, new MyBiConsumer<ContactType, String>() {
-                        @Override
-                        public void accept(ContactType contactType, String s) throws IOException {
-                            dos.writeUTF((contactType.name()));
-                            dos.writeUTF(s);
-                        }
-                    });*/
-
-            Map<SectionType, Section> sections = resume.getSections();
-            // dos.writeInt(sections.size());
-
-            writeWithException(dos, sections.entrySet(), sectionTypeSectionEntry -> {
+            writeWithException(dos, resume.getSections().entrySet(), sectionTypeSectionEntry -> {
                 dos.writeUTF(sectionTypeSectionEntry.getKey().name());
+
                 switch (SectionType.valueOf(sectionTypeSectionEntry.getKey().name())) {
                     case OBJECTIVE, PERSONAL -> {
                         TextSection text = (TextSection) sectionTypeSectionEntry.getValue();
@@ -63,14 +50,9 @@ public class DataStrategy implements SerializeStrategy {
                     case ACHIEVEMENT, QUALIFICATION -> {
                         ListSection list = (ListSection) sectionTypeSectionEntry.getValue();
                         writeWithException(dos, list.getList(), dos::writeUTF);
-                       /* dos.writeInt(list.getList().size());
-                        for (String s : list.getList()) {
-                            dos.writeUTF(s);
-                        }*/
                     }
                     case EXPERIENCE, EDUCATION -> {
                         OrganisationSection organisations = (OrganisationSection) sectionTypeSectionEntry.getValue();
-                        //  dos.writeInt(organisations.getOrganisationList().size());
                         writeWithException(dos, organisations.getOrganisationList(), organisation -> {
                             dos.writeUTF(organisation.getCompany());
                             dos.writeUTF(String.valueOf(organisation.getHomepage()));
@@ -84,62 +66,9 @@ public class DataStrategy implements SerializeStrategy {
                                 dos.writeUTF(position.getDescription());
                             });
                         });
-
-                     /*   for (Organisation o : organisations.getOrganisationList()) {
-                            dos.writeUTF(o.getCompany());
-                            dos.writeUTF(String.valueOf(o.getHomepage()));
-                            dos.writeInt(o.getPosition().size());
-                            for (Organisation.Position p : o.getPosition()) {
-                                dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                dos.writeUTF(p.getTitle());
-                                if (p.getDescription() == null) {
-                                    p.setDescription("");
-                                }
-                                dos.writeUTF(p.getDescription());
-                            }
-                        }*/
                     }
                 }
             });
-
-           /* writeWithExceptionMap(sections, new MyBiConsumer<SectionType, Section>() {
-                @Override
-                public void accept(SectionType sectionType, Section section) throws IOException {
-                    dos.writeUTF(sectionType.name());
-                    switch (SectionType.valueOf(sectionType.name())) {
-                        case OBJECTIVE, PERSONAL -> {
-                            TextSection text = (TextSection) section;
-                            dos.writeUTF(text.getText());
-                        }
-                        case ACHIEVEMENT, QUALIFICATION -> {
-                            ListSection list = (ListSection) section;
-                            dos.writeInt(list.getList().size());
-                            for (String s : list.getList()) {
-                                dos.writeUTF(s);
-                            }
-                        }
-                        case EXPERIENCE, EDUCATION -> {
-                            OrganisationSection organisations = (OrganisationSection) section;
-                            dos.writeInt(organisations.getOrganisationList().size());
-                            for (Organisation o : organisations.getOrganisationList()) {
-                                dos.writeUTF(o.getCompany());
-                                dos.writeUTF(String.valueOf(o.getHomepage()));
-                                dos.writeInt(o.getPosition().size());
-                                for (Organisation.Position p : o.getPosition()) {
-                                    dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                    dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                    dos.writeUTF(p.getTitle());
-                                    if (p.getDescription() == null) {
-                                        p.setDescription("");
-                                    }
-                                    dos.writeUTF(p.getDescription());
-                                }
-                            }
-                        }
-                    }
-                }
-            });*/
         }
     }
 
