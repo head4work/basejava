@@ -20,10 +20,11 @@ public class DataStrategy implements SerializeStrategy {
         }
     }
 
-    private <T> void writeWithException(Collection<T> collection, MyConsumerWriter<T> action) throws IOException {
-        Objects.requireNonNull(action);
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, MyConsumerWriter<T> writer) throws IOException {
+        Objects.requireNonNull(writer);
+        dos.writeInt(collection.size());
         for (T element : collection) {
-            action.accept(element);
+            writer.accept(element);
         }
     }
 
@@ -34,9 +35,9 @@ public class DataStrategy implements SerializeStrategy {
             dos.writeUTF(resume.getFullName());
 
             Map<ContactType, String> contacts = resume.getContacts();
-            dos.writeInt(contacts.size());
+            //   dos.writeInt(contacts.size());
 
-            writeWithException(contacts.entrySet(), contactTypeStringEntry -> {
+            writeWithException(dos, contacts.entrySet(), contactTypeStringEntry -> {
                 dos.writeUTF(contactTypeStringEntry.getKey().name());
                 dos.writeUTF(contactTypeStringEntry.getValue());
             });
@@ -50,41 +51,54 @@ public class DataStrategy implements SerializeStrategy {
                     });*/
 
             Map<SectionType, Section> sections = resume.getSections();
-            dos.writeInt(sections.size());
-            writeWithException(sections.entrySet(), new MyConsumerWriter<Map.Entry<SectionType, Section>>() {
-                @Override
-                public void accept(Map.Entry<SectionType, Section> sectionTypeSectionEntry) throws IOException {
-                    dos.writeUTF(sectionTypeSectionEntry.getKey().name());
-                    switch (SectionType.valueOf(sectionTypeSectionEntry.getKey().name())) {
-                        case OBJECTIVE, PERSONAL -> {
-                            TextSection text = (TextSection) sectionTypeSectionEntry.getValue();
-                            dos.writeUTF(text.getText());
-                        }
-                        case ACHIEVEMENT, QUALIFICATION -> {
-                            ListSection list = (ListSection) sectionTypeSectionEntry.getValue();
-                            dos.writeInt(list.getList().size());
-                            for (String s : list.getList()) {
-                                dos.writeUTF(s);
-                            }
-                        }
-                        case EXPERIENCE, EDUCATION -> {
-                            OrganisationSection organisations = (OrganisationSection) sectionTypeSectionEntry.getValue();
-                            dos.writeInt(organisations.getOrganisationList().size());
-                            for (Organisation o : organisations.getOrganisationList()) {
-                                dos.writeUTF(o.getCompany());
-                                dos.writeUTF(String.valueOf(o.getHomepage()));
-                                dos.writeInt(o.getPosition().size());
-                                for (Organisation.Position p : o.getPosition()) {
-                                    dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                    dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                    dos.writeUTF(p.getTitle());
-                                    if (p.getDescription() == null) {
-                                        p.setDescription("");
-                                    }
-                                    dos.writeUTF(p.getDescription());
+            // dos.writeInt(sections.size());
+
+            writeWithException(dos, sections.entrySet(), sectionTypeSectionEntry -> {
+                dos.writeUTF(sectionTypeSectionEntry.getKey().name());
+                switch (SectionType.valueOf(sectionTypeSectionEntry.getKey().name())) {
+                    case OBJECTIVE, PERSONAL -> {
+                        TextSection text = (TextSection) sectionTypeSectionEntry.getValue();
+                        dos.writeUTF(text.getText());
+                    }
+                    case ACHIEVEMENT, QUALIFICATION -> {
+                        ListSection list = (ListSection) sectionTypeSectionEntry.getValue();
+                        writeWithException(dos, list.getList(), dos::writeUTF);
+                       /* dos.writeInt(list.getList().size());
+                        for (String s : list.getList()) {
+                            dos.writeUTF(s);
+                        }*/
+                    }
+                    case EXPERIENCE, EDUCATION -> {
+                        OrganisationSection organisations = (OrganisationSection) sectionTypeSectionEntry.getValue();
+                        //  dos.writeInt(organisations.getOrganisationList().size());
+                        writeWithException(dos, organisations.getOrganisationList(), organisation -> {
+                            dos.writeUTF(organisation.getCompany());
+                            dos.writeUTF(String.valueOf(organisation.getHomepage()));
+                            writeWithException(dos, organisation.getPosition(), position -> {
+                                dos.writeUTF(position.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                dos.writeUTF(position.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                dos.writeUTF(position.getTitle());
+                                if (position.getDescription() == null) {
+                                    position.setDescription("");
                                 }
+                                dos.writeUTF(position.getDescription());
+                            });
+                        });
+
+                     /*   for (Organisation o : organisations.getOrganisationList()) {
+                            dos.writeUTF(o.getCompany());
+                            dos.writeUTF(String.valueOf(o.getHomepage()));
+                            dos.writeInt(o.getPosition().size());
+                            for (Organisation.Position p : o.getPosition()) {
+                                dos.writeUTF(p.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                dos.writeUTF(p.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                dos.writeUTF(p.getTitle());
+                                if (p.getDescription() == null) {
+                                    p.setDescription("");
+                                }
+                                dos.writeUTF(p.getDescription());
                             }
-                        }
+                        }*/
                     }
                 }
             });
