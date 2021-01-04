@@ -6,26 +6,28 @@ import java.io.*;
 import java.net.URL;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 
 public class DataStrategy implements SerializeStrategy {
 
-    private <K, V> void writeWithExceptionMap(Map<K, V> map, MyBiConsumer<K, V> action) throws IOException {
-        Objects.requireNonNull(action);
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            K k = entry.getKey();
-            V v = entry.getValue();
-            action.accept(k, v);
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, Writer<T> write) throws IOException {
+        Objects.requireNonNull(write);
+        dos.writeInt(collection.size());
+        for (T element : collection) {
+            write.accept(element);
         }
     }
 
-    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, MyConsumerWriter<T> writer) throws IOException {
-        Objects.requireNonNull(writer);
-        dos.writeInt(collection.size());
-        for (T element : collection) {
-            writer.accept(element);
-        }
+    private interface Writer<T> {
+        void accept(T t) throws IOException;
+    }
+
+    private interface Reader<String> {
+        void accept(String s, String s1) throws IOException;
     }
 
     @Override
@@ -77,8 +79,11 @@ public class DataStrategy implements SerializeStrategy {
         try (DataInputStream dis = new DataInputStream(inputStream)) {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
-            int size = dis.readInt();
+
+
             Resume resume = new Resume(uuid, fullName);
+
+            int size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
