@@ -14,36 +14,17 @@ import java.util.Objects;
 
 public class DataStrategy implements SerializeStrategy {
 
-    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, Writer<T> write) throws IOException {
-        Objects.requireNonNull(write);
-        dos.writeInt(collection.size());
-        for (T element : collection) {
-            write.accept(element);
-        }
-    }
-
-    private interface Writer<T> {
-        void accept(T t) throws IOException;
-    }
-
-    private interface Reader<String> {
-        void accept(String s, String s1) throws IOException;
-    }
-
     @Override
     public void writeResume(Resume resume, OutputStream outputStream) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(outputStream)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-
             writeWithException(dos, resume.getContacts().entrySet(), contactTypeStringEntry -> {
                 dos.writeUTF(contactTypeStringEntry.getKey().name());
                 dos.writeUTF(contactTypeStringEntry.getValue());
             });
-
             writeWithException(dos, resume.getSections().entrySet(), sectionTypeSectionEntry -> {
                 dos.writeUTF(sectionTypeSectionEntry.getKey().name());
-
                 switch (SectionType.valueOf(sectionTypeSectionEntry.getKey().name())) {
                     case OBJECTIVE, PERSONAL -> {
                         TextSection text = (TextSection) sectionTypeSectionEntry.getValue();
@@ -59,13 +40,14 @@ public class DataStrategy implements SerializeStrategy {
                             dos.writeUTF(organisation.getCompany());
                             dos.writeUTF(String.valueOf(organisation.getHomepage()));
                             writeWithException(dos, organisation.getPosition(), position -> {
-                                dos.writeUTF(position.getStartDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
-                                dos.writeUTF(position.getFinishDate().format(DateTimeFormatter.ofPattern("uuuu-MM")));
+                                writeDate(dos, position.getStartDate());
+                                writeDate(dos, position.getFinishDate());
                                 dos.writeUTF(position.getTitle());
                                 if (position.getDescription() == null) {
-                                    position.setDescription("");
+                                    dos.writeUTF("");
+                                } else {
+                                    dos.writeUTF(position.getDescription());
                                 }
-                                dos.writeUTF(position.getDescription());
                             });
                         });
                     }
@@ -79,55 +61,73 @@ public class DataStrategy implements SerializeStrategy {
         try (DataInputStream dis = new DataInputStream(inputStream)) {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
-
-
             Resume resume = new Resume(uuid, fullName);
-
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-
+            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> {
                 SectionType type = SectionType.valueOf(dis.readUTF());
                 switch (type) {
                     case OBJECTIVE, PERSONAL -> resume.addSection(type, new TextSection(dis.readUTF()));
                     case ACHIEVEMENT, QUALIFICATION -> {
-                        int listSize = dis.readInt();
                         List<String> list = new ArrayList<>();
-                        for (int j = 0; j < listSize; j++) {
-                            list.add(dis.readUTF());
-                        }
+                        readWithException(dis, () -> list.add(dis.readUTF()));
                         resume.addSection(type, new ListSection(list));
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        int orgSize = dis.readInt();
                         List<Organisation> organisations = new ArrayList<>();
                         List<Organisation.Position> positions = new ArrayList<>();
-                        for (int k = 0; k < orgSize; k++) {
+                        readWithException(dis, () -> {
                             String company = dis.readUTF();
                             URL url = null;
                             String sUrl = dis.readUTF();
                             if (!sUrl.equals("null")) {
                                 url = new URL(sUrl);
                             }
-                            int posSize = dis.readInt();
-                            for (int l = 0; l < posSize; l++) {
-                                YearMonth started = YearMonth.parse(dis.readUTF());
-                                YearMonth finished = YearMonth.parse(dis.readUTF());
+                            readWithException(dis, () -> {
+                                YearMonth started = readDate(dis);
+                                YearMonth finished = readDate(dis);
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
                                 positions.add(new Organisation.Position(started, finished, title, description));
-                            }
+                            });
                             organisations.add(new Organisation(company, url, positions));
-                        }
+                        });
                         resume.addSection(type, new OrganisationSection(organisations));
                     }
                 }
-            }
+            });
             return resume;
         }
     }
 
+    private interface Writer<T> {
+        void accept(T t) throws IOException;
+    }
+
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, Writer<T> write) throws IOException {
+        Objects.requireNonNull(write);
+        dos.writeInt(collection.size());
+        for (T element : collection) {
+            write.accept(element);
+        }
+    }
+
+    private void writeDate(DataOutputStream dos, YearMonth date) throws IOException {
+        dos.writeUTF(date.format(DateTimeFormatter.ofPattern("uuuu-MM")));
+    }
+
+
+    private void readWithException(DataInputStream dis, Read runnable) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            runnable.run();
+        }
+    }
+
+    private interface Read {
+        void run() throws IOException;
+    }
+
+    private YearMonth readDate(DataInputStream dis) throws IOException {
+        return YearMonth.parse(dis.readUTF());
+    }
 }
