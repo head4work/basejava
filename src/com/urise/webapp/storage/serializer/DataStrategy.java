@@ -87,6 +87,9 @@ public class DataStrategy implements SerializeStrategy {
                                 YearMonth finished = readDate(dis);
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
+                                if (description.equals("")) {
+                                    description = null;
+                                }
                                 positions.add(new Organisation.Position(started, finished, title, description));
                             });
                             organisations.add(new Organisation(company, url, positions));

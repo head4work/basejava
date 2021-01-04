@@ -45,8 +45,8 @@ public class ResumeTestDataSimple {
         resume_1.addSection(QUALIFICATION, new ListSection("text",
                 "text"));
         resume_1.addSection(EXPERIENCE, new OrganisationSection(new Organisation("Coursera",
-                new URL("https://www.coursera.org"), new Organisation.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
-                "title", "description"))));
+                null, new Organisation.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
+                "title", null))));
 
         resume_1.addSection(EDUCATION, new OrganisationSection(new Organisation("университет", new URL("https://www.spbgu.org")
                 , new Organisation.Position(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)")
