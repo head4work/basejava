@@ -77,19 +77,14 @@ public class DataStrategy implements SerializeStrategy {
                         List<Organisation.Position> positions = new ArrayList<>();
                         readWithException(dis, () -> {
                             String company = dis.readUTF();
-                            URL url = null;
                             String sUrl = dis.readUTF();
-                            if (!sUrl.equals("null")) {
-                                url = new URL(sUrl);
-                            }
+                            URL url = (!sUrl.equals("null")) ? new URL(sUrl) : null;
                             readWithException(dis, () -> {
                                 YearMonth started = readDate(dis);
                                 YearMonth finished = readDate(dis);
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
-                                if (description.equals("")) {
-                                    description = null;
-                                }
+                                description = (description.equals("")) ? null : description;
                                 positions.add(new Organisation.Position(started, finished, title, description));
                             });
                             organisations.add(new Organisation(company, url, positions));
