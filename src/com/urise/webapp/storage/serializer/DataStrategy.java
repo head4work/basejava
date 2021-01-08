@@ -43,11 +43,8 @@ public class DataStrategy implements SerializeStrategy {
                                 writeDate(dos, position.getStartDate());
                                 writeDate(dos, position.getFinishDate());
                                 dos.writeUTF(position.getTitle());
-                                if (position.getDescription() == null) {
-                                    dos.writeUTF("");
-                                } else {
-                                    dos.writeUTF(position.getDescription());
-                                }
+                                String description = (position.getDescription() == null) ? "" : position.getDescription();
+                                dos.writeUTF(description);
                             });
                         });
                     }
