@@ -1,7 +1,7 @@
 package com.urise.webapp.util;
 
 public class MainConcurrency {
-    public static final int THREADS_NUMBER = 10000;
+ //   public static final int THREADS_NUMBER = 10000;
     private static int counter;
     private static final Object LOCK = new Object();
 
@@ -54,30 +54,24 @@ public class MainConcurrency {
         }
 */
 
-        Thread thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (MainConcurrency.class) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    synchronized (LOCK) {
-                        counter++;
-                    }
+        Thread thread1 = new Thread(() -> {
+            synchronized (MainConcurrency.class) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (LOCK) {
+                    counter++;
                 }
             }
         });
         thread1.start();
 
-        Thread thread2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (LOCK) {
-                    synchronized (MainConcurrency.class) {
-                        counter++;
-                    }
+        Thread thread2 = new Thread(() -> {
+            synchronized (LOCK) {
+                synchronized (MainConcurrency.class) {
+                    counter++;
                 }
             }
         });
