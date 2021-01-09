@@ -1,13 +1,16 @@
 package com.urise.webapp.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainConcurrency {
- //   public static final int THREADS_NUMBER = 10000;
+    public static final int THREADS_NUMBER = 10000;
     private static int counter;
     private static final Object LOCK = new Object();
 
     public static void main(String[] args) throws InterruptedException {
 
-/*
+
         System.out.println(Thread.currentThread().getName());
 
         Thread thread0 = new Thread() {
@@ -52,32 +55,7 @@ public class MainConcurrency {
         synchronized (LOCK) {
             counter++;
         }
-*/
 
-        Thread thread1 = new Thread(() -> {
-            synchronized (MainConcurrency.class) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                synchronized (LOCK) {
-                    counter++;
-                }
-            }
-        });
-        thread1.start();
-
-        Thread thread2 = new Thread(() -> {
-            synchronized (LOCK) {
-                synchronized (MainConcurrency.class) {
-                    counter++;
-                }
-            }
-        });
-        thread2.start();
-
-        System.out.println(counter);
 
     }
 
