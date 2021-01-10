@@ -11,12 +11,11 @@ public class DeadLock {
 
     private static void lock(Object o1, Object o2) {
         synchronized (o1) {
-            System.out.println("locked on Object " + o1);
+            System.out.println(Thread.currentThread().getName() + "  locked on Object  " + o1);
+            System.out.println(Thread.currentThread().getName() + "  trying to lock on Object  " + o2);
             synchronized (o2) {
-                System.out.println("locked on Object " + o1 + ", locking on Object " + o2);
+                System.out.println(Thread.currentThread().getName() + "  locked on Object  " + o2);
             }
         }
-
     }
-
 }
