@@ -21,13 +21,10 @@ public class StreamUtil {
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        List<Integer> list;
-        if (integers.stream().reduce(Integer::sum).get() % 2 == 0) {
-            list = integers.stream().filter(integer -> integer % 2 != 0).collect(Collectors.toList());
-        } else {
-            list = integers.stream().filter(integer -> integer % 2 == 0).collect(Collectors.toList());
-        }
-        return list;
+        int sum = integers.stream().reduce(Integer::sum).get();
+        return integers.stream()
+                .filter(integer -> integer % 2 != sum % 2)
+                .collect(Collectors.toList());
     }
 
 }
