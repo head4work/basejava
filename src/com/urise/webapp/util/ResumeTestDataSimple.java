@@ -1,14 +1,12 @@
 package com.urise.webapp.util;
 
-import com.urise.webapp.model.*;
+import com.urise.webapp.model.ContactType;
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.Section;
+import com.urise.webapp.model.SectionType;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.YearMonth;
 import java.util.Map;
-
-import static com.urise.webapp.model.ContactType.*;
-import static com.urise.webapp.model.SectionType.*;
 
 public class ResumeTestDataSimple {
 
@@ -26,7 +24,7 @@ public class ResumeTestDataSimple {
     public static Resume createResumeWithSimpleData(String uuid, String fullName) throws MalformedURLException {
         Resume resume_1 = new Resume(uuid, fullName);
 
-        resume_1.addContact(PHONE, "+7(921) 855-0482");
+       /* resume_1.addContact(PHONE, "+7(921) 855-0482");
         resume_1.addContact(SKYPE, "grigory.kislin");
         resume_1.addContact(EMAIL, "gkislin@yandex.ru");
         resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
@@ -51,7 +49,7 @@ public class ResumeTestDataSimple {
         resume_1.addSection(EDUCATION, new OrganisationSection(new Organisation("университет", new URL("https://www.spbgu.org")
                 , new Organisation.Position(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)")
                 , new Organisation.Position(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"))));
-
+*/
         return resume_1;
     }
 

@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.util.Config;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 abstract class AbstractStorageTest {
-    protected final static File STORAGE_DIR = new File("basejava/storage");
+    protected final static File STORAGE_DIR = Config.get().getStorageDir();
 
     Storage storage;
     static final String UUID_1 = "uuid1";

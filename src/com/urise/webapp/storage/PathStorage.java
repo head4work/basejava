@@ -33,7 +33,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("File delete error", null);
+            throw new StorageException("File delete error", "");
         }
     }
 
@@ -42,7 +42,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create file ", null);
+            throw new StorageException("Couldn't create file ");
         }
         updateResume(resume, path);
     }
@@ -94,7 +94,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Directory read error");
         }
     }
 
