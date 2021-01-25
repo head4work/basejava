@@ -10,25 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
-    SqlHelper<Resume> helper = new SqlHelper<>();
+    SqlHelper helper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        helper.connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        helper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
     public void update(Resume resume) {
-        try {
-            get(resume.getUuid());
-            helper.executeStatement("UPDATE  resume SET full_name = ? WHERE uuid =?", ps -> {
-                ps.setString(1, resume.getFullName());
-                ps.setString(2, resume.getUuid());
-                ps.execute();
-                return null;
-            });
-        } catch (Exception e) {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+        helper.executeStatement("UPDATE  resume SET full_name = ? WHERE uuid =?", ps -> {
+            ps.setString(1, resume.getFullName());
+            ps.setString(2, resume.getUuid());
+            if (ps.executeUpdate() != 1) {
+                throw new NotExistStorageException(resume.getUuid());
+            }
+            return null;
+        });
+
     }
 
     @Override
@@ -64,16 +62,13 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        try {
-            get(uuid);
-            helper.executeStatement("DELETE  FROM resume  WHERE uuid =?", ps -> {
-                ps.setString(1, uuid);
-                ps.execute();
-                return null;
-            });
-        } catch (Exception e) {
-            throw new NotExistStorageException(uuid);
-        }
+        helper.executeStatement("DELETE  FROM resume  WHERE uuid =?", ps -> {
+            ps.setString(1, uuid);
+            if (ps.executeUpdate() != 1) {
+                throw new NotExistStorageException(uuid);
+            }
+            return null;
+        });
     }
 
     @Override
@@ -91,7 +86,12 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        return getAllSorted().size();
+        return helper.executeStatement("SELECT COUNT(uuid) FROM resume", ps -> {
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        });
+
     }
 
 }

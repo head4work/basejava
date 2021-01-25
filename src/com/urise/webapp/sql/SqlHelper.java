@@ -6,14 +6,17 @@ import com.urise.webapp.exeption.StorageException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class SqlHelper<T> {
-    public ConnectionFactory connectionFactory;
+public class SqlHelper {
+    private final ConnectionFactory connectionFactory;
 
-    public T executeStatement(String statement, StatementSettings<T> statementSettings) {
+    public SqlHelper(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
+
+    public <T> T executeStatement(String statement, StatementExecutor<T> statementExecutor) {
         try (PreparedStatement ps = connectionFactory.getConnection().prepareStatement(statement)) {
-            return statementSettings.execute(ps);
+            return statementExecutor.execute(ps);
         } catch (SQLException e) {
-            System.out.println(e.getSQLState());
             if (e.getSQLState().equals("23505")) {
                 throw new ExistStorageException(e.getMessage());
             } else {
@@ -22,7 +25,7 @@ public class SqlHelper<T> {
         }
     }
 
-    public interface StatementSettings<T> {
+    public interface StatementExecutor<T> {
         T execute(PreparedStatement ps) throws SQLException;
     }
 }

@@ -23,16 +23,16 @@ public class Resume implements Serializable {
     }
 
     // Unique identifier
-    private String uuid;
+    private UUID uuid;
     private String fullName;
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), fullName);
+        this(UUID.randomUUID(), fullName);
     }
 
-    public Resume(String uuid, String fullName) {
+    public Resume(UUID uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
@@ -55,7 +55,7 @@ public class Resume implements Serializable {
         contacts.remove(type);
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
