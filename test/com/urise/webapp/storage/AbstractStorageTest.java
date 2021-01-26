@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static com.urise.webapp.util.ResumeTestDataSimple.createResumeWithSimpleData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,11 +22,11 @@ abstract class AbstractStorageTest {
     protected final static File STORAGE_DIR = Config.get().getStorageDir();
 
     Storage storage;
-    static final String UUID_1 = "uuid1";
-    static final String UUID_2 = "uuid2";
-    static final String UUID_3 = "uuid3";
-    static final String UUID_dummy = "dummy";
-    static final String UUID_777 = "uuid777";
+    static final String UUID_1 = UUID.randomUUID().toString();
+    static final String UUID_2 = UUID.randomUUID().toString();
+    static final String UUID_3 = UUID.randomUUID().toString();
+    static final String UUID_dummy = UUID.randomUUID().toString();
+    static final String UUID_777 = UUID.randomUUID().toString();
     static Resume resume_1;
     static Resume resume_2;
     static Resume resume_3;

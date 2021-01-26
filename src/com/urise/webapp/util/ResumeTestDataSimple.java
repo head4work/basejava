@@ -22,7 +22,6 @@ public class ResumeTestDataSimple {
     }
 
     public static Resume createResumeWithSimpleData(String uuid, String fullName) throws MalformedURLException {
-        Resume resume_1 = new Resume(uuid, fullName);
 
        /* resume_1.addContact(PHONE, "+7(921) 855-0482");
         resume_1.addContact(SKYPE, "grigory.kislin");
@@ -50,7 +49,7 @@ public class ResumeTestDataSimple {
                 , new Organisation.Position(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)")
                 , new Organisation.Position(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"))));
 */
-        return resume_1;
+        return new Resume(uuid, fullName);
     }
 
 
