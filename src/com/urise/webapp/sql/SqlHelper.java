@@ -13,7 +13,7 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public <T> T executeStatement(String statement, StatementExecutor<T> statementExecutor) {
+    public <T> T execute(String statement, StatementExecutor<T> statementExecutor) {
         try (PreparedStatement ps = connectionFactory.getConnection().prepareStatement(statement)) {
             return statementExecutor.execute(ps);
         } catch (SQLException e) {
@@ -25,7 +25,9 @@ public class SqlHelper {
         try (Connection conn = connectionFactory.getConnection()) {
             try {
                 conn.setAutoCommit(false);
-                return executor.execute(conn);
+                T res = executor.execute(conn);
+                conn.commit();
+                return res;
             } catch (SQLException e) {
                 conn.rollback();
                 throw ExceptionUtil.convertException(e);
@@ -35,7 +37,4 @@ public class SqlHelper {
         }
     }
 
-    public interface StatementExecutor<T> {
-        T execute(PreparedStatement ps) throws SQLException;
-    }
 }
