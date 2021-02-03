@@ -6,11 +6,10 @@ import com.urise.webapp.model.Resume;
 import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SqlStorage implements Storage {
     SqlHelper helper;
@@ -95,7 +94,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Map<String, Resume> map = new HashMap<>();
+        Map<String, Resume> map = new LinkedHashMap<>();
         helper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ORDER BY full_name, uuid")) {
                 ResultSet rs = ps.executeQuery();
@@ -113,7 +112,7 @@ public class SqlStorage implements Storage {
             }
             return null;
         });
-        return map.values().stream().sorted(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid)).collect(Collectors.toList());
+        return new ArrayList<>(map.values());
     }
 
     @Override
