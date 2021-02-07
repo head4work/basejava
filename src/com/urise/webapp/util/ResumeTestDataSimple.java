@@ -1,15 +1,12 @@
 package com.urise.webapp.util;
 
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
-import com.urise.webapp.model.Section;
-import com.urise.webapp.model.SectionType;
+import com.urise.webapp.model.*;
 
 import java.net.MalformedURLException;
 import java.util.Map;
 
-import static com.urise.webapp.model.ContactType.PHONE;
-import static com.urise.webapp.model.ContactType.SKYPE;
+import static com.urise.webapp.model.ContactType.*;
+import static com.urise.webapp.model.SectionType.*;
 
 public class ResumeTestDataSimple {
 
@@ -28,7 +25,7 @@ public class ResumeTestDataSimple {
         Resume resume_1 = new Resume(uuid, fullName);
         resume_1.addContact(PHONE, "+7(921) 855-0482");
         resume_1.addContact(SKYPE, "grigory.kislin");
-       /* resume_1.addContact(EMAIL, "gkislin@yandex.ru");
+        resume_1.addContact(EMAIL, "gkislin@yandex.ru");
         resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume_1.addContact(GITHUB, "https://github.com/gkislin");
         resume_1.addContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
@@ -44,6 +41,8 @@ public class ResumeTestDataSimple {
 
         resume_1.addSection(QUALIFICATION, new ListSection("text",
                 "text"));
+
+        /*
         resume_1.addSection(EXPERIENCE, new OrganisationSection(new Organisation("Coursera",
                 null, new Organisation.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
                 "title", null))));
