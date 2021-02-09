@@ -74,11 +74,7 @@ public class SqlStorage implements Storage {
                 "        WHERE r.uuid =?", ps -> {
             ps.setString(1, uuid);
             ps.execute();
-
             ResultSet rs = ps.executeQuery();
-            ResultSetMetaData metaData = rs.getMetaData();
-
-            System.out.println(metaData.getColumnLabel(5));
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
@@ -143,13 +139,12 @@ public class SqlStorage implements Storage {
 
     private void addSections(ResultSet rs, Resume r) throws SQLException {
         String value = rs.getString("s_value");
-        String type = rs.getString("s_type");
         if (value != null) {
+            String type = rs.getString("s_type");
             switch (SectionType.valueOf(type)) {
                 case OBJECTIVE, PERSONAL -> r.addSection(SectionType.valueOf(type), new TextSection(value));
                 case ACHIEVEMENT, QUALIFICATION -> {
-                    String[] split = value.split("\n");
-                    Section section = new ListSection(Arrays.asList(split));
+                    Section section = new ListSection(Arrays.asList(value.split("\n")));
                     r.addSection(SectionType.valueOf(type), section);
                 }
             }
@@ -158,16 +153,17 @@ public class SqlStorage implements Storage {
 
     private void addContacts(ResultSet rs, Resume r) throws SQLException {
         String value = rs.getString("value");
-        String type = rs.getString("type");
         if (value != null) {
+            String type = rs.getString("type");
             r.addContact(ContactType.valueOf(type), value);
         }
     }
 
     private void insertSections(Resume resume, Connection conn) throws SQLException {
-        if (resume.getSections().size() > 0) {
+        Map<SectionType, Section> sections = resume.getSections();
+        if (sections.size() > 0) {
             try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, s_type,s_value) VALUES (?,?,?)")) {
-                for (Map.Entry<SectionType, Section> e : resume.getSections().entrySet()) {
+                for (Map.Entry<SectionType, Section> e : sections.entrySet()) {
                     ps.setString(1, resume.getUuid());
                     String type = e.getKey().name();
                     ps.setString(2, type);
@@ -191,9 +187,10 @@ public class SqlStorage implements Storage {
     }
 
     private void insertContacts(Resume resume, Connection conn) throws SQLException {
-        if (resume.getContacts().size() > 0) {
+        Map<ContactType, String> contacts = resume.getContacts();
+        if (contacts.size() > 0) {
             try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type,value) VALUES (?,?,?)")) {
-                for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
+                for (Map.Entry<ContactType, String> e : contacts.entrySet()) {
                     ps.setString(1, resume.getUuid());
                     ps.setString(2, e.getKey().name());
                     ps.setString(3, e.getValue());

@@ -1,5 +1,6 @@
 package com.urise.webapp.web;
 
+import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.model.Section;
@@ -12,36 +13,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Map;
-import java.util.UUID;
-
-import static com.urise.webapp.util.ResumeTestDataSimple.createResumeWithSimpleData;
 
 public class ResumeServlet extends HttpServlet {
-
-
-    static final String UUID_1 = UUID.randomUUID().toString();
-    static Resume resume_1;
-    Storage storage = Config.get().getStorage();
-
-
-    static {
-        try {
-            resume_1 = createResumeWithSimpleData(UUID_1, "Григорий Кислин");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
+    private Storage storage;
 
     @Override
     public void init() throws ServletException {
+        storage = Config.get().getStorage();
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        storage.save(resume_1);
     }
 
     @Override
@@ -60,7 +44,7 @@ public class ResumeServlet extends HttpServlet {
                 try {
                     buildTable(response, resume);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new StorageException(e.getMessage());
                 }
             });
         } else {
