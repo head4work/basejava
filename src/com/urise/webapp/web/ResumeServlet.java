@@ -24,7 +24,7 @@ public class ResumeServlet extends HttpServlet {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 

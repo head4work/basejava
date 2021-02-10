@@ -3,6 +3,8 @@ package com.urise.webapp.util;
 import com.urise.webapp.model.*;
 
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.YearMonth;
 import java.util.Map;
 
 import static com.urise.webapp.model.ContactType.*;
@@ -42,14 +44,13 @@ public class ResumeTestDataSimple {
         resume_1.addSection(QUALIFICATION, new ListSection("text",
                 "text"));
 
-        /*
         resume_1.addSection(EXPERIENCE, new OrganisationSection(new Organisation("Coursera",
                 null, new Organisation.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
                 "title", null))));
 
         resume_1.addSection(EDUCATION, new OrganisationSection(new Organisation("университет", new URL("https://www.spbgu.org")
                 , new Organisation.Position(YearMonth.of(1993, 9), YearMonth.of(1996, 7), "Аспирантура ", "(программист С, С++)")
-                , new Organisation.Position(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"))));*/
+                , new Organisation.Position(YearMonth.of(1987, 9), YearMonth.of(1993, 7), "Инженер ", "(программист Fortran, C)"))));
         return resume_1;
     }
 
