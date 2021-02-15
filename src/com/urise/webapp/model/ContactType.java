@@ -3,20 +3,38 @@ package com.urise.webapp.model;
 public enum ContactType {
 
     PHONE("Телефон"),
-    SKYPE("Скайп"),
-    EMAIL("Электронна почта"),
+    SKYPE("Скайп") {
+        @Override
+        public String toHtml0(String value) {
+            return "<a href='skype:" + value + "'>" + value + "</a>";
+        }
+    },
+    EMAIL("Электронна почта") {
+        @Override
+        public String toHtml0(String value) {
+            return "<a href='mailto:" + value + "'>" + value + "</a>";
+        }
+    },
     LINKEDIN("Линкдин"),
     GITHUB("Гитхаб"),
     STACKOVERFLOW("Стаковерфлоу"),
     HOMEPAGE("Домашняястраница");
 
-    private final String contact;
+    private final String title;
 
-    ContactType(String contact) {
-        this.contact = contact;
+    ContactType(String title) {
+        this.title = title;
     }
 
-    public String getContact() {
-        return contact;
+    public String getTitle() {
+        return title;
+    }
+
+    protected String toHtml0(String value) {
+        return title + ": " + value;
+    }
+
+    public String toHtml(String value) {
+        return (value == null) ? "" : toHtml0(value);
     }
 }

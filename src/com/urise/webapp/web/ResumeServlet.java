@@ -1,10 +1,7 @@
 package com.urise.webapp.web;
 
-import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.model.Section;
-import com.urise.webapp.model.SectionType;
 import com.urise.webapp.storage.Storage;
 import com.urise.webapp.util.Config;
 
@@ -13,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -30,95 +26,54 @@ public class ResumeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        if (uuid.equals("")) {
+            Resume r = new Resume(fullName);
+            uuid = r.getUuid();
+            storage.save(r);
+        }
+        Resume r = storage.get(uuid);
+        r.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && value.trim().length() != 0) {
+                r.addContact(type, value);
+            } else {
+                r.getContacts().remove(type);
+            }
+        }
+        storage.update(r);
+        response.sendRedirect("resume");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
         String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
 
-        initHeader(response);
-        if (uuid == null) {
-            storage.getAllSorted().forEach(resume -> {
-                try {
-                    buildTable(response, resume);
-                } catch (IOException e) {
-                    throw new StorageException(e.getMessage());
-                }
-            });
-        } else {
-            Resume resume = storage.get(uuid);
-            buildTable(response, resume);
+        if (action == null) {
+            request.setAttribute("resumes", storage.getAllSorted());
+            request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
+            return;
         }
-        initFooter(response);
-    }
-
-    private void buildTable(HttpServletResponse response, Resume resume) throws IOException {
-        insertResume(response, resume);
-        insertContacts(response, resume);
-        insertSections(response, resume);
-    }
-
-    private void initFooter(HttpServletResponse response) throws IOException {
-        response.getWriter().write(
-
-                "</table>" +
-                        "" +
-                        "</body>" +
-                        "</html>");
-    }
-
-    private void insertSections(HttpServletResponse response, Resume resume) throws IOException {
-        StringBuilder sections = new StringBuilder();
-        for (Map.Entry<SectionType, Section> e : resume.getSections().entrySet()) {
-            sections.append(e.getKey().name()).append(" : ").append(e.getValue()).append("\n");
+        Resume r;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view", "edit":
+                r = storage.get(uuid);
+                break;
+            case "new":
+                r = new Resume();
+                break;
+            default:
+                throw new IllegalStateException("Action " + action + " is illegal");
         }
-        response.getWriter().write(
-                "    <td>" + sections + " </td>" +
-                        "  </tr>");
+        request.setAttribute("resume", r);
+        request.getRequestDispatcher("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp").forward(request, response);
     }
-
-    private void insertContacts(HttpServletResponse response, Resume resume) throws IOException {
-        StringBuilder contacts = new StringBuilder();
-        for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
-            contacts.append(e.getKey().name()).append(" : ").append(e.getValue()).append("\n");
-        }
-        response.getWriter().write("<td> " + contacts.toString() + "</td>");
-    }
-
-    private void insertResume(HttpServletResponse response, Resume resume) throws IOException {
-        response.getWriter().write(
-                "  <tr>" +
-                        "    <td> " + resume.getUuid() + "</td>" +
-                        "    <td>" + resume.getFullName() + "</td>");
-    }
-
-    private void initHeader(HttpServletResponse response) throws IOException {
-        response.getWriter().write("<!DOCTYPE html>" +
-                "<html>" +
-                "<head>" +
-                "<style>" +
-                "table, th, td {" +
-                "  border: 1px solid black;" +
-                "border-collapse: collapse;" +
-                "}" +
-                "th, td {" +
-                "  padding: 15px;" +
-                "}" +
-                "</style>" +
-                "</head>" +
-                "<body>" +
-                "" +
-                "<h2>Resume</h2>" +
-                "" +
-                "<table style=\"width:100%\">" +
-                "  <tr>" +
-                "    <th>UUID</th>" +
-                "    <th>Full Name</th> " +
-                "    <th>Contacts</th> " +
-                "    <th>Sections</th> " +
-                "  </tr>");
-    }
-
 }

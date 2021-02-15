@@ -91,7 +91,7 @@ public class ResumeTestData {
 
     private static void printContacts(Resume resume_1) {
         Map<ContactType, String> map = resume_1.getContacts();
-        map.forEach((k, v) -> System.out.println(k.getContact() + "  -  " + v));
+        map.forEach((k, v) -> System.out.println(k.getTitle() + "  -  " + v));
     }
 }
 

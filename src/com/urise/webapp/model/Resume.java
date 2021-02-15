@@ -47,7 +47,7 @@ public class Resume implements Serializable {
         contacts.put(type, value);
     }
 
-    String getContact(ContactType type) {
+    public String getContact(ContactType type) {
         return contacts.get(type);
     }
 
@@ -69,6 +69,10 @@ public class Resume implements Serializable {
 
     public Map<SectionType, Section> getSections() {
         return sections;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @Override
