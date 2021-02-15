@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import static com.urise.webapp.util.ResumeTestDataSimple.createResumeWithSimpleData;
+import static com.urise.webapp.util.ResumeTestData.createResumeWithData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,10 +34,10 @@ abstract class AbstractStorageTest {
 
     static {
         try {
-            resume_1 = createResumeWithSimpleData(UUID_1, "Григорий Кислин");
-            resume_2 = createResumeWithSimpleData(UUID_2, "Name2");
-            resume_3 = createResumeWithSimpleData(UUID_3, "Name3");
-            resume_777 = createResumeWithSimpleData(UUID_777, "Name777");
+            resume_1 = createResumeWithData(UUID_1, "Григорий Кислин");
+            resume_2 = createResumeWithData(UUID_2, "Name2");
+            resume_3 = createResumeWithData(UUID_3, "Name3");
+            resume_777 = createResumeWithData(UUID_777, "Name777");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

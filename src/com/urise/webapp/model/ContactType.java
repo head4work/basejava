@@ -2,7 +2,12 @@ package com.urise.webapp.model;
 
 public enum ContactType {
 
-    PHONE("Телефон"),
+    PHONE("Телефон") {
+        @Override
+        protected String toHtml0(String value) {
+            return value;
+        }
+    },
     SKYPE("Скайп") {
         @Override
         public String toHtml0(String value) {
@@ -31,7 +36,7 @@ public enum ContactType {
     }
 
     protected String toHtml0(String value) {
-        return title + ": " + value;
+        return title + ": " + "<a href=:" + value + "'>" + value + "</a>";
     }
 
     public String toHtml(String value) {

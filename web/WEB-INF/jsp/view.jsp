@@ -1,3 +1,5 @@
+<%@ page import="com.urise.webapp.util.JsonParser" %>
+<%@ page import="com.urise.webapp.model.Section" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -19,6 +21,14 @@
                 <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
         </c:forEach>
     <p>
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
+
+    <h3><%=sectionEntry.getKey().getTitle()%>
+    </h3>
+    <%=String.valueOf(sectionEntry.getValue())%><br/>
+    </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
