@@ -34,29 +34,29 @@ public class ResumeTestData {
         resume_1.addContact(LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume_1.addContact(GITHUB, "https://github.com/gkislin");
         resume_1.addContact(STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/\n");
+        resume_1.addContact(HOMEPAGE, "http://gkislin.ru/");
 
         resume_1.addSection(OBJECTIVE,
-                new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям\n"));
+                new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         resume_1.addSection(PERSONAL,
-                new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.\n"));
+                new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
         resume_1.addSection(ACHIEVEMENT, new ListSection("С 2013 года: разработка проектов" +
-                " \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven." +
+                " Разработка Web приложения,Java Enterprise, Многомодульный maven." +
                 " Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие" +
-                " (JMS/AKKA)\"." +
-                " Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.\n",
+                " (JMS/AKKA)." +
+                " Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                 "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike." +
-                        " Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.\n"));
+                        " Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk."));
 
-        resume_1.addSection(QUALIFICATION, new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n",
-                "Version control: Subversion, Git, Mercury, ClearCase, Perforce\n"));
+        resume_1.addSection(QUALIFICATION, new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
+                "Version control: Subversion, Git, Mercury, ClearCase, Perforce"));
 
 
         List<Organisation> sectionListOrganisation = new ArrayList<>();
         List<Organisation.Position> javaOnlinePositions = new ArrayList<>();
         javaOnlinePositions.add(new Organisation.Position(YearMonth.of(2013, 10), YearMonth.now(), "Автор проекта.",
-                "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
+                "Создание, организация и проведение Java онлайн проектов и стажировок."));
 
         Organisation javaOnlineProjects = new Organisation("Java Online Projects", new URL("http://javaops.ru/"), javaOnlinePositions);
 
@@ -66,7 +66,7 @@ public class ResumeTestData {
 
         List<Organisation.Position> courseraPositions = new ArrayList<>();
         courseraPositions.add(new Organisation.Position(YearMonth.of(2013, 2), YearMonth.of(2013, 5),
-                "\"Functional Programming Principles in Scala\" by Martin Odersky", ""));
+                "Functional Programming Principles in Scala by Martin Odersky", ""));
         Organisation coursera = new Organisation("Coursera", new URL("https://www.coursera.org/course/progfun"), courseraPositions);
         sectionListOrganisation.add(coursera);
 
