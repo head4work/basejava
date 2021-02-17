@@ -36,7 +36,7 @@ public enum ContactType {
     }
 
     protected String toHtml0(String value) {
-        return title + ": " + "<a href=:" + value + "'>" + value + "</a>";
+        return title + ": " + "<a href=':" + value + "'>" + value + "</a>";
     }
 
     public String toHtml(String value) {

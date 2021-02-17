@@ -51,6 +51,10 @@ public class Resume implements Serializable {
         return contacts.get(type);
     }
 
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
+
     void removeContact(ContactType type) {
         contacts.remove(type);
     }

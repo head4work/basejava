@@ -5,7 +5,10 @@ import com.urise.webapp.model.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static com.urise.webapp.model.ContactType.*;
 import static com.urise.webapp.model.SectionType.*;
@@ -18,7 +21,7 @@ public class ResumeTestDataSimple {
 
 
         System.out.println("\n" + resume_1.getFullName());
-        printContacts(resume_1);
+        // printContacts(resume_1);
         printSections(resume_1);
 
     }
@@ -57,8 +60,100 @@ public class ResumeTestDataSimple {
 
     private static void printSections(Resume resume_1) {
         Map<SectionType, Section> map1 = resume_1.getSections();
-        map1.forEach((k, v) -> System.out.println(k.getTitle() + "\n" + v.toString()));
+        map1.forEach(new BiConsumer<SectionType, Section>() {
+            @Override
+            public void accept(SectionType k, Section v) {
+                System.out.println(k.name());
+                switch (k) {
+                    case OBJECTIVE, PERSONAL -> {
+                        TextSection text = (TextSection) v;
+                        System.out.println(text.getText());
+                    }
+                    case ACHIEVEMENT, QUALIFICATION -> {
+                        List<String> list = ((ListSection) v).getList();
+                        list.forEach(System.out::println);
+                    }
+                    case EDUCATION, EXPERIENCE -> {
+                        List<Organisation> orgs = ((OrganisationSection) v).getOrganisationList();
+                        orgs.forEach(new Consumer<Organisation>() {
+                            @Override
+                            public void accept(Organisation organisation) {
+                                System.out.println(organisation.getCompany());
+                                try {
+                                    URL homepage = organisation.getHomepage() == null ? new URL("http://baeldung.com") : organisation.getHomepage();
+                                    System.out.println(homepage);
+                                } catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                }
+                                List<Organisation.Position> position = organisation.getPosition();
+                                position.forEach(new Consumer<Organisation.Position>() {
+                                    @Override
+                                    public void accept(Organisation.Position position) {
+                                        System.out.println(position.getStartDate());
+                                        System.out.println(position.getFinishDate());
+                                        System.out.println(position.getTitle());
+                                        String description = (position.getDescription() == null) ? "" : position.getDescription();
+                                        System.out.println(description);
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                }
+                System.out.println();
+            }
+        });
     }
+
+    private static void printSection(Resume resume_1) {
+        Map<SectionType, Section> map1 = resume_1.getSections();
+        map1.forEach(new BiConsumer<SectionType, Section>() {
+            @Override
+            public void accept(SectionType k, Section v) {
+                System.out.println(k.name());
+                switch (k) {
+                    case OBJECTIVE, PERSONAL -> {
+                        TextSection text = (TextSection) v;
+                        System.out.println(text.getText());
+                    }
+                    case ACHIEVEMENT, QUALIFICATION -> {
+                        List<String> list = ((ListSection) v).getList();
+                        list.forEach(System.out::println);
+                    }
+                    case EDUCATION, EXPERIENCE -> {
+                        List<Organisation> orgs = ((OrganisationSection) v).getOrganisationList();
+                        orgs.forEach(new Consumer<Organisation>() {
+                            @Override
+                            public void accept(Organisation organisation) {
+                                System.out.println(organisation.getCompany());
+                                try {
+                                    URL homepage = organisation.getHomepage() == null ? new URL("http://baeldung.com") : organisation.getHomepage();
+                                    System.out.println(homepage);
+                                } catch (MalformedURLException e) {
+                                    e.printStackTrace();
+                                }
+                                List<Organisation.Position> position = organisation.getPosition();
+                                position.forEach(new Consumer<Organisation.Position>() {
+                                    @Override
+                                    public void accept(Organisation.Position position) {
+                                        System.out.println(position.getStartDate());
+                                        System.out.println(position.getFinishDate());
+                                        System.out.println(position.getTitle());
+                                        String description = (position.getDescription() == null) ? "" : position.getDescription();
+                                        System.out.println(description);
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                }
+                System.out.println();
+            }
+        });
+    }
+
 
     private static void printContacts(Resume resume_1) {
         Map<ContactType, String> map = resume_1.getContacts();

@@ -48,6 +48,10 @@ public class Organisation implements Serializable {
         return homepage;
     }
 
+    public String getUrlOfHomepage() {
+        return "<a href='" + homepage + "'>" + homepage + "</a>";
+    }
+
     public String getCompany() {
         return company;
     }
