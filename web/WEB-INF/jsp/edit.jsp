@@ -44,12 +44,11 @@
 
         <c:when test="${sectionEntry.key eq SectionType.ACHIEVEMENT || sectionEntry.key eq SectionType.QUALIFICATION}">
             <dl>
-                <dt><%=sectionEntry.getKey().getTitle()%>
-                </dt>
                 <dt>
-                    <c:forEach var="list" items="<%=((ListSection) sectionEntry.getValue()).getList()%>">
-                        <input type="text" name="${sectionEntry.key.name()}" size="150" value="${list}">
-                    </c:forEach>
+                    <label for="${sectionEntry.key.name()}">${sectionEntry.key.title}</label><br/>
+                    <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
+                              rows="10"
+                              cols="150"><%=String.join("\n", ((ListSection) sectionEntry.getValue()).getList())%></textarea>
                 </dt>
 
             </dl>

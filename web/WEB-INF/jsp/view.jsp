@@ -39,20 +39,23 @@
     </c:when>
 
     <c:when test="${sectionEntry.key eq SectionType.EDUCATION || sectionEntry.key eq SectionType.EXPERIENCE}">
-    <c:forEach var="organisations"
-               items="<%=((OrganisationSection) sectionEntry.getValue()).getOrganisationList()%>">
-    <jsp:useBean id="organisations"
-                 type="com.urise.webapp.model.Organisation"/>
-        ${organisations.company}<br/>
-    <%=organisations.getUrlOfHomepage()%><br/>
-    <c:forEach var="positions" items="<%=organisations.getPosition()%>">
-    <jsp:useBean id="positions"
-                 type="com.urise.webapp.model.Organisation.Position"/>
-        ${positions.startDate}
-        ${positions.finishDate}
-    <p> ${positions.title}
-            ${positions.description}
-        </c:forEach>
+      <c:forEach var="organisations"
+                 items="<%=((OrganisationSection) sectionEntry.getValue()).getOrganisationList()%>">
+          <jsp:useBean id="organisations"
+                       type="com.urise.webapp.model.Organisation"/>
+          <b> <a href="${organisations.homepage}">${organisations.company}</a> </b>
+          <c:forEach var="positions" items="<%=organisations.getPosition()%>">
+
+              <jsp:useBean id="positions"
+                           type="com.urise.webapp.model.Organisation.Position"/>
+
+              ${positions.showStartDate()} - ${positions.showFinishDate()}<br/>
+              <b>${positions.title}</b>
+              ${positions.description}
+              <br/>
+              <br/>
+
+          </c:forEach>
         </c:forEach>
         </c:when>
         </c:choose>

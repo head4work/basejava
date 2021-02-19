@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ResumeServlet extends HttpServlet {
     private Storage storage;
@@ -51,7 +51,12 @@ public class ResumeServlet extends HttpServlet {
                     r.addSection(SectionType.valueOf(s), new TextSection(String.join(" ", strings)));
                     break;
                 case "ACHIEVEMENT", "QUALIFICATION":
-                    r.addSection(SectionType.valueOf(s), new ListSection(Arrays.stream(strings).collect(Collectors.toList())));
+                    if (strings.length != 0) {
+                        String string = String.join("", strings);
+                        r.addSection(SectionType.valueOf(s), new ListSection(Stream.of(string.split("\n")).collect(Collectors.toList())));
+                    } else {
+                        r.getSections().remove(SectionType.valueOf(s));
+                    }
                     break;
             }
         });

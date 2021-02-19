@@ -9,6 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.net.URL;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -105,6 +106,14 @@ public class Organisation implements Serializable {
 
         public YearMonth getStartDate() {
             return startDate;
+        }
+
+        public String showStartDate() {
+            return startDate.format(DateTimeFormatter.ofPattern("MM/yyyy"));
+        }
+
+        public String showFinishDate() {
+            return (finishDate.equals(YearMonth.now())) ? "Current time" : finishDate.format(DateTimeFormatter.ofPattern("MM/yyyy"));
         }
 
         public YearMonth getFinishDate() {
