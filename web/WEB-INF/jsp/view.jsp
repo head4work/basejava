@@ -41,15 +41,15 @@
     <c:when test="${sectionEntry.key eq SectionType.EDUCATION || sectionEntry.key eq SectionType.EXPERIENCE}">
       <c:forEach var="organisations"
                  items="<%=((OrganisationSection) sectionEntry.getValue()).getOrganisationList()%>">
-          <jsp:useBean id="organisations"
-                       type="com.urise.webapp.model.Organisation"/>
-          <b> <a href="${organisations.homepage}">${organisations.company}</a> </b>
-          <c:forEach var="positions" items="<%=organisations.getPosition()%>">
+    <jsp:useBean id="organisations"
+                 type="com.urise.webapp.model.Organisation"/>
+    <p><b> <a href="${organisations.homepage}">${organisations.company}</a> </b>
+        <c:forEach var="positions" items="<%=organisations.getPosition()%>">
 
-    <jsp:useBean id="positions"
-                 type="com.urise.webapp.model.Organisation.Position"/>
+            <jsp:useBean id="positions"
+                         type="com.urise.webapp.model.Organisation.Position"/>
 
-    <p>  ${positions.showStartDate()} - ${positions.showFinishDate()}<br/>
+        <br/> ${positions.showStartDate()} - ${positions.showFinishDate()}<br/>
         <b>${positions.title}</b>
             ${positions.description}
 
