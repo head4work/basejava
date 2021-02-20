@@ -46,16 +46,15 @@
           <b> <a href="${organisations.homepage}">${organisations.company}</a> </b>
           <c:forEach var="positions" items="<%=organisations.getPosition()%>">
 
-              <jsp:useBean id="positions"
-                           type="com.urise.webapp.model.Organisation.Position"/>
+    <jsp:useBean id="positions"
+                 type="com.urise.webapp.model.Organisation.Position"/>
 
-              ${positions.showStartDate()} - ${positions.showFinishDate()}<br/>
-              <b>${positions.title}</b>
-              ${positions.description}
-              <br/>
-              <br/>
+    <p>  ${positions.showStartDate()} - ${positions.showFinishDate()}<br/>
+        <b>${positions.title}</b>
+            ${positions.description}
 
-          </c:forEach>
+
+        </c:forEach>
         </c:forEach>
         </c:when>
         </c:choose>
