@@ -48,12 +48,14 @@ public class ResumeServlet extends HttpServlet {
         request.getParameterMap().forEach((s, strings) -> {
             switch (s) {
                 case "OBJECTIVE", "PERSONAL":
-                    r.addSection(SectionType.valueOf(s), new TextSection(String.join(" ", strings)));
+                   r.addSection(SectionType.valueOf(s), new TextSection(String.join(" ", strings)));
                     break;
                 case "ACHIEVEMENT", "QUALIFICATION":
                     if (strings.length != 0) {
-                        String string = String.join("", strings);
-                        r.addSection(SectionType.valueOf(s), new ListSection(Stream.of(string.split("\n")).collect(Collectors.toList())));
+                        String string = String.join("", strings).trim();
+                        r.addSection(SectionType.valueOf(s), new ListSection(Stream.of(string.split("\n"))
+                                .filter(s1 -> s1.length() > 1)
+                                .collect(Collectors.toList())));
                     } else {
                         r.getSections().remove(SectionType.valueOf(s));
                     }
@@ -86,6 +88,7 @@ public class ResumeServlet extends HttpServlet {
                 break;
             case "new":
                 r = new Resume();
+                r.addEmptySections();
                 break;
             default:
                 throw new IllegalStateException("Action " + action + " is illegal");

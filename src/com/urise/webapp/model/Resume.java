@@ -43,6 +43,15 @@ public class Resume implements Serializable {
         sections.put(type, section);
     }
 
+    public void addEmptySections() {
+        for (SectionType type : SectionType.values()) {
+            switch (type) {
+                case OBJECTIVE, PERSONAL -> sections.put(type, new TextSection(""));
+                case ACHIEVEMENT, QUALIFICATION -> sections.put(type, new ListSection(""));
+            }
+        }
+    }
+
     public void addContact(ContactType type, String value) {
         contacts.put(type, value);
     }
