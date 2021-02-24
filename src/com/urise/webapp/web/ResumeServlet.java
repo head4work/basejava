@@ -9,6 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,10 +51,11 @@ public class ResumeServlet extends HttpServlet {
                 r.getContacts().remove(type);
             }
         }
-        request.getParameterMap().forEach((s, strings) -> {
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        parameterMap.forEach((s, strings) -> {
             switch (s) {
                 case "OBJECTIVE", "PERSONAL":
-                   r.addSection(SectionType.valueOf(s), new TextSection(String.join(" ", strings)));
+                    r.addSection(SectionType.valueOf(s), new TextSection(String.join(" ", strings)));
                     break;
                 case "ACHIEVEMENT", "QUALIFICATION":
                     if (strings.length != 0) {
@@ -60,9 +67,33 @@ public class ResumeServlet extends HttpServlet {
                         r.getSections().remove(SectionType.valueOf(s));
                     }
                     break;
+                case "EXPERIENCE", "EDUCATION":
+                    List<Organisation> organisationList = new ArrayList<>();
+                    for (int i = 0; i < strings.length; i += 3) {
+                        List<Organisation.Position> positionList = new ArrayList<>();
+                        String company = strings[i];
+                        URL url = null;
+                        try {
+                            url = new URL(strings[i + 1]);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
+                        String hash = strings[i + 2];
+                        String[] position = parameterMap.get(hash);
+                        for (int j = 0; j < position.length; j += 3) {
+                            YearMonth start = YearMonth.parse(position[j]);
+                            YearMonth finish = (position[j + 1].equals("Current time")) ? YearMonth.now() : YearMonth.parse(position[j + 1]);
+                            String title = position[j + 2];
+                            String description = position[j + 3];
+                            j++;
+                            positionList.add(new Organisation.Position(start, finish, title, description));
+                        }
+                        organisationList.add(new Organisation(company, url, positionList));
+
+                    }
+                    r.addSection(SectionType.valueOf(s), new OrganisationSection(organisationList));
             }
         });
-
         storage.update(r);
         response.sendRedirect("resume");
     }

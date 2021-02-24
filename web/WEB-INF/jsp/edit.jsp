@@ -28,51 +28,81 @@
         <h3>Секции:</h3>
         <c:forEach var="sectionEntry" items="<%=resume.getSections()%>">
 
-        <jsp:useBean id="sectionEntry"
-                     type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
 
-        <c:choose>
-        <c:when test="${sectionEntry.key eq SectionType.OBJECTIVE || sectionEntry.key eq SectionType.PERSONAL}">
-            <dl>
-                <dt><%=sectionEntry.getKey().getTitle()%>
-                </dt>
-                <dt><input type="text" name="${sectionEntry.key.name()}" size=150
-                           value="<%=((TextSection) sectionEntry.getValue()).getText()%>"></dt>
-            </dl>
+            <c:choose>
+                <c:when test="${sectionEntry.key eq SectionType.OBJECTIVE || sectionEntry.key eq SectionType.PERSONAL}">
+                    <dl>
+                        <dt><%=sectionEntry.getKey().getTitle()%>
+                        </dt>
+                        <dt><input type="text" name="${sectionEntry.key.name()}" size=150
+                                   value="<%=((TextSection) sectionEntry.getValue()).getText()%>"></dt>
+                    </dl>
 
-        </c:when>
+                </c:when>
 
-        <c:when test="${sectionEntry.key eq SectionType.ACHIEVEMENT || sectionEntry.key eq SectionType.QUALIFICATION}">
-            <dl>
-                <dt>
-                    <label for="${sectionEntry.key.name()}">${sectionEntry.key.title}</label><br/>
-                    <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
-                              rows="10"
-                              cols="150"><%=String.join("\n", ((ListSection) sectionEntry.getValue()).getList())%></textarea>
-                </dt>
+                <c:when test="${sectionEntry.key eq SectionType.ACHIEVEMENT || sectionEntry.key eq SectionType.QUALIFICATION}">
+                    <dl>
+                        <dt>
+                            <label for="${sectionEntry.key.name()}">${sectionEntry.key.title}</label><br/>
+                            <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
+                                      rows="10"
+                                      cols="150"><%=String.join("\n", ((ListSection) sectionEntry.getValue()).getList())%></textarea>
+                        </dt>
 
-            </dl>
-        </c:when>
+                    </dl>
+                </c:when>
 
-        <c:when test="${sectionEntry.key eq SectionType.EDUCATION || sectionEntry.key eq SectionType.EXPERIENCE}">
-        <c:forEach var="organisations"
-                   items="<%=((OrganisationSection) sectionEntry.getValue()).getOrganisationList()%>">
-        <jsp:useBean id="organisations"
-                     type="com.urise.webapp.model.Organisation"/>
-            ${organisations.company}<br/>
-        <%=organisations.getUrlOfHomepage()%><br/>
-        <c:forEach var="positions" items="<%=organisations.getPosition()%>">
-        <jsp:useBean id="positions"
-                     type="com.urise.webapp.model.Organisation.Position"/>
-            ${positions.startDate}
-            ${positions.finishDate}
-        <p> ${positions.title}
-                ${positions.description}
-            </c:forEach>
-            </c:forEach>
-            </c:when>
+                <c:when test="${sectionEntry.key eq SectionType.EDUCATION || sectionEntry.key eq SectionType.EXPERIENCE}">
+                    <h4><%=sectionEntry.getKey().getTitle()%>
+                    </h4>
+
+
+                    <c:forEach var="organisations"
+                               items="<%=((OrganisationSection) sectionEntry.getValue()).getOrganisationList()%>">
+                        <jsp:useBean id="organisations"
+                                     type="com.urise.webapp.model.Organisation"/>
+                        <dl>
+                            <dt>Company:<br>
+                                <input type="text" name="${sectionEntry.key.name()}" size=150
+                                       value="${organisations.company}">
+                            </dt>
+                            <dt>homepage: <br> <input type="text" name="${sectionEntry.key.name()}" size=150
+                                                      value="${organisations.homepage}"></dt>
+                            <input type="hidden" name="${sectionEntry.key.name()}" value="${organisations.hashCode()}">
+                            <c:forEach var="positions" items="<%=organisations.getPosition()%>">
+                                <jsp:useBean id="positions" type="com.urise.webapp.model.Organisation.Position"/>
+                                <b>Позиции:</b>
+                                <dt>startDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                          value="${positions.startDate}"></dt>
+                                <dt>finishDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                           value="${positions.finishDate}"></dt>
+                                <dt>title: <br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                       value="${positions.title}"></dt>
+                                <dt>description:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                            value="${positions.description}"></dt>
+                            </c:forEach>
+                        </dl>
+
+                        <%--<dl>
+                            <dt>
+                                <label for="${sectionEntry.key.name()}">${sectionEntry.key.title}</label><br/>
+                                <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
+                                          rows="10"
+                                          cols="150">${organisations.company}
+                ${organisations.homepage}<c:forEach var="positions" items="<%=organisations.getPosition()%>"><jsp:useBean id="positions" type="com.urise.webapp.model.Organisation.Position"/>
+                ${positions.startDate} - ${positions.finishDate}
+                ${positions.title}
+                ${positions.description}</c:forEach></textarea>
+                            </dt>
+                        </dl>--%>
+
+
+                    </c:forEach>
+                </c:when>
             </c:choose>
-            </c:forEach>
+        </c:forEach>
 
         <hr>
         <button type="submit">Сохранить</button>

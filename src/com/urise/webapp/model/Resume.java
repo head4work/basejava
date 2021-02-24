@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.YearMonth;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
@@ -48,6 +49,14 @@ public class Resume implements Serializable {
             switch (type) {
                 case OBJECTIVE, PERSONAL -> sections.put(type, new TextSection(""));
                 case ACHIEVEMENT, QUALIFICATION -> sections.put(type, new ListSection(""));
+                case EDUCATION -> sections.put(type,
+                        new OrganisationSection(
+                                new Organisation("", null,
+                                        new Organisation.Position(YearMonth.now(), YearMonth.now(), "", ""))));
+                case EXPERIENCE -> sections.put(type,
+                        new OrganisationSection(
+                                new Organisation("1", null,
+                                        new Organisation.Position(YearMonth.now(), YearMonth.now(), "", ""))));
             }
         }
     }
