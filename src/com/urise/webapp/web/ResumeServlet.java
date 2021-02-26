@@ -75,7 +75,7 @@ public class ResumeServlet extends HttpServlet {
                             break;
                         }
                         String company = strings[i];
-                        URL url = null;
+                        URL url;
                         try {
                             url = new URL(strings[i + 1]);
                         } catch (MalformedURLException e) {
