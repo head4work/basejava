@@ -83,23 +83,41 @@
                                 <dt>description:<br> <input type="text" name="${organisations.hashCode()}" size=150
                                                             value="${positions.description}"></dt>
                             </c:forEach>
+                            <b>Добавить позицию:</b>
+                            <dt>startDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                      value=""></dt>
+                            <dt>finishDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                       value=""></dt>
+                            <dt>title: <br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                   value=""></dt>
+                            <dt>description:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                        value=""></dt>
                         </dl>
-
-                        <%--<dl>
-                            <dt>
-                                <label for="${sectionEntry.key.name()}">${sectionEntry.key.title}</label><br/>
-                                <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
-                                          rows="10"
-                                          cols="150">${organisations.company}
-                ${organisations.homepage}<c:forEach var="positions" items="<%=organisations.getPosition()%>"><jsp:useBean id="positions" type="com.urise.webapp.model.Organisation.Position"/>
-                ${positions.startDate} - ${positions.finishDate}
-                ${positions.title}
-                ${positions.description}</c:forEach></textarea>
-                            </dt>
-                        </dl>--%>
 
 
                     </c:forEach>
+                    <h4>Добавить новую организацию</h4>
+
+                    <dl>
+                        <dt>Company:<br>
+                            <input type="text" name="${sectionEntry.key.name()}" size=150
+                                   value="">
+                        </dt>
+                        <dt>homepage: <br> <input type="text" name="${sectionEntry.key.name()}" size=150
+                                                  value=""></dt>
+                        <input type="hidden" name="${sectionEntry.key.name()}" value="new">
+
+                        <b>Добавить позицию:</b>
+                        <dt>startDate:<br> <input type="text" name="new" size=150
+                                                  value=""></dt>
+                        <dt>finishDate:<br> <input type="text" name="new" size=150
+                                                   value=""></dt>
+                        <dt>title: <br> <input type="text" name="new" size=150
+                                               value=""></dt>
+                        <dt>description:<br> <input type="text" name="new" size=150
+                                                    value=""></dt>
+                    </dl>
+
                 </c:when>
             </c:choose>
         </c:forEach>

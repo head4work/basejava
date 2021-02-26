@@ -71,16 +71,22 @@ public class ResumeServlet extends HttpServlet {
                     List<Organisation> organisationList = new ArrayList<>();
                     for (int i = 0; i < strings.length; i += 3) {
                         List<Organisation.Position> positionList = new ArrayList<>();
+                        if (strings[i].equals("") || strings[i + 1].equals("")) {
+                            break;
+                        }
                         String company = strings[i];
                         URL url = null;
                         try {
                             url = new URL(strings[i + 1]);
                         } catch (MalformedURLException e) {
-                            e.printStackTrace();
+                            throw new IllegalStateException(e.getMessage() + " illegal url address");
                         }
                         String hash = strings[i + 2];
                         String[] position = parameterMap.get(hash);
                         for (int j = 0; j < position.length; j += 3) {
+                            if (position[j].equals("") || position[j].length() < 7 || position[j + 1].equals("") || position[j + 1].length() < 7) {
+                                break;
+                            }
                             YearMonth start = YearMonth.parse(position[j]);
                             YearMonth finish = (position[j + 1].equals("Current time")) ? YearMonth.now() : YearMonth.parse(position[j + 1]);
                             String title = position[j + 2];
