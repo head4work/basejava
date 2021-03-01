@@ -64,34 +64,53 @@
                         <jsp:useBean id="organisations"
                                      type="com.urise.webapp.model.Organisation"/>
                         <dl>
-                            <dt>Company:<br>
-                                <input type="text" name="${sectionEntry.key.name()}" size=150
-                                       value="${organisations.company}">
-                            </dt>
-                            <dt>homepage: <br> <input type="text" name="${sectionEntry.key.name()}" size=150
-                                                      value="${organisations.homepage}"></dt>
+                            <dt><label for="${sectionEntry.key.name()}">Company, web address</label><br/>
+                                <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
+                                          rows="2"
+                                          cols="150">${organisations.company}<%='\n'%>
+                                    ${organisations.homepage}</textarea></dt>
+
+                                <%--  <dt>Employer, web address:<br>
+                                      <input type="text" name="${sectionEntry.key.name()}" size=150
+                                             value="${organisations.company}, ${organisations.homepage} ">
+                                  </dt>--%>
+
                             <input type="hidden" name="${sectionEntry.key.name()}" value="${organisations.hashCode()}">
                             <c:forEach var="positions" items="<%=organisations.getPosition()%>">
                                 <jsp:useBean id="positions" type="com.urise.webapp.model.Organisation.Position"/>
                                 <b>Позиции:</b>
-                                <dt>startDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
-                                                          value="${positions.startDate}"></dt>
-                                <dt>finishDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
-                                                           value="${positions.finishDate}"></dt>
-                                <dt>title: <br> <input type="text" name="${organisations.hashCode()}" size=150
+                                <dt>Dates:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                      value="${positions.startDate} - ${positions.finishDate}"></dt>
+                                <dt>
+                                    <label for="${organisations.hashCode()}">Title, description</label><br/>
+                                    <textarea id="${organisations.hashCode()}" name="${organisations.hashCode()}"
+                                              rows="2"
+                                              cols="150">${positions.title}<%='\n'%>
+                                        ${positions.description}</textarea></dt>
+
+                                <%--<dt>title, : <br> <input type="text" name="${organisations.hashCode()}" size=150
                                                        value="${positions.title}"></dt>
                                 <dt>description:<br> <input type="text" name="${organisations.hashCode()}" size=150
-                                                            value="${positions.description}"></dt>
+                                                            value="${positions.description}"></dt>--%>
                             </c:forEach>
                             <b>Добавить позицию:</b>
-                            <dt>startDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
-                                                      value=""></dt>
-                            <dt>finishDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
-                                                       value=""></dt>
-                            <dt>title: <br> <input type="text" name="${organisations.hashCode()}" size=150
-                                                   value=""></dt>
-                            <dt>description:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                            <dt>Dates:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                  placeholder="0000-00 - 0000-00"></dt>
+                            <dt>
+                                <label for="${organisations.hashCode()}">Title, description</label><br/>
+                                <textarea id="${organisations.hashCode()}" name="${organisations.hashCode()}"
+                                          rows="2"
+                                          cols="150" placeholder="Title<%='\n'%>Description"></textarea>
+                            </dt>
+
+                                <%-- <dt>startDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                           value=""></dt>
+                                 <dt>finishDate:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                            value=""></dt>
+                                 <dt>title: <br> <input type="text" name="${organisations.hashCode()}" size=150
                                                         value=""></dt>
+                                 <dt>description:<br> <input type="text" name="${organisations.hashCode()}" size=150
+                                                             value=""></dt>--%>
                         </dl>
 
 
@@ -99,24 +118,38 @@
                     <h4>Добавить новую организацию</h4>
 
                     <dl>
-                        <dt>Company:<br>
-                            <input type="text" name="${sectionEntry.key.name()}" size=150
-                                   value="">
-                        </dt>
-                        <dt>homepage: <br> <input type="text" name="${sectionEntry.key.name()}" size=150
-                                                  value=""></dt>
+                        <dt><label for="${sectionEntry.key.name()}">Company, web address</label><br/>
+                            <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
+                                      rows="2"
+                                      cols="150" placeholder="Company<%='\n'%>Web address"></textarea></dt>
+
+                            <%--  <dt>Employer, web address:<br>
+                                  <input type="text" name="${sectionEntry.key.name()}" size=150
+                                         placeholder="Company name, url">
+                              </dt>--%>
+
                         <input type="hidden" name="${sectionEntry.key.name()}"
                                value="${sectionEntry.key.name().hashCode()}">
 
                         <b>Добавить позицию:</b>
-                        <dt>startDate:<br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
-                                                  value=""></dt>
-                        <dt>finishDate:<br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
-                                                   value=""></dt>
-                        <dt>title: <br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
-                                               value=""></dt>
-                        <dt>description:<br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
+                        <dt>Dates:<br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
+                                              placeholder="0000-00 - 0000-00"></dt>
+
+                        <dt>
+                            <label for="${sectionEntry.key.name().hashCode()}">Title, description</label><br/>
+                            <textarea id="${sectionEntry.key.name().hashCode()}"
+                                      name="${sectionEntry.key.name().hashCode()}"
+                                      rows="2"
+                                      cols="150" placeholder="Title<%='\n'%>Description"></textarea>
+                        </dt>
+                            <%-- <dt>startDate:<br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
+                                                       value=""></dt>
+                             <dt>finishDate:<br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
+                                                        value=""></dt>
+                             <dt>title: <br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
                                                     value=""></dt>
+                             <dt>description:<br> <input type="text" name="${sectionEntry.key.name().hashCode()}" size=150
+                                                         value=""></dt>--%>
                     </dl>
 
                 </c:when>

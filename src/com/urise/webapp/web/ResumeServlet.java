@@ -69,29 +69,33 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case "EXPERIENCE", "EDUCATION":
                     List<Organisation> organisationList = new ArrayList<>();
-                    for (int i = 0; i < strings.length; i += 3) {
+
+
+                    for (int i = 0; i < strings.length; i += 2) {
                         List<Organisation.Position> positionList = new ArrayList<>();
-                        if (strings[i].equals("") || strings[i + 1].equals("")) {
+                        if (strings[i].trim().length() < 2 || !strings[i].contains("\n") || !strings[i].contains("http")) {
                             break;
                         }
-                        String company = strings[i];
+                        String[] split = strings[i].split("\n", 2);
+                        String company = split[0];
                         URL url;
                         try {
-                            url = new URL(strings[i + 1]);
+                            url = new URL(split[1]);
                         } catch (MalformedURLException e) {
                             throw new IllegalStateException(e.getMessage() + " illegal url address");
                         }
-                        String hash = strings[i + 2];
+                        String hash = strings[i + 1];
                         String[] position = parameterMap.get(hash);
-                        for (int j = 0; j < position.length; j += 3) {
-                            if (position[j].equals("") || position[j].length() < 7 || position[j + 1].equals("") || position[j + 1].length() < 7) {
+                        for (int j = 0; j < position.length; j += 2) {
+                            if (position[j].length() < 17 || position[j + 1].trim().length() < 2) {
                                 break;
                             }
-                            YearMonth start = YearMonth.parse(position[j]);
-                            YearMonth finish = (position[j + 1].equals("Current time")) ? YearMonth.now() : YearMonth.parse(position[j + 1]);
-                            String title = position[j + 2];
-                            String description = position[j + 3];
-                            j++;
+                            String[] split1 = position[j].split(" - ", 2);
+                            YearMonth start = YearMonth.parse(split1[0]);
+                            YearMonth finish = (split1[1].equals("Current time")) ? YearMonth.now() : YearMonth.parse(split1[1]);
+                            String[] split2 = position[j + 1].split("\n", 2);
+                            String title = split2[0];
+                            String description = split2.length < 2 ? "" : split2[1];
                             positionList.add(new Organisation.Position(start, finish, title, description));
                         }
                         organisationList.add(new Organisation(company, url, positionList));

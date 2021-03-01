@@ -49,9 +49,9 @@
             <jsp:useBean id="positions"
                          type="com.urise.webapp.model.Organisation.Position"/>
 
-        <br/> ${positions.showStartDate()} - ${positions.showFinishDate()}<br/>
+        <br/><br/> ${positions.showStartDate()} - ${positions.showFinishDate()}<br/>
         <b>${positions.title}</b>
-            ${positions.description}
+        <br/> ${positions.description}
 
 
         </c:forEach>
