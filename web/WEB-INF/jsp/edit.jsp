@@ -30,7 +30,6 @@
 
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<com.urise.webapp.model.SectionType, com.urise.webapp.model.Section>"/>
-
             <c:choose>
                 <c:when test="${sectionEntry.key eq SectionType.OBJECTIVE || sectionEntry.key eq SectionType.PERSONAL}">
                     <dl>
@@ -67,8 +66,7 @@
                             <dt><label for="${sectionEntry.key.name()}">Company, web address</label><br/>
                                 <textarea id="${sectionEntry.key.name()}" name="${sectionEntry.key.name()}"
                                           rows="2"
-                                          cols="150">${organisations.company}<%='\n'%>
-                                    ${organisations.homepage}</textarea></dt>
+                                          cols="150">${organisations.company}<%='\n'%>${organisations.homepage}</textarea></dt>
 
                             <input type="hidden" name="${sectionEntry.key.name()}" value="${organisations.hashCode()}">
                             <c:forEach var="positions" items="<%=organisations.getPosition()%>">
@@ -80,8 +78,7 @@
                                     <label for="${organisations.hashCode()}">Title, description</label><br/>
                                     <textarea id="${organisations.hashCode()}" name="${organisations.hashCode()}"
                                               rows="2"
-                                              cols="150">${positions.title}<%='\n'%>
-                                        ${positions.description}</textarea></dt>
+                                              cols="150">${positions.title}<%='\n'%>${positions.description}</textarea></dt>
 
                             </c:forEach>
                             <b>Добавить позицию:</b>
@@ -121,7 +118,6 @@
                 </c:when>
             </c:choose>
         </c:forEach>
-
         <hr>
         <button type="submit">Сохранить</button>
     </form>
